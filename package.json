@@ -1,0 +1,11 @@
+{
+  "name": "rotary",
+  "title": "Rotary",
+  "id": "jid1-AJEftiSmCtDBxA",
+  "description": "Finds DIAL devices on the local network",
+  "author": "Off By None",
+  "license": "yes",
+  "version": "1.0",
+  "icon":"data/rotary-32.png",
+  "icon64":"data/rotary-64.png"
+}

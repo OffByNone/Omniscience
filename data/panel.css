@@ -1,0 +1,16 @@
+.icon {
+    float:left;
+    margin-right:7px;
+}
+
+.deviceName {
+    font-weight:bold;
+    font-size: 18px;
+}
+
+.moreInfo {
+    font-size:12px;
+}
+#header{
+    font-size: 20px;
+}
