@@ -1,2 +1,5 @@
 *.db
 npm-debug.log
+*.name
+*.min.js
+.idea/

@@ -1,7 +1,7 @@
 var app = angular.module('Rotary', []);
 app.controller('PanelController', function($scope) {
   //var vm = this;
-  $scope.title = "Devices found on your network:";
+  $scope.title = 'Devices found on your network:';
   $scope.devices = [];
 
   $scope.$watch('devices', function(){
@@ -31,7 +31,7 @@ app.controller('PanelController', function($scope) {
 
   var removeDevice = function(device) {
     for(var i=$scope.devices.length-1; i>=0; i--) {
-      if( $scope.devices[i].address === device.address) {
+      if($scope.devices[i].address === device.address) {
         $scope.devices.splice(i,1);
       }
     }
@@ -42,7 +42,7 @@ app.controller('PanelController', function($scope) {
   var updateDevice = function(device) {
     var found = false;
     for(var i=$scope.devices.length-1; i>=0; i--) {
-      if( $scope.devices[i].address === device.address) {
+      if($scope.devices[i].address === device.address) {
         $scope.devices.splice(i,1, device);
         found = true;
       }
@@ -54,11 +54,11 @@ app.controller('PanelController', function($scope) {
     updateHeight();
   };
 
-  self.port.on("removedevice", removeDevice);
+  self.port.on('removedevice', removeDevice);
 
-  self.port.on("updatedevice", updateDevice);
+  self.port.on('updatedevice', updateDevice);
 
-  self.port.on("newdevice", addDevice);
+  self.port.on('newdevice', addDevice);
 
   var updateHeight = function(){
     //I had this inside the $scope.$watch but it fired too soon
@@ -67,7 +67,7 @@ app.controller('PanelController', function($scope) {
     //It would be better if we could call it on an after $scope.devices mutates
 
     var newHeight = document.body.parentNode.offsetHeight;
-    self.port.emit("heightChange", newHeight);
+    self.port.emit('heightChange', newHeight);
   };
 
 });
