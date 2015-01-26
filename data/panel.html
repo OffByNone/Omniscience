@@ -5,12 +5,12 @@
         <div id="header">{{ title }}</div>
         <div id="deviceList" ng-repeat="device in devices">
           <div id="{{ device.address }}">
-            <img style="float: left;" class="icon" ng-src="{{ device.icon.url }}" />
+            <img style="float: left;" class="icon" ng-src="{{ device.icons[0].url }}" />
             <span class="deviceName">{{ device.name }}</span>
             <div>
-              <em>{{ device.model }}</em> by <em>{{ device.manufacturer }}</em>
+              <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
               <br />
-              at: {{ device.address }}
+              at: {{ device.address.toString() }}
             </div>
           </div>
           <hr style="clear:both;">
