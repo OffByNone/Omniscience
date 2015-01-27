@@ -2,18 +2,11 @@
 <html ng-app="Rotary">
     <head></head>
     <body ng-controller="PanelController">
-        <div id="header">{{ title }}</div>
-        <div id="deviceList" ng-repeat="device in devices">
+        <div class="device" id="deviceList" ng-repeat="device in devices">
           <div id="{{ device.address }}">
-            <img style="float: left;" class="icon" ng-src="{{ device.icons[0].url }}" />
+            <img class="icon" ng-src="{{ device.icons[0].url }}" />
             <span class="deviceName">{{ device.name }}</span>
-            <div>
-              <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
-              <br />
-              at: {{ device.address.toString() }}
-            </div>
           </div>
-          <hr style="clear:both;">
         </div>
     </body>
 </html>

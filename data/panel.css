@@ -1,16 +1,25 @@
 .icon {
-    float:left;
-    margin-right:7px;
+    display: block;
+    max-height: 48px;
+    max-width: 96px;
+    margin: 0 auto;
+    padding-bottom:2px;
 }
 
 .deviceName {
-    font-weight:bold;
-    font-size: 18px;
+    text-align: center;
 }
 
-.moreInfo {
-    font-size:12px;
+.device{
+    float: left;
+    padding: 7px;
+    border: 1px solid white;
+    text-align: center;
+    min-height:67px;
+    width:103px;
 }
-#header{
-    font-size: 20px;
+
+.device:hover{
+    border: 1px solid black;
+    cursor: pointer;
 }
