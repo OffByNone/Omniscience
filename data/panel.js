@@ -1,9 +1,13 @@
 var app = angular.module('Rotary', []);
 app.controller('PanelController', function($scope) {
   //var vm = this;
-  $scope.title = 'Devices found on your network:';
+  $scope.title = 'Devices on your network:';
   $scope.devices = [];
 
+    $scope.play = function(device){
+        self.port.emit("play", device);
+    };
+    
   $scope.$watch('devices', function(){
     //todo add min and max heights
     //Something in here isn't working right

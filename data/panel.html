@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html ng-app="Rotary">
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="libs/font-awesome/font-awesome.min.css">
+    </head>
     <body ng-controller="PanelController">
-        <div class="device" id="deviceList" ng-repeat="device in devices">
-          <div id="{{ device.address }}">
-            <img class="icon" ng-src="{{ device.icons[0].url }}" />
-            <span class="deviceName">{{ device.name }}</span>
-          </div>
+        <div id="header">{{ title }}</div>
+        <div id="deviceList">
+            <div class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
+                <img class="icon" ng-src="{{ device.icons[0].url }}" />
+                <span class="deviceName">{{ device.name }}</span>
+                <span class="gear fa fa-lg fa-cog"></span>
+                <div class="moreInfo">
+                        <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
+                </div>
+                <span class="capabilities">
+                   <span ng-show="device.audioCapable" class="capability fa fa-lg fa-music"></span>
+                   <span ng-show="device.videoCapable" class="capability fa fa-lg fa-video-camera"></span>
+                   <span ng-show="device.mirrorCapable" class="capability fa fa-lg fa-desktop"></span>
+                </span>
+                <div ng-show="device.showPicker" class="picker group">
+                    <div class="picker-left">
+                             Enter a url <br>
+                             Choose a file
+                    </div>
+                    <div class="picker-right">
+                        <input class="input-url" type="text">
+                        <br>
+                        <button class="filePicker">Browse</button>
+                        <button class="launch">Launch</button>
+                    </div>
+                </div>
+                <div ng-show="device.showControls" class="controls">
+                    <div class="slider"></div>
+                    <span class="fa fa-lg fa-fast-backward"></span>
+                    <span class="fa fa-lg fa-play"></span>
+                    <span class="fa fa-lg fa-pause"></span>
+                    <span class="fa fa-lg fa-fast-forward"></span>
+                    <span class="fa fa-lg fa-stop"></span>
+                </div>
+            </div>            
         </div>
     </body>
 </html>
+<!-- 320px wide by default -->

@@ -1,0 +1,14 @@
+body{
+    background-color:#FFF;
+}
+
+#video{
+    max-width:1920px;
+    max-height:1080px;
+    margin:0;
+    border:0;
+    padding:0;
+    position:absolute;
+    top:0;
+    left:0;
+}

@@ -1,9 +1,10 @@
 {
   "name": "rotary",
   "title": "Rotary",
-  "id": "jid1-AJEftiSmCtDBxA",
+  "id": "jid1-AJEftiSmCtDBxA@jetpack",
   "description": "Finds DIAL devices on the local network",
   "author": "Off By None",
+  "main": "lib/main.js",
   "license": "yes",
   "version": "1.0.0",
   "icon": "data/icons/rotary-32.png",

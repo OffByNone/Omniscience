@@ -1,25 +1,76 @@
 .icon {
-    display: block;
-    max-height: 48px;
-    max-width: 96px;
-    margin: 0 auto;
-    padding-bottom:2px;
-}
-
-.deviceName {
-    text-align: center;
-}
-
-.device{
     float: left;
-    padding: 7px;
-    border: 1px solid white;
-    text-align: center;
-    min-height:67px;
-    width:103px;
+    margin-right:7px;
+}
+.deviceName {
+    font-weight:bold;
+    font-size: 18px;
+}
+.moreInfo {
+    font-size:12px;
+    margin:2px 0px 3px 0px;
+}
+#header {
+    font-size:20px;
+    text-align:center;
+}
+.device {
+    display:inline-block;
+    width: 100%;
+    margin-top:15px;
+    margin-bottom:5px;
+}
+.capability{
+    margin: 5px;
+}
+.fa:hover{
+    color:#42B4E6;
+    cursor:pointer;
+}
+.input-url{
+    width:98%;
+}
+.picker{
+    margin:0 5px;
+    border:2px solid #42B4E6;
+    padding:5px;
+    border-radius:7px;
+}
+.picker-left{
+    float:left;
+}
+.picker-right{
+    float:right;
+    width:195px;
+}
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-.device:hover{
-    border: 1px solid black;
-    cursor: pointer;
+.controls{
+    text-align:center;
 }
+
+.controls .fa {
+    margin:0 5px;
+}
+
+.slider{
+    height: 10px;
+    background-color: black;
+    border-radius: 9px;
+    width: 95%;
+    display: inline-block;
+}
+
+
+/*
+body {
+    width: 320px;
+    font-family: 'Open Sans', sans-serif;
+    border:1px solid black;
+}
+
+*/
