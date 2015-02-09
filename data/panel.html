@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html ng-app="Rotary">
     <head>
+        <meta charset="utf-8" />
         <link rel="stylesheet" href="libs/font-awesome/font-awesome.min.css">
     </head>
     <body ng-controller="PanelController">
         <div id="header">{{ title }}</div>
         <div id="deviceList">
-            <div class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
+            <div rotary-update-height class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
                 <span class="deviceName">{{ device.name }}</span>
                 <span class="gear fa fa-lg fa-cog"></span>
@@ -14,11 +15,11 @@
                         <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
                 </div>
                 <span class="capabilities">
-                   <span ng-show="device.audioCapable" class="capability fa fa-lg fa-music"></span>
-                   <span ng-show="device.videoCapable" class="capability fa fa-lg fa-video-camera"></span>
-                   <span ng-show="device.mirrorCapable" class="capability fa fa-lg fa-desktop"></span>
+                   <span ng-show="device.audioCapable" ng-click="showHideAudioPicker(device)" class="capability fa fa-lg fa-music" ng-class="{highlight : device.showAudioPicker}"></span>
+                   <span ng-show="device.videoCapable" ng-click="showHideVideoPicker(device)" class="capability fa fa-lg fa-video-camera"  ng-class="{highlight : device.showVideoPicker}"></span>
+                   <span ng-show="device.mirrorCapable" ng-click="showHideMirrorPicker(device)" class="capability fa fa-lg fa-desktop"  ng-class="{highlight : device.showMirrorPicker}"></span>
                 </span>
-                <div ng-show="device.showPicker" class="picker group">
+                <div ng-show="device.showAudioPicker || device.showVideoPicker" class="picker group">
                     <div class="picker-left">
                              Enter a url <br>
                              Choose a file
@@ -26,19 +27,22 @@
                     <div class="picker-right">
                         <input class="input-url" type="text">
                         <br>
-                        <button class="filePicker">Browse</button>
-                        <button class="launch">Launch</button>
+                        <button class="filePicker" ng-click="pickLocalFile(device)">Browse</button>
+                    </div>
+                    <div ng-show="device.file">
+                        <div style="float:left;width:280px;">{{device.file.name}}</div>
+                        <button class="launch" ng-click="launch(device)">Launch</button>
                     </div>
                 </div>
-                <div ng-show="device.showControls" class="controls">
+                <div ng-show="device.isRunning" class="controls">
                     <div class="slider"></div>
                     <span class="fa fa-lg fa-fast-backward"></span>
-                    <span class="fa fa-lg fa-play"></span>
-                    <span class="fa fa-lg fa-pause"></span>
+                    <span ng-click="executeCommand(device,'play')" class="fa fa-lg fa-play"></span>
+                    <span ng-click="executeCommand(device,'pause')" class="fa fa-lg fa-pause"></span>
                     <span class="fa fa-lg fa-fast-forward"></span>
-                    <span class="fa fa-lg fa-stop"></span>
+                    <span ng-click="executeCommand(device,'stop')" class="fa fa-lg fa-stop"><i></i></span>
                 </div>
-            </div>            
+            </div>
         </div>
     </body>
 </html>

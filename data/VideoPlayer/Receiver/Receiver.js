@@ -3,8 +3,8 @@
     //if the below two lines are not executed the matchstick will think it
     //failed to open the app and return to the default screen after a timeout
 
-    var receiverManager = new ReceiverManager("~mediaPlayerDemo"); //create a new ReceiverManager with the same app id used in the sender
-    var messageChannel = receiverManager.createMessageChannel("mediaPlayerDemo");
+    var receiverManager = new ReceiverManager("~rotary"); //create a new ReceiverManager with the same app id used in the sender
+    var messageChannel = receiverManager.createMessageChannel("rotary");
     var media = {
         video : document.getElementById("video"),
         audio : document.getElementById("audio"),
