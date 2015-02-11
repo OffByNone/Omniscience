@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html ng-app="Rotary">
+<html ng-app="rotaryApp">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="libs/font-awesome/font-awesome.min.css">
+        <link rel="stylesheet" href="../libs/font-awesome/font-awesome.min.css">
     </head>
-    <body ng-controller="PanelController">
+    <body ng-controller="DeviceController">
         <div id="header">{{ title }}</div>
         <div id="deviceList">
-            <div rotary-update-height class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
+            <div class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
                 <span class="deviceName">{{ device.name }}</span>
                 <span class="gear fa fa-lg fa-cog"></span>
