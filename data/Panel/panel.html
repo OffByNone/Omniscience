@@ -6,8 +6,16 @@
     </head>
     <body ng-controller="DeviceController">
         <div id="header">{{ title }}</div>
+        <select ng-model="selectedType">
+            <option selected value="">All</option>
+            <option ng-repeat="type in deviceTypes" ng-value="type.urn">{{type.name}}</option>
+        </select>
+        <select ng-model="selectedService">
+            <option selected value="">All</option>
+            <option ng-repeat="type in serviceTypes" ng-value="type.urn">{{type.name}}</option>
+        </select>        
         <div id="deviceList">
-            <div class="device" ng-repeat="device in devices" id="{{ device.address }}">
+            <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
                 <span class="deviceName">{{ device.name }}</span>
                 <span class="gear fa fa-lg fa-cog"></span>

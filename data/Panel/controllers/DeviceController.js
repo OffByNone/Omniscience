@@ -1,10 +1,11 @@
 "use strict";
 
-rotaryApp.controller('DeviceController', function($scope, $window, deviceService) {
-    //var vm = this;
+rotaryApp.controller('DeviceController', function DeviceController($scope, $window, deviceService) {
     $scope.title = 'Devices on your network:';
     $scope.devices = [];
-
+    $scope.deviceTypes = [];
+    $scope.serviceTypes = [];
+    
     $scope.pickLocalFile = function pickLocalFile(device){
         deviceService.chooseFile(device, device.fileType);
     };
@@ -22,7 +23,6 @@ rotaryApp.controller('DeviceController', function($scope, $window, deviceService
         })[0];
         dev.file = file;
     };
-    
     var hidePicker = function hidePicker(device){
         device.isRunning = true;
         device.showAudioPicker = false; 
@@ -46,31 +46,45 @@ rotaryApp.controller('DeviceController', function($scope, $window, deviceService
         device.showAudioPicker = false;
         device.showMirrorPicker = !device.showMirrorPicker;
     };
-
-    var addUpdateDevice = function(device) {
+    
+    var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
-        for(var i=$scope.devices.length-1; i>=0; i--) {
-          if($scope.devices[i].address === device.address) {
-            //$scope.devices.splice(i, 1, device);
-            found = true;
-          }
-        }
-        if (!found) {
-          $scope.devices.push(device);
-        }
+        $scope.devices.forEach(function(x){
+            if(x.address === device.address) {
+                x.name = device.name;
+                found = true;
+            }
+        });
+        
+        if (!found) $scope.devices.push(device);
+        
+        addTypes(device);
         deviceService.updateHeight();
         $scope.$apply();
     };
-    var removeDevice = function(device) {
-        for(var i=$scope.devices.length-1; i>=0; i--) {
-          if($scope.devices[i].address === device.address) {
+    var removeDevice = function removeDevice(device) {
+        for(var i=$scope.devices.length-1; i>=0; i--)
+          if($scope.devices[i].address === device.address)
             $scope.devices.splice(i, 1);
-          }
-        }
+        
+        removeTypes();
         deviceService.updateHeight();
         $scope.$apply();
     };
-
+    
+    var addTypes = function addTypes(device){
+        if(!$scope.deviceTypes.some(x=> x.name === device.type.name && x.urn === device.type.urn))
+            $scope.deviceTypes.push(device.type);
+        device.services.forEach(service => {
+            if(!$scope.serviceTypes.some(x=> x.name === service.type.name && x.urn === service.type.urn))
+                $scope.serviceTypes.push(service.type);
+        });
+    };
+    var removeTypes = function removeTypes(){
+        $scope.deviceTypes = $scope.deviceTypes.filter(deviceType => $scope.devices.some(device => device.type.name === deviceType.name && device.type.urn === deviceType.urn));
+        $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
+    };
+    
     deviceService.onDeviceLost(removeDevice);
     deviceService.onDeviceFound(addUpdateDevice);
     deviceService.onFileChosen(setFile);
