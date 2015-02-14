@@ -1,28 +1,28 @@
 'use strict';
 
-rotaryApp.service('deviceService', function() {
+rotaryApp.service('deviceService', function($window) {
 	return {
         onDeviceLost: function onDeviceLost(callback){
-            self.port.on('deviceLost', callback);
+            $window.self.port.on('deviceLost', callback);
         },
         onDeviceFound: function onDeviceFound(callback){
-            self.port.on('deviceFound', callback);
+            $window.self.port.on('deviceFound', callback);
         },
         onFileChosen: function onFileChosen(callback){
-            self.port.on('pickedFile', callback);
+            $window.self.port.on('pickedFile', callback);
         },
         sendCommand: function sendCommand(command, device){
-            self.port.emit('sendCommand', command, device);
+            $window.self.port.emit('sendCommand', command, device);
         },
         launch: function launch(device){
-            self.port.emit("launch", device);
+            $window.self.port.emit("launch", device);
         },
         chooseFile: function chooseFile(device, fileType){
-            self.port.emit("chooseFile", device, fileType);
+            $window.self.port.emit("chooseFile", device, fileType);
         },
         updateHeight: function updateHeight(){
-            var newHeight = document.body.parentNode.offsetHeight;
-            self.port.emit('updateHeight', newHeight);
+            var newHeight = $window.document.body.parentNode.offsetHeight;
+            $window.self.port.emit('updateHeight', newHeight);
         }
 	};
 });

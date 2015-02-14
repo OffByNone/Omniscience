@@ -7,7 +7,7 @@
     <body ng-controller="DeviceController">
         <div id="header">{{ title }}</div>
         <div id="deviceList">
-            <div class="device" ng-repeat="device in devices" ng-show="device.type.name == 'DIAL Multiscreen'" id="{{ device.address }}">
+            <div class="device" ng-repeat="device in devices" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
                 <span class="deviceName">{{ device.name }}</span>
                 <span class="gear fa fa-lg fa-cog"></span>
@@ -47,3 +47,4 @@
     </body>
 </html>
 <!-- 320px wide by default -->
+<!-- ng-show="device.type.name == 'DIAL Multiscreen'" -->

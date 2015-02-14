@@ -1,6 +1,6 @@
 "use strict";
 
-rotaryApp.controller('DeviceController', function($scope, deviceService) {
+rotaryApp.controller('DeviceController', function($scope, $window, deviceService) {
     //var vm = this;
     $scope.title = 'Devices on your network:';
     $scope.devices = [];
