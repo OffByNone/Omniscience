@@ -6,14 +6,16 @@
     </head>
     <body ng-controller="DeviceController">
         <div id="header">{{ title }}</div>
+        Filter By:
         <select ng-model="selectedType">
             <option selected value="">All</option>
-            <option ng-repeat="type in deviceTypes" ng-value="type.urn">{{type.name}}</option>
+            <optgroup label="Devices">
+                <option ng-repeat="deviceType in deviceTypes" ng-value="deviceType.urn">{{deviceType.name}}</option>
+            </optgroup>
+            <optgroup label="Services">
+                <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
+            </optgroup>
         </select>
-        <select ng-model="selectedService">
-            <option selected value="">All</option>
-            <option ng-repeat="type in serviceTypes" ng-value="type.urn">{{type.name}}</option>
-        </select>        
         <div id="deviceList">
             <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
@@ -34,7 +36,7 @@
                     </div>
                     <div class="picker-right">
                         <input class="input-url" type="text">
-                        <br>
+                        <br />
                         <button class="filePicker" ng-click="pickLocalFile(device)">Browse</button>
                     </div>
                     <div ng-show="device.file">
