@@ -11,9 +11,12 @@ rotaryApp.service('deviceService', function($window) {
         onFileChosen: function onFileChosen(callback){
             $window.self.port.on('pickedFile', callback);
         },
-        sendCommand: function sendCommand(command, device){
-            $window.self.port.emit('sendCommand', command, device);
+        executeCommand: function executeCommand(device, command){
+            $window.self.port.emit('executeCommand', device, command);
         },
+        setProperty: function setProperty(device, property){
+            $window.self.port.emit('setProperty', device, property);
+        },        
         launch: function launch(device){
             $window.self.port.emit("launch", device);
         },

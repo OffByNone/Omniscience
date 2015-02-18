@@ -14,7 +14,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         hidePicker(device);
     };
     $scope.executeCommand = function executeCommand(device, command){
-        deviceService.sendCommand(command, device);
+        deviceService.executeCommand(device, command);
     };
 
     var setFile = function setFile(device, file){
