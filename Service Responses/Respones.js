@@ -244,7 +244,7 @@ var response = {
 
         LastChange: 'string', // sendEvents = true
         TransportState: 'string', // ['STOPPED', 'PLAYING', 'PAUSED_PLAYBACK', 'TRANSITIONING', 'NO_MEDIA_PRESENT' ] sendEvents = false
-        TransportStatus: : 'string', // [ 'OK', 'ERROR_OCCURRED' ] sendEvents = false
+        TransportStatus: 'string', // [ 'OK', 'ERROR_OCCURRED' ] sendEvents = false
         PlaybackStorageMedium: 'string', // allowedvalue: 'NETWORK' sendEvents = false
         RecordStorageMedium: 'string', // allowedvalue: 'NOT_IMPLEMENTED' sendEvents = false
         PossiblePlaybackStorageMedia: 'string', // sendEvents = false
