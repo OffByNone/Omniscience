@@ -15,12 +15,5 @@
   },
   "bugs": {
     "url": "https://github.com/OffByNone/Rotary/issues"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "latest",
-    "grunt-mozilla-addon-sdk": "^0.4.0",
-    "jshint-stylish": "^1.0.0"
   }
 }
