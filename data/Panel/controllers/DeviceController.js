@@ -29,6 +29,10 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         device.showVideoPicker = false;  
     };
     
+    $scope.setName = function setName(device, name){
+        deviceService.setName(device, name);
+    };
+    
     $scope.showHideAudioPicker = function showHideAudioPicker(device){
         device.showVideoPicker = false;
         device.showAudioPicker = !device.showAudioPicker;
