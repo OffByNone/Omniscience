@@ -16,7 +16,7 @@ rotaryApp.service('deviceService', function($window) {
         },
         setProperty: function setProperty(device, property){
             $window.self.port.emit('setProperty', device, property);
-        },        
+        },
         launch: function launch(device){
             $window.self.port.emit("launch", device);
         },
@@ -30,6 +30,9 @@ rotaryApp.service('deviceService', function($window) {
         },
         setName: function setName(device, name){
             $window.self.port.emit("setName", device, name);
+        },
+        openFocusTab: function openFocusTab(){
+            $window.self.port.emit("openFocusTab");
         }
 	};
 });

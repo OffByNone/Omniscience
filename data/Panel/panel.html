@@ -16,6 +16,7 @@
                 <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
             </optgroup>
         </select>
+        <span ng-click="openFocusTab()" class="gear fa fa-lg fa-cog"></span>
         <div id="deviceList">
             <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />

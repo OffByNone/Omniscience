@@ -16,7 +16,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
     $scope.executeCommand = function executeCommand(device, command){
         deviceService.executeCommand(device, command);
     };
-
     var setFile = function setFile(device, file){
         var dev = $scope.devices.filter(function(x){
             return x.address == device.address;
@@ -29,10 +28,13 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         device.showVideoPicker = false;  
     };
     
+    $scope.openFocusTab = function openFocusTab(){
+        deviceService.openFocusTab();
+    };
+    
     $scope.setName = function setName(device, name){
         deviceService.setName(device, name);
     };
-    
     $scope.showHideAudioPicker = function showHideAudioPicker(device){
         device.showVideoPicker = false;
         device.showAudioPicker = !device.showAudioPicker;
@@ -50,7 +52,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         device.showAudioPicker = false;
         device.showMirrorPicker = !device.showMirrorPicker;
     };
-    
     var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
         $scope.devices.forEach(function(x){
@@ -75,7 +76,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         deviceService.updateHeight();
         $scope.$apply();
     };
-    
     var addTypes = function addTypes(device){
         if(!$scope.deviceTypes.some(x=> x.name === device.type.name && x.urn === device.type.urn))
             $scope.deviceTypes.push(device.type);
