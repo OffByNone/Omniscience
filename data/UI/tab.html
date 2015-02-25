@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html ng-app="rotaryApp">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="tab.css" />
+        <link rel="stylesheet" href="rotary.css" />
+        <link rel="stylesheet" href="../libs/font-awesome/font-awesome.min.css">
+    </head>
+    <body ng-controller="DeviceController">
+        <div id="header">{{ title }}</div>
+        Filter By:
+        <select ng-model="selectedType">
+            <option selected value="">All</option>
+            <optgroup label="Devices">
+                <option ng-repeat="deviceType in deviceTypes" ng-value="deviceType.urn">{{deviceType.name}}</option>
+            </optgroup>
+            <optgroup label="Services">
+                <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
+            </optgroup>
+        </select>
+        <div id="deviceList">
+            <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
+                <img class="icon" ng-src="{{ device.icons[0].url }}" />
+                <span class="deviceName">{{ device.name }}</span>
+                <span class="gear fa fa-lg fa-cog"></span>
+                <div class="moreInfo">
+                        <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
+                </div>
+                <span class="capabilities">
+                   <span ng-show="device.audioCapable" ng-click="showHideAudioPicker(device)" class="capability fa fa-lg fa-music" ng-class="{highlight : device.showAudioPicker}"></span>
+                   <span ng-show="device.videoCapable" ng-click="showHideVideoPicker(device)" class="capability fa fa-lg fa-video-camera"  ng-class="{highlight : device.showVideoPicker}"></span>
+                   <span ng-show="device.mirrorCapable" ng-click="showHideMirrorPicker(device)" class="capability fa fa-lg fa-desktop"  ng-class="{highlight : device.showMirrorPicker}"></span>
+                </span>
+                <div ng-show="device.showAudioPicker || device.showVideoPicker" class="picker group">
+                    <div class="picker-left">
+                             Enter a url <br>
+                             Choose a file
+                    </div>
+                    <div class="picker-right">
+                        <input class="input-url" type="text">
+                        <br />
+                        <button class="filePicker" ng-click="pickLocalFile(device)">Browse</button>
+                    </div>
+                    <div ng-show="device.file">
+                        <div style="float:left;width:280px;">{{device.file.name}}</div>
+                        <button class="launch" ng-click="launch(device)">Launch</button>
+                    </div>
+                </div>
+                <div ng-show="device.isRunning" class="controls">
+                    <div class="slider"></div>
+                    <span class="fa fa-lg fa-fast-backward"></span>
+                    <span ng-click="executeCommand(device,'play')" class="fa fa-lg fa-play"></span>
+                    <span ng-click="executeCommand(device,'pause')" class="fa fa-lg fa-pause"></span>
+                    <span class="fa fa-lg fa-fast-forward"></span>
+                    <span ng-click="executeCommand(device,'stop')" class="fa fa-lg fa-stop"><i></i></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<!--
+<ul id="deviceList">
+    <li class="device" ng-repeat="device in devices">
+        <div id="{{ device.address.origin }}">
+            <img ng-src="{{device.icons[0].url.href}}"/>
+            <span class="deviceName">{{ device.name }}</span>
+            <br/>
+            <span>Type:</span>
+            <span class="deviceType">{{device.type.name}} <span class="typeURN">({{device.type.urn}})</span></span>
+            <br/>
+            <a ng-hide="device.webPage == null" ng-href="{{device.webPage}}">WebPage</a>
+            <br/>
+            <span>SerialNumber:</span>
+            <span class="deviceSerialNumber">{{device.serialNumber}}</span>
+            <br/>
+            <div ng-show="device.manufacturer.name != null" class="manufacturer">
+                <span>Manufacturer:</span>
+                <a ng-show="device.manufacturer.url != null" ng-href="{{device.manufacturer.url.href}}">{{device.manufacturer.name}}</a>
+                <span ng-show="device.manufacturer.url == null">{{device.manufacturer.name}}</span>
+            </div>
+            <span>Model:</span>
+            <div class="model">
+                <span>Number:</span>
+                <span>{{device.model.number}}</span>
+                <br/>
+                <span>Description:</span>
+                <span>{{device.model.description}}</span>
+                <br/>
+                <span>Name:</span>
+                <span>{{device.model.name}}</span>
+                <br/>
+                <a ng-hide="device.model.url == null" ng-href="{{device.model.url.href}}">url</a>
+                <br/>
+                <span>udn:</span>
+                <span>{{device.model.udn}}</span>
+            </div>
+           <span>Icons:</span>
+            <ul class="icons">
+                <li class="icon" ng-repeat="icon in device.icons">
+                    <span>MimeType:</span>
+                    <span>{{icon.mimeType}}</span>
+                    <br/>
+                    <span>width:</span>
+                    <span>{{icon.width}}</span>
+                    <br/>
+                    <span>height:</span>
+                    <span>{{icon.height}}</span>
+                    <br/>
+                    <span>depth:</span>
+                    <span>{{icon.depth}}</span>
+                    <br/>
+                    <img ng-src="{{icon.url.href}}"/>
+                </li>
+            </ul>
+            <span>Services:</span>
+            <ul class="services">
+                <li class="service" id="{{service.id}}" ng-repeat="service in device.services">
+                    <span class="serviceType">{{service.type.name}} <span class="typeURN">({{service.type.urn}})</span></span>
+                    <a ng-hide="service.controlUrl == null" ng-href="{{service.controlUrl.href}}">Control</a>
+                    <a ng-hide="service.eventsSubUrl == null" ng-href="{{service.eventsSubUrl.href}}">Event Subscription</a>
+                    <a ng-hide="service.scpdUrl == null" ng-href="{{service.scpdUrl.href}}">Service Control Protocol Document</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+</ul>
+-->
