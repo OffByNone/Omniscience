@@ -6,6 +6,9 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
     $scope.deviceTypes = [];
     $scope.serviceTypes = [];
     
+    $scope.setActiveDevice = function setActiveDevice(device){
+        $scope.activeDevice = device;
+    };
     $scope.pickLocalFile = function pickLocalFile(device){
         deviceService.chooseFile(device, device.fileType);
     };

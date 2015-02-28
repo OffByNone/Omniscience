@@ -3,35 +3,181 @@
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="tab.css" />
-        <link rel="stylesheet" href="rotary.css" />
-        <link rel="stylesheet" href="../libs/font-awesome/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="rotary.css" /> -->
+        <link href="../libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body ng-controller="DeviceController">
-        <div id="header">{{ title }}</div>
-        Filter By:
-        <select ng-model="selectedType">
-            <option selected value="">All</option>
-            <optgroup label="Devices">
-                <option ng-repeat="deviceType in deviceTypes" ng-value="deviceType.urn">{{deviceType.name}}</option>
-            </optgroup>
-            <optgroup label="Services">
-                <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
-            </optgroup>
-        </select>
-        <div id="deviceList">
-            <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
-                <img class="icon" ng-src="{{ device.icons[0].url }}" />
-                <span class="deviceName">{{ device.name }}</span>
-                <span class="gear fa fa-lg fa-cog"></span>
-                <div class="moreInfo">
-                        <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
-                </div>
+        <div class="list-group pull-left">
+            <a href="#" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}"  class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
+                <img class="icon pull-left" ng-src="{{ device.icons[0].url }}" />
+                <h4 class="list-group-item-heading">{{ device.name }}</h4>
+                <p class="list-group-item-text">
+                    <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
+                </p>
                 <span class="capabilities">
-                   <span ng-show="device.audioCapable" ng-click="showHideAudioPicker(device)" class="capability fa fa-lg fa-music" ng-class="{highlight : device.showAudioPicker}"></span>
-                   <span ng-show="device.videoCapable" ng-click="showHideVideoPicker(device)" class="capability fa fa-lg fa-video-camera"  ng-class="{highlight : device.showVideoPicker}"></span>
-                   <span ng-show="device.mirrorCapable" ng-click="showHideMirrorPicker(device)" class="capability fa fa-lg fa-desktop"  ng-class="{highlight : device.showMirrorPicker}"></span>
+                    <span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
+                    <span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
+                    <span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
                 </span>
-                <div ng-show="device.showAudioPicker || device.showVideoPicker" class="picker group">
+            </a>
+        </div>
+        <div class="container pull-right">
+            <div>
+                <h1>{{ activeDevice.name }} <small> {{ activeDevice.model.name }} by {{ activeDevice.manufacturer.name }} at {{activeDevice.address}}</small></h1>
+                <img class="icon" ng-src="{{ activeDevice.icons[0].url }}" />
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-md-1">
+                        DeviceType
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1">
+                        <div class="row">
+                            <div class="col-md-1">
+                                Name
+                            </div>
+                            <div class="col-md-11">
+                                {{activeDevice.type.name}}
+                            </div>
+                        </div>    
+                        <div class="row">
+                            <div class="col-md-1">
+                                Urn
+                            </div>
+                            <div class="col-md-11">
+                                {{activeDevice.type.urn}}
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        Services
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1">
+                        <span ng-repeat="service in activeDevice.services">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Name
+                                </div>                        
+                                <div class="col-md-11">
+                                    {{service.type.name}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Id
+                                </div>
+                                <div class="col-md-11">
+                                    {{service.id}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Urn
+                                </div>
+                                <div class="col-md-11">
+                                    {{service.type.urn}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Control Url
+                                </div>
+                                <div class="col-md-10">
+                                    {{service.controlUrl}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    Event Subscription Url
+                                </div>
+                                <div class="col-md-10">
+                                    {{service.eventSubUrl}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    Service Control Point Document Url
+                                </div>
+                                <div class="col-md-9">
+                                    {{service.scpdUrl}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">&nbsp;</div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        Icons
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1">                
+                        <span ng-repeat="icon in activeDevice.icons">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img ng-src="{{icon.url}}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    MimeType
+                                </div>
+                                <div class="col-md-11">
+                                    {{icon.mimeType}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Width
+                                </div>
+                                <div class="col-md-11">
+                                    {{icon.width}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Height
+                                </div>
+                                <div class="col-md-11">
+                                    {{icon.height}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    Depth
+                                </div>
+                                <div class="col-md-11">
+                                    {{icon.depth}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">&nbsp;</div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        raw response
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-11">
+                        {{activeDevice.rawResponse}}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div ng-show="activeDevice.showAudioPicker || activeDevice.showVideoPicker" class="picker group">
                     <div class="picker-left">
                              Enter a url <br>
                              Choose a file
@@ -39,30 +185,37 @@
                     <div class="picker-right">
                         <input class="input-url" type="text">
                         <br />
-                        <button class="filePicker" ng-click="pickLocalFile(device)">Browse</button>
+                        <button class="filePicker" ng-click="pickLocalFile(activeDevice)">Browse</button>
                     </div>
-                    <div ng-show="device.file">
-                        <div style="float:left;width:280px;">{{device.file.name}}</div>
-                        <button class="launch" ng-click="launch(device)">Launch</button>
+                    <div ng-show="activeDevice.file">
+                        <div>{{activeDevice.file.name}}</div>
+                        <button class="launch" ng-click="launch(activeDevice)">Launch</button>
                     </div>
                 </div>
-                <div ng-show="device.isRunning" class="controls">
-                    <div class="slider"></div>
-                    <span class="fa fa-lg fa-fast-backward"></span>
-                    <span ng-click="executeCommand(device,'play')" class="fa fa-lg fa-play"></span>
-                    <span ng-click="executeCommand(device,'pause')" class="fa fa-lg fa-pause"></span>
-                    <span class="fa fa-lg fa-fast-forward"></span>
-                    <span ng-click="executeCommand(device,'stop')" class="fa fa-lg fa-stop"><i></i></span>
-                </div>
+                <div ng-show="activeDevice.isRunning" class="controls">
+                        <div class="slider"></div>
+                        <span class="glyphicon glyphicon-fast-backward"></span>
+                        <span ng-click="executeCommand(activeDevice,'play')" class="glyphicon glyphicon-play"></span>
+                        <span ng-click="executeCommand(activeDevice,'pause')" class="glyphicon glyphicon-pause"></span>
+                        <span class="glyphicon glyphicon-fast-forward"></span>
+                        <span ng-click="executeCommand(activeDevice,'stop')" class="glyphicon glyphicon-stop"><i></i></span>
+                    </div>
             </div>
         </div>
+
+        <script src="../libs/jquery-2.1.3.min.js"></script>
+        <script src="../libs/bootstrap/js/bootstrap.min.js"></script>           
     </body>
-</html>
-<!--
+</html>            
+<!--            
+            <div id="deviceList">
+
+            </div>
+        </div>
+
 <ul id="deviceList">
     <li class="device" ng-repeat="device in devices">
         <div id="{{ device.address.origin }}">
-            <img ng-src="{{device.icons[0].url.href}}"/>
             <span class="deviceName">{{ device.name }}</span>
             <br/>
             <span>Type:</span>
@@ -117,7 +270,7 @@
                 <li class="service" id="{{service.id}}" ng-repeat="service in device.services">
                     <span class="serviceType">{{service.type.name}} <span class="typeURN">({{service.type.urn}})</span></span>
                     <a ng-hide="service.controlUrl == null" ng-href="{{service.controlUrl.href}}">Control</a>
-                    <a ng-hide="service.eventsSubUrl == null" ng-href="{{service.eventsSubUrl.href}}">Event Subscription</a>
+                    <a ng-hide="service.eventSubUrl == null" ng-href="{{service.eventSubUrl.href}}">Event Subscription</a>
                     <a ng-hide="service.scpdUrl == null" ng-href="{{service.scpdUrl.href}}">Service Control Protocol Document</a>
                 </li>
             </ul>

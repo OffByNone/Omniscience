@@ -1,5 +1,21 @@
-body {
-    width: 320px;
-    font-family: 'Open Sans', sans-serif;
-    border:1px solid black;
+.list-group .icon {
+    margin-right:7px;
+    max-height: 64px;
+    max-width: 100px;
+}
+
+.list-group{
+    max-width: 320px;
+}
+
+.list-group-item-heading {
+    font-weight:bold;
+    font-size: 18px;
+}
+.list-group-item-text {
+    font-size:12px;
+    margin:2px 0px 3px 0px;
+}
+.capability{
+    margin: 5px;
 }
