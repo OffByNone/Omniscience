@@ -21,92 +21,84 @@
                 </span>
             </a>
         </div>
-        <div class="container pull-right">
+        <div class="container pull-left">
             <div>
-                <h1>{{ activeDevice.name }} <small> {{ activeDevice.model.name }} by {{ activeDevice.manufacturer.name }} at {{activeDevice.address}}</small></h1>
+                <h1>{{ activeDevice.name }} <small> {{ activeDevice.model.name }} <em>by</em> {{ activeDevice.manufacturer.name }} <em>at</em> {{activeDevice.address}}</small></h1>
                 <img class="icon" ng-src="{{ activeDevice.icons[0].url }}" />
             </div>
             <div>
-                <div class="row">
-                    <div class="col-md-1">
-                        DeviceType
+                <div class="row" ng-show="activeDevice.type.name">
+                    <div class="col-md-1">Type</div>
+                    <div class="col-md-11">
+                        {{activeDevice.type.name}}
+                        <em ng-show="activeDevice.type.urn">{{activeDevice.type.urn}}</em>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="activeDevice.serialNumber">
+                    <div class="col-md-2">Serial Number</div>
+                    <div class="col-md-10">{{activeDevice.serialNumber}}</div>
+                </div>
+                <div class="row" ng-show="activeDevice.upnpVersion">
+                    <div class="col-md-2">UPnP Version</div>
+                    <div class="col-md-10">{{activeDevice.upnpVersion}}</div>
+                </div>
+                <div class="row" ng-show="activeDevice.webPage">
+                    <div class="col-md-12">
+                        <a ng-show="activeDevice.wegPage" ng-href="{{activeDevice.webPage}}">WebPage</a>
+                        <span ng-hide="activeDevice.wegPage">WebPage</span>
+                    </div>
+                </div>
+                <div class="row" ng-show="activeDevice.manufacturer">
+                    <div class="col-md-1">Manufacturer</div>
+                    <div class="col-md-11">
+                        <a ng-show="activeDevice.manufacturer.url" ng-href="{{activeDevice.manufacturer.url}}">{{activeDevice.manufacturer.name}}</a>
+                        <span ng-hide="activeDevice.manufacturer.url">{{activeDevice.manufacturer.name}}</span>
+                    </div>
+                </div>
+                <div class="row" ng-show="activeDevice.model">
+                    <div class="col-md-1">Model</div>
+                    <div class="col-md-11">
+                        <a ng-show="activeDevice.model.url" ng-href="{{activeDevice.model.url}}">{{activeDevice.model.name}}</a>
+                        <span ng-hide="activeDevice.model.url">{{activeDevice.model.name}}</span>
+                    </div>
+                </div>
+                <div class="row" ng-show="activeDevice.model">
                     <div class="col-md-offset-1">
-                        <div class="row">
-                            <div class="col-md-1">
-                                Name
-                            </div>
-                            <div class="col-md-11">
-                                {{activeDevice.type.name}}
-                            </div>
-                        </div>    
-                        <div class="row">
-                            <div class="col-md-1">
-                                Urn
-                            </div>
-                            <div class="col-md-11">
-                                {{activeDevice.type.urn}}
-                            </div>
+                        <div class="row" ng-show="activeDevice.model.number">
+                            <div class="col-md-1">Number</div>
+                            <div class="col-md-11">{{activeDevice.model.number}}</div>
                         </div>
-                    </div>    
-                </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        Services
+                        <div class="row" ng-show="activeDevice.model.description">
+                            <div class="col-md-1">Description</div>
+                            <div class="col-md-11">{{activeDevice.model.description}}</div>
+                        </div>
+                        <div class="row" ng-show="activeDevice.model.udn">
+                            <div class="col-md-1">UDN</div>
+                            <div class="col-md-11">{{activeDevice.model.udn}}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="activeDevice.services">
+                    <div class="col-md-1">Services</div>
+                </div>
+                <div class="row" ng-show="activeDevice.services">
                     <div class="col-md-offset-1">
                         <span ng-repeat="service in activeDevice.services">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Name
-                                </div>                        
-                                <div class="col-md-11">
-                                    {{service.type.name}}
-                                </div>
+                            <div class="row" ng-show="service.type.name">
+                                <div class="col-md-3">{{service.type.name}}</div>
+                                <ul class="col-md-9 list-inline">
+                                    <li ng-show="service.scpdUrl"><a ng-href="{{service.scpdUrl}}">Control Point Document</a></li>
+                                    <li ng-show="service.controlUrl"><a ng-href="{{service.controlUrl}}">Control</a></li>
+                                    <li ng-show="service.eventSubUrl"><a ng-href="{{service.eventSubUrl}}">Event Subscription</a></li>
+                                </ul>
                             </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Id
-                                </div>
-                                <div class="col-md-11">
-                                    {{service.id}}
-                                </div>
+                            <div class="row" ng-show="service.id">
+                                <div class="col-md-1">Id</div>
+                                <div class="col-md-11">{{service.id}}</div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Urn
-                                </div>
-                                <div class="col-md-11">
-                                    {{service.type.urn}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Control Url
-                                </div>
-                                <div class="col-md-10">
-                                    {{service.controlUrl}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    Event Subscription Url
-                                </div>
-                                <div class="col-md-10">
-                                    {{service.eventSubUrl}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    Service Control Point Document Url
-                                </div>
-                                <div class="col-md-9">
-                                    {{service.scpdUrl}}
-                                </div>
+                            <div class="row" ng-show="service.type.urn">
+                                <div class="col-md-1">URN</div>
+                                <div class="col-md-11">{{service.type.urn}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">&nbsp;</div>
@@ -114,72 +106,40 @@
                         </span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        Icons
-                    </div>
+                <div class="row" ng-show="activeDevice.icons">
+                    <div class="col-md-1">Icons</div>
                 </div>
-                <div class="row">
-                    <div class="col-md-offset-1">                
-                        <span ng-repeat="icon in activeDevice.icons">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <img ng-src="{{icon.url}}" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    MimeType
-                                </div>
-                                <div class="col-md-11">
-                                    {{icon.mimeType}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Width
-                                </div>
-                                <div class="col-md-11">
-                                    {{icon.width}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Height
-                                </div>
-                                <div class="col-md-11">
-                                    {{icon.height}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    Depth
-                                </div>
-                                <div class="col-md-11">
-                                    {{icon.depth}}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">&nbsp;</div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        raw response
-                    </div>
-                </div>
-                <div class="row">
+                <div class="row" ng-show="activeDevice.icons">
                     <div class="col-md-offset-1 col-md-11">
-                        {{activeDevice.rawResponse}}
+                        <ul class="row list-inline">
+                            <li ng-repeat="icon in activeDevice.icons">
+                                <img ng-src="{{icon.url}}" />
+                                <div class="row" ng-show="icon.mimeType">
+                                    <div class="col-md-12">{{icon.mimeType}}</div>
+                                </div>
+                                <div class="row">
+                                    <h5 class="col-md-12">
+                                        {{icon.width}}<small>x</small>{{icon.height}}<small>x</small>{{icon.depth}}
+                                    </h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">&nbsp;</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+                <div class="row" ng-show="activeDevice.rawResponse">
+                    <div class="col-md-2">raw response</div>
+                </div>
+                <div class="row" ng-show="activeDevice.rawResponse">
+                    <div class="col-md-offset-1 col-md-11">{{activeDevice.rawResponse}}</div>
                 </div>
             </div>
             <div>
                 <div ng-show="activeDevice.showAudioPicker || activeDevice.showVideoPicker" class="picker group">
                     <div class="picker-left">
-                             Enter a url <br>
+                             Enter a url <br />
                              Choose a file
                     </div>
                     <div class="picker-right">
@@ -215,75 +175,4 @@
         <script src="../libs/jquery-2.1.3.min.js"></script>
         <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
     </body>
-</html>            
-<!--            
-            <div id="deviceList">
-
-            </div>
-        </div>
-
-<ul id="deviceList">
-    <li class="device" ng-repeat="device in devices">
-        <div id="{{ device.address.origin }}">
-            <span class="deviceName">{{ device.name }}</span>
-            <br/>
-            <span>Type:</span>
-            <span class="deviceType">{{device.type.name}} <span class="typeURN">({{device.type.urn}})</span></span>
-            <br/>
-            <a ng-hide="device.webPage == null" ng-href="{{device.webPage}}">WebPage</a>
-            <br/>
-            <span>SerialNumber:</span>
-            <span class="deviceSerialNumber">{{device.serialNumber}}</span>
-            <br/>
-            <div ng-show="device.manufacturer.name != null" class="manufacturer">
-                <span>Manufacturer:</span>
-                <a ng-show="device.manufacturer.url != null" ng-href="{{device.manufacturer.url.href}}">{{device.manufacturer.name}}</a>
-                <span ng-show="device.manufacturer.url == null">{{device.manufacturer.name}}</span>
-            </div>
-            <span>Model:</span>
-            <div class="model">
-                <span>Number:</span>
-                <span>{{device.model.number}}</span>
-                <br/>
-                <span>Description:</span>
-                <span>{{device.model.description}}</span>
-                <br/>
-                <span>Name:</span>
-                <span>{{device.model.name}}</span>
-                <br/>
-                <a ng-hide="device.model.url == null" ng-href="{{device.model.url.href}}">url</a>
-                <br/>
-                <span>udn:</span>
-                <span>{{device.model.udn}}</span>
-            </div>
-           <span>Icons:</span>
-            <ul class="icons">
-                <li class="icon" ng-repeat="icon in device.icons">
-                    <span>MimeType:</span>
-                    <span>{{icon.mimeType}}</span>
-                    <br/>
-                    <span>width:</span>
-                    <span>{{icon.width}}</span>
-                    <br/>
-                    <span>height:</span>
-                    <span>{{icon.height}}</span>
-                    <br/>
-                    <span>depth:</span>
-                    <span>{{icon.depth}}</span>
-                    <br/>
-                    <img ng-src="{{icon.url.href}}"/>
-                </li>
-            </ul>
-            <span>Services:</span>
-            <ul class="services">
-                <li class="service" id="{{service.id}}" ng-repeat="service in device.services">
-                    <span class="serviceType">{{service.type.name}} <span class="typeURN">({{service.type.urn}})</span></span>
-                    <a ng-hide="service.controlUrl == null" ng-href="{{service.controlUrl.href}}">Control</a>
-                    <a ng-hide="service.eventSubUrl == null" ng-href="{{service.eventSubUrl.href}}">Event Subscription</a>
-                    <a ng-hide="service.scpdUrl == null" ng-href="{{service.scpdUrl.href}}">Service Control Protocol Document</a>
-                </li>
-            </ul>
-        </div>
-    </li>
-</ul>
--->
+</html>
