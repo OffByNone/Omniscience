@@ -23,7 +23,7 @@
         </div>
         <div class="container pull-left">
             <div>
-                <h1>{{ activeDevice.name }} <small> {{ activeDevice.model.name }} <em>by</em> {{ activeDevice.manufacturer.name }} <em>at</em> {{activeDevice.address}}</small></h1>
+                <h1>{{ activeDevice.name }} <small> {{ activeDevice.model.name }} <em>by</em> {{ activeDevice.manufacturer.name }}</small></h1>
                 <img class="icon" ng-src="{{ activeDevice.icons[0].url }}" />
             </div>
             <div>
@@ -34,18 +34,30 @@
                         <em ng-show="activeDevice.type.urn">{{activeDevice.type.urn}}</em>
                     </div>
                 </div>
+                <div class="row" ng-show="activeDevice.address">
+                    <div class="col-md-1">Location</div>
+                    <a ng-href="{{activeDevice.address}}" class="col-md-11">{{activeDevice.address}}</a>
+                </div>
+                <div class="row" ng-show="activeDevice.ssdpDescription">
+                    <div class="col-md-2">SSDP Description</div>
+                    <a ng-href="{{activeDevice.ssdpDescription}}" class="col-md-10">{{activeDevice.ssdpDescription}}</a>
+                </div>
                 <div class="row" ng-show="activeDevice.serialNumber">
                     <div class="col-md-2">Serial Number</div>
                     <div class="col-md-10">{{activeDevice.serialNumber}}</div>
                 </div>
+                <div class="row" ng-show="activeDevice.udn">
+                    <div class="col-md-1">UDN</div>
+                    <div class="col-md-11">{{activeDevice.udn}}</div>
+                </div>
                 <div class="row" ng-show="activeDevice.upnpVersion">
-                    <div class="col-md-2">UPnP Version</div>
-                    <div class="col-md-10">{{activeDevice.upnpVersion}}</div>
+                    <div class="col-md-1">UPnP</div>
+                    <div class="col-md-11">v{{activeDevice.upnpVersion}}</div>
                 </div>
                 <div class="row" ng-show="activeDevice.webPage">
-                    <div class="col-md-12">
-                        <a ng-show="activeDevice.wegPage" ng-href="{{activeDevice.webPage}}">WebPage</a>
-                        <span ng-hide="activeDevice.wegPage">WebPage</span>
+                    <div class="col-md-1">WebPage</div>
+                    <div class="col-md-11">
+                        <a ng-href="{{activeDevice.webPage}}">WebPage</a>
                     </div>
                 </div>
                 <div class="row" ng-show="activeDevice.manufacturer">
@@ -72,10 +84,6 @@
                             <div class="col-md-1">Description</div>
                             <div class="col-md-11">{{activeDevice.model.description}}</div>
                         </div>
-                        <div class="row" ng-show="activeDevice.model.udn">
-                            <div class="col-md-1">UDN</div>
-                            <div class="col-md-11">{{activeDevice.model.udn}}</div>
-                        </div>
                     </div>
                 </div>
                 <div class="row" ng-show="activeDevice.services">
@@ -85,20 +93,18 @@
                     <div class="col-md-offset-1">
                         <span ng-repeat="service in activeDevice.services">
                             <div class="row" ng-show="service.type.name">
-                                <div class="col-md-3">{{service.type.name}}</div>
-                                <ul class="col-md-9 list-inline">
+                                <div class="col-md-12">{{service.type.name}} <em ng-show="service.type.urn">{{service.type.urn}}</em></div>
+                            </div>
+                            <div class="row" ng-show="service.scpdUrl || service.controlUrl || service.eventSubUrl">
+                                <ul class="col-md-12 list-inline">
                                     <li ng-show="service.scpdUrl"><a ng-href="{{service.scpdUrl}}">Control Point Document</a></li>
                                     <li ng-show="service.controlUrl"><a ng-href="{{service.controlUrl}}">Control</a></li>
                                     <li ng-show="service.eventSubUrl"><a ng-href="{{service.eventSubUrl}}">Event Subscription</a></li>
-                                </ul>
+                                </ul>                                
                             </div>
                             <div class="row" ng-show="service.id">
                                 <div class="col-md-1">Id</div>
                                 <div class="col-md-11">{{service.id}}</div>
-                            </div>
-                            <div class="row" ng-show="service.type.urn">
-                                <div class="col-md-1">URN</div>
-                                <div class="col-md-11">{{service.type.urn}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">&nbsp;</div>
@@ -163,8 +169,8 @@
             </div>
         </div>
         
+        
         <script src="tab.js"></script>
-
         <script src="../libs/angular.js"></script>
         <script src="rotary.js"></script>
         <script src="services/DeviceService.js"></script>

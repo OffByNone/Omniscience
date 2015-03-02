@@ -19,3 +19,6 @@
 .capability{
     margin: 5px;
 }
+.row ul{
+    margin-bottom: 0;
+}
