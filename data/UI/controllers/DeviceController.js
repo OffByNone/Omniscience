@@ -60,6 +60,9 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         $scope.devices.forEach(function(x){
             if(x.address === device.address) {
                 x.name = device.name;
+                x.videoCapable = device.videoCapable;
+                x.imageCapable = device.imageCapable;
+                x.audioCapable = device.audioCapable;
                 found = true;
             }
         });
