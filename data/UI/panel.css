@@ -12,7 +12,7 @@
     font-size:12px;
     margin:2px 0px 3px 0px;
 }
-#header {
+#title {
     font-size:20px;
     text-align:center;
 }
@@ -59,6 +59,11 @@
 
 .controls .fa {
     margin:0 5px;
+}
+
+#deviceList{
+    height: 350px;
+    overflow:auto;
 }
 
 .slider{

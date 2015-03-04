@@ -5,18 +5,20 @@
         <link rel="stylesheet" href="../libs/font-awesome/font-awesome.min.css">
     </head>
     <body ng-controller="DeviceController">
-        <div id="header">{{ title }}</div>
-        Filter By:
-        <select ng-model="selectedType">
-            <option selected value="">All</option>
-            <optgroup label="Devices">
-                <option ng-repeat="deviceType in deviceTypes" ng-value="deviceType.urn">{{deviceType.name}}</option>
-            </optgroup>
-            <optgroup label="Services">
-                <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
-            </optgroup>
-        </select>
-        <span ng-click="openFocusTab()" class="gear fa fa-lg fa-cog"></span>
+        <div id="header">
+            <div id="title">{{ title }}</div>
+            Filter By:
+            <select ng-model="selectedType">
+                <option selected value="">All</option>
+                <optgroup label="Devices">
+                    <option ng-repeat="deviceType in deviceTypes" ng-value="deviceType.urn">{{deviceType.name}}</option>
+                </optgroup>
+                <optgroup label="Services">
+                    <option ng-repeat="serviceType in serviceTypes" ng-value="serviceType.urn">{{serviceType.name}}</option>
+                </optgroup>
+            </select>
+            <span ng-click="openFocusTab()" class="gear fa fa-lg fa-cog"></span>
+        </div>
         <div id="deviceList">
             <div class="device" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
                 <img class="icon" ng-src="{{ device.icons[0].url }}" />
