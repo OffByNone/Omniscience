@@ -65,7 +65,8 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
                 if(typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
                 if(typeof device.mirrorCapable !== 'undefined') scopeDevice.mirrorCapable = device.mirrorCapable;
                 
-                scopeDevice.rawResponse = device.rawResponse;
+                if(typeof device.rawProtocolInfo !== 'undefined')scopeDevice.rawProtocolInfo = device.rawProtocolInfo;
+                if(typeof device.rawDiscoveryInfo !== 'undefined')scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
                 
                 found = true;
             }
@@ -99,5 +100,5 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
     
     deviceService.onDeviceLost(removeDevice);
     deviceService.onDeviceFound(addUpdateDevice);
-    deviceService.onFileChosen(setFile);
+    deviceService.onFileChosen(setFile);    
 });
