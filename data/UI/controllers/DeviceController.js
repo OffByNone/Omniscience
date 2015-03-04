@@ -57,12 +57,16 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
     };
     var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
-        $scope.devices.forEach(function(x){
-            if(x.address === device.address) {
-                x.name = device.name;
-                x.videoCapable = device.videoCapable;
-                x.imageCapable = device.imageCapable;
-                x.audioCapable = device.audioCapable;
+        $scope.devices.forEach(function(scopeDevice){
+            if(scopeDevice.address === device.address) {
+                scopeDevice.name = device.name;
+                if(typeof device.videoCapable !== 'undefined') scopeDevice.videoCapable = device.videoCapable;
+                if(typeof device.imageCapable !== 'undefined') scopeDevice.imageCapable = device.imageCapable;
+                if(typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
+                if(typeof device.mirrorCapable !== 'undefined') scopeDevice.mirrorCapable = device.mirrorCapable;
+                
+                scopeDevice.rawResponse = device.rawResponse;
+                
                 found = true;
             }
         });
@@ -70,7 +74,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         if (!found) $scope.devices.push(device);
         
         addTypes(device);
-        deviceService.updateHeight();
         $scope.$apply();
     };
     var removeDevice = function removeDevice(device) {
@@ -79,7 +82,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
             $scope.devices.splice(i, 1);
         
         removeTypes();
-        deviceService.updateHeight();
         $scope.$apply();
     };
     var addTypes = function addTypes(device){

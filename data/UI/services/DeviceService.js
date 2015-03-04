@@ -23,11 +23,6 @@ rotaryApp.service('deviceService', function($window) {
         chooseFile: function chooseFile(device, fileType){
             $window.self.port.emit("chooseFile", device, fileType);
         },
-        updateHeight: function updateHeight(){
-            //todo: add min and max height -- might not need min
-            var newHeight = $window.document.body.parentNode.offsetHeight;
-            $window.self.port.emit('updateHeight', newHeight);
-        },
         setName: function setName(device, name){
             $window.self.port.emit("setName", device, name);
         },

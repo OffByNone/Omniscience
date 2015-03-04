@@ -17,6 +17,7 @@
                 <span class="capabilities">
                     <span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
                     <span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
+                    <span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
                     <span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
                 </span>
             </a>
@@ -38,14 +39,6 @@
                     <div class="col-md-1">Location</div>
                     <a ng-href="{{activeDevice.address}}" class="col-md-11">{{activeDevice.address}}</a>
                 </div>
-                <div class="row" ng-show="activeDevice.ssdpDescription">
-                    <div class="col-md-2">SSDP Description</div>
-                    <a ng-href="{{activeDevice.ssdpDescription}}" class="col-md-10">{{activeDevice.ssdpDescription}}</a>
-                </div>
-                <div class="row" ng-show="activeDevice.serialNumber">
-                    <div class="col-md-2">Serial Number</div>
-                    <div class="col-md-10">{{activeDevice.serialNumber}}</div>
-                </div>
                 <div class="row" ng-show="activeDevice.udn">
                     <div class="col-md-1">UDN</div>
                     <div class="col-md-11">{{activeDevice.udn}}</div>
@@ -59,6 +52,37 @@
                     <div class="col-md-11">
                         <a ng-href="{{activeDevice.webPage}}">WebPage</a>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">Capabilities</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1">
+                        <div class="row" ng-show="activeDevice.imageCapable != null">
+                            <div class="col-md-1">Image</div>
+                            <div class="col-md-11">{{activeDevice.imageCapable}}</div>    
+                        </div>
+                        <div class="row" ng-show="activeDevice.videoCapable != null">
+                            <div class="col-md-1">Video</div>
+                            <div class="col-md-11">{{activeDevice.videoCapable}}</div>
+                        </div>
+                        <div class="row" ng-show="activeDevice.audioCapable != null">
+                            <div class="col-md-1">Audio</div>
+                            <div class="col-md-11">{{activeDevice.audioCapable}}</div>
+                        </div>
+                        <div class="row" ng-show="activeDevice.mirrorCapable != null">
+                            <div class="col-md-1">Mirror</div>
+                            <div class="col-md-11">{{activeDevice.mirrorCapable}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="activeDevice.ssdpDescription">
+                    <div class="col-md-2">SSDP Description</div>
+                    <a ng-href="{{activeDevice.ssdpDescription}}" class="col-md-10">{{activeDevice.ssdpDescription}}</a>
+                </div>
+                <div class="row" ng-show="activeDevice.serialNumber">
+                    <div class="col-md-2">Serial Number</div>
+                    <div class="col-md-10">{{activeDevice.serialNumber}}</div>
                 </div>
                 <div class="row" ng-show="activeDevice.manufacturer">
                     <div class="col-md-1">Manufacturer</div>
@@ -174,7 +198,6 @@
         <script src="../libs/angular.js"></script>
         <script src="rotary.js"></script>
         <script src="services/DeviceService.js"></script>
-        <script src="directives.js"></script>
         <script src="controllers/DeviceController.js"></script>
         -->
         
