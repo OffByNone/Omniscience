@@ -72,7 +72,10 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
             }
         });
         
-        if (!found) $scope.devices.push(device);
+        if (!found){
+            device.services.forEach( service => service.htmlId = service.id.replace(/[\:\.]/g,"") );
+            $scope.devices.push(device);
+        }
         
         addTypes(device);
         $scope.$apply();

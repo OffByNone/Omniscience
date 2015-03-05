@@ -1,5 +1,4 @@
-.list-group .icon {
-    margin-right:7px;
+.icon {
     max-height: 64px;
     max-width: 100px;
 }
@@ -9,16 +8,28 @@
 }
 
 .list-group-item-heading {
-    font-weight:bold;
+    font-weight: bold;
     font-size: 18px;
 }
 .list-group-item-text {
-    font-size:12px;
-    margin:2px 0px 3px 0px;
+    font-size: 12px;
+    margin: 2px 0px 3px 0px;
 }
 .capability{
     margin: 5px;
 }
 .row ul{
     margin-bottom: 0;
+}
+.tab-padding{
+    padding: 10px 15px;
+}
+.tab-content{
+    background: #FFF;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent #DDD #DDD;
+}
+.padding-top{
+    padding-top: 10px;
 }
