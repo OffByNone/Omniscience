@@ -6,32 +6,53 @@
         <link href="../libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body ng-controller="DeviceController">
-        <div class="list-group pull-left">
-            <a href="#" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}"  class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
-                <div class="media-body">
-                    <h4 class="list-group-item-heading">{{ device.name }}</h4>
-                    <p class="list-group-item-text">
-                        <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
-                    </p>
-                    <span class="capabilities">
-                    <span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
-                    <span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
-                    <span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
-                    <span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
-                </span>
-                </div>
-                <div class="media-right media-middle">
-                    <img class="icon" ng-src="{{ device.icons[0].url }}" />
-                </div>                
-            </a>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-content">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Rotary</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-content">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="" class="nav navbar-nav navbar-right">About</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <div>
+            <div class="list-group pull-left">
+                <a href="#" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}"  class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:device.name" id="{{ device.address }}">
+                    <span class="media-body">
+                        <h4 class="list-group-item-heading">{{ device.name }}</h4>
+                        <p class="list-group-item-text">
+                            <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
+                        </p>
+                        <span class="capabilities">
+                        <span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
+                        <span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
+                        <span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
+                        <span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
+                    </span>
+                    </span>
+                    <span class="media-right media-middle">
+                        <img class="icon" ng-src="{{ device.icons[0].url }}" />
+                    </span>
+                </a>
+            </div>
         </div>
-        <div class="well container pull-left">
+        <div class="container pull-left">
             <div class="media">
                 <div class="media-left media-top">
-                    <img class="icon" ng-src="{{ activeDevice.icons[0].url }}" />
+                    <img class="icon" ng-show="activeDevice.icons[0].url" ng-src="{{ activeDevice.icons[0].url }}" />
                 </div>
                 <div class="media-body">
-                    <h1>
+                    <h1 class="active-device-header">
                         <a ng-href="{{activeDevice.webPage}}" ng-show="activeDevice.webPage">{{activeDevice.name}}</a>
                         <span ng-hide="activeDevice.webPage">{{activeDevice.name}}</span>
                         <small>
@@ -46,161 +67,194 @@
                             </em>
                         </small>
                     </h1>
-                    <div class="row" ng-show="activeDevice.type.name">
-                        <div class="col-md-1">Type</div>
-                        <div class="col-md-11">
-                            {{activeDevice.type.name}}
-                            <em ng-show="activeDevice.type.urn">{{activeDevice.type.urn}}</em>
-                        </div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.udn">
-                        <div class="col-md-1">UUID</div>
-                        <div class="col-md-11">{{activeDevice.udn}}</div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.upnpVersion">
-                        <div class="col-md-1">UPnP</div>
-                        <div class="col-md-11">v{{activeDevice.upnpVersion}}</div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.serialNumber">
-                        <div class="col-md-2">Serial Number</div>
-                        <div class="col-md-10">{{activeDevice.serialNumber}}</div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.model.number">
-                        <div class="col-md-2">Model Number</div>
-                        <div class="col-md-10">{{activeDevice.model.number}}</div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.model.description">
-                        <div class="col-md-2">Model Description</div>
-                        <div class="col-md-10">{{activeDevice.model.description}}</div>
-                    </div>
-                    <div class="row" ng-show="activeDevice.ssdpDescription">
-                        <div class="col-md-12">
-                            <a ng-href="{{activeDevice.ssdpDescription}}" ng-show="activeDevice.ssdpDescription">SSDP Description</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <h4 class="col-md-2 tab-padding">Capabilities</h4>
-                        <div class="col-md-10" ng-show="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" ng-show="activeDevice.videoCapable != null" ng-class="{active: activeDevice.videoCapable != null}">
-                                    <a ng-href="#capabilities-tab-video" aria-controls="video" role="tab" data-toggle="tab">Video</a>
-                                </li>
-                                <li role="presentation" ng-show="activeDevice.audioCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
-                                    <a ng-href="#capabilities-tab-audio" aria-controls="audio" role="tab" data-toggle="tab">Audio</a>
-                                </li>
-                                <li role="presentation" ng-show="activeDevice.imageCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
-                                    <a ng-href="#capabilities-tab-image" aria-controls="image" role="tab" data-toggle="tab">Image</a>
-                                </li>
-                                <li role="presentation" ng-show="activeDevice.mirrorCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
-                                    <a ng-href="#capabilities-tab-mirror" aria-controls="mirror" role="tab" data-toggle="tab">Mirror</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content tab-padding">
-                                <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video" ng-class="{active: activeDevice.videoCapable != null}">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Protocol</th>
-                                                <th>Network</th>
-                                                <th>Medium</th>
-                                                <th>Container Type</th>
-                                                <th>Container Type Info</th>
-                                                <th>Additional Info</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'video'">
-                                                <td>{{info.protocol}}</td>
-                                                <td>{{info.network}}</td>
-                                                <td>{{info.contentFormat.medium}}</td>
-                                                <td>{{info.contentFormat.containerType}}</td>
-                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                <td>{{info.additionalInfo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Protocol</th>
-                                                <th>Network</th>
-                                                <th>Medium</th>
-                                                <th>Container Type</th>
-                                                <th>Container Type Info</th>
-                                                <th>Additional Info</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'audio'">
-                                                <td>{{info.protocol}}</td>
-                                                <td>{{info.network}}</td>
-                                                <td>{{info.contentFormat.medium}}</td>
-                                                <td>{{info.contentFormat.containerType}}</td>
-                                                <td>{{info.contentFormat.containerTypeInfo}}</td>
-                                                <td>{{info.additionalInfo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Protocol</th>
-                                                <th>Network</th>
-                                                <th>Medium</th>
-                                                <th>Container Type</th>
-                                                <th>Container Type Info</th>
-                                                <th>Additional Info</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'image'">
-                                                <td>{{info.protocol}}</td>
-                                                <td>{{info.network}}</td>
-                                                <td>{{info.contentFormat.medium}}</td>
-                                                <td>{{info.contentFormat.containerType}}</td>
-                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                <td>{{info.additionalInfo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div role="tabpanel" ng-show="activeDevice.mirrorCapable != null" class="tab-pane" id="capabilities-tab-mirror" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Protocol</th>
-                                                <th>Network</th>
-                                                <th>Medium</th>
-                                                <th>Container Type</th>
-                                                <th>Container Type Info</th>
-                                                <th>Additional Info</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'mirror'">
-                                                <td>{{info.protocol}}</td>
-                                                <td>{{info.network}}</td>
-                                                <td>{{info.contentFormat.medium}}</td>
-                                                <td>{{info.contentFormat.containerType}}</td>
-                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                <td>{{info.additionalInfo}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                </div>
+            </div>
+            <div role="tabpanel">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation"><a href="#supported-formats" aria-controls="supported-formats" role="tab" data-toggle="tab">Supported Formats</a></li>
+                    <li role="presentation"><a href="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
+                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                    <li class="pull-right" role="presentation"><a href="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        <div class="well">
+                            <div class="row" ng-show="activeDevice.type.name">
+                                <div class="col-md-1">Type</div>
+                                <div class="col-md-11">
+                                    {{activeDevice.type.name}}
+                                    <em ng-show="activeDevice.type.urn">{{activeDevice.type.urn}}</em>
                                 </div>
                             </div>
+                            <div class="row" ng-show="activeDevice.udn">
+                                <div class="col-md-1">UUID</div>
+                                <div class="col-md-11">{{activeDevice.udn}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.upnpVersion">
+                                <div class="col-md-1">UPnP</div>
+                                <div class="col-md-11">v{{activeDevice.upnpVersion}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.serialNumber">
+                                <div class="col-md-2">Serial Number</div>
+                                <div class="col-md-10">{{activeDevice.serialNumber}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.model.number">
+                                <div class="col-md-2">Model Number</div>
+                                <div class="col-md-10">{{activeDevice.model.number}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.model.description">
+                                <div class="col-md-2">Model Description</div>
+                                <div class="col-md-10">{{activeDevice.model.description}}</div>
+                            </div>
+                            <div ng-show="activeDevice.showAudioPicker || activeDevice.showVideoPicker" class="picker group">
+                                    <div class="picker-left">
+                                             Enter a url <br />
+                                             Choose a file
+                                    </div>
+                                    <div class="picker-right">
+                                        <input class="input-url" type="text">
+                                        <br />
+                                        <button class="filePicker" ng-click="pickLocalFile(activeDevice)">Browse</button>
+                                    </div>
+                                    <div ng-show="activeDevice.file">
+                                        <div>{{activeDevice.file.name}}</div>
+                                        <button class="launch" ng-click="launch(activeDevice)">Launch</button>
+                                    </div>
+                                </div>
+                            <div ng-show="activeDevice.isRunning" class="controls">
+                                        <div class="slider"></div>
+                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                        <span ng-click="executeCommand(activeDevice,'play')" class="glyphicon glyphicon-play"></span>
+                                        <span ng-click="executeCommand(activeDevice,'pause')" class="glyphicon glyphicon-pause"></span>
+                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                        <span ng-click="executeCommand(activeDevice,'stop')" class="glyphicon glyphicon-stop"><i></i></span>
+                                    </div>                            
                         </div>
-                        <h4 class="col-md-11" ng-hide="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
-                            Unknown
-                        </h4>
                     </div>
-                    <div class="row" ng-show="activeDevice.services">
-                        <h4 class="col-md-1 tab-padding">Services</h4>
-                        <div class="col-md-11">
+                    <div role="tabpanel" class="tab-pane" id="supported-formats">
+                        <div ng-show="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" ng-show="activeDevice.videoCapable != null" ng-class="{active: activeDevice.videoCapable != null}">
+                                            <a ng-href="#capabilities-tab-video" aria-controls="video" role="tab" data-toggle="tab">Video</a>
+                                        </li>
+                                        <li role="presentation" ng-show="activeDevice.audioCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
+                                            <a ng-href="#capabilities-tab-audio" aria-controls="audio" role="tab" data-toggle="tab">Audio</a>
+                                        </li>
+                                        <li role="presentation" ng-show="activeDevice.imageCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
+                                            <a ng-href="#capabilities-tab-image" aria-controls="image" role="tab" data-toggle="tab">Image</a>
+                                        </li>
+                                        <li role="presentation" ng-show="activeDevice.mirrorCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
+                                            <a ng-href="#capabilities-tab-mirror" aria-controls="mirror" role="tab" data-toggle="tab">Mirror</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content tab-padding">
+                                        <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video" ng-class="{active: activeDevice.videoCapable != null}">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Protocol</th>
+                                                        <th>Network</th>
+                                                        <th>Medium</th>
+                                                        <th>Container Type</th>
+                                                        <th>Container Type Info</th>
+                                                        <th>Additional Info</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'video'">
+                                                        <td>{{info.protocol}}</td>
+                                                        <td>{{info.network}}</td>
+                                                        <td>{{info.contentFormat.medium}}</td>
+                                                        <td>{{info.contentFormat.containerType}}</td>
+                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                        <td>{{info.additionalInfo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Protocol</th>
+                                                        <th>Network</th>
+                                                        <th>Medium</th>
+                                                        <th>Container Type</th>
+                                                        <th>Container Type Info</th>
+                                                        <th>Additional Info</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'audio'">
+                                                        <td>{{info.protocol}}</td>
+                                                        <td>{{info.network}}</td>
+                                                        <td>{{info.contentFormat.medium}}</td>
+                                                        <td>{{info.contentFormat.containerType}}</td>
+                                                        <td>{{info.contentFormat.containerTypeInfo}}</td>
+                                                        <td>{{info.additionalInfo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Protocol</th>
+                                                        <th>Network</th>
+                                                        <th>Medium</th>
+                                                        <th>Container Type</th>
+                                                        <th>Container Type Info</th>
+                                                        <th>Additional Info</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'image'">
+                                                        <td>{{info.protocol}}</td>
+                                                        <td>{{info.network}}</td>
+                                                        <td>{{info.contentFormat.medium}}</td>
+                                                        <td>{{info.contentFormat.containerType}}</td>
+                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                        <td>{{info.additionalInfo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" ng-show="activeDevice.mirrorCapable != null" class="tab-pane" id="capabilities-tab-mirror" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Protocol</th>
+                                                        <th>Network</th>
+                                                        <th>Medium</th>
+                                                        <th>Container Type</th>
+                                                        <th>Container Type Info</th>
+                                                        <th>Additional Info</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'mirror'">
+                                                        <td>{{info.protocol}}</td>
+                                                        <td>{{info.network}}</td>
+                                                        <td>{{info.contentFormat.medium}}</td>
+                                                        <td>{{info.contentFormat.containerType}}</td>
+                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                        <td>{{info.additionalInfo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        <h4 ng-hide="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
+                                    Unknown
+                                </h4>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="services">
+                        <div class="well">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" ng-class="{active: $first}" ng-repeat="service in activeDevice.services">
                                     <a ng-href="#{{service.htmlId}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
@@ -227,64 +281,52 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" ng-show="activeDevice.icons">
-                        <h4 class="col-md-1">Icons</h4>
-                        <div class="col-md-11">
-                            <ul class="row list-inline">
-                                <li ng-repeat="icon in activeDevice.icons">
-                                    <img ng-src="{{icon.url}}" />
-                                    <div class="row" ng-show="icon.mimeType">
-                                        <div class="col-md-12">{{icon.mimeType}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <h5 class="col-md-12">
-                                            {{icon.width}}<small>x</small>{{icon.height}}<small>x</small>{{icon.depth}}
-                                        </h5>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">&nbsp;</div>
-                                    </div>
-                                </li>
-                            </ul>
+                    <div role="tabpanel" class="tab-pane" id="settings">
+                        <div class="well"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="debug">
+                        <div class="well">
+                            <div class="row" ng-show="activeDevice.ssdpDescription">
+                                <div class="col-md-12">
+                                    <a ng-href="{{activeDevice.ssdpDescription}}" ng-show="activeDevice.ssdpDescription">SSDP Description</a>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.icons">
+                                <h4 class="col-md-1">Icons</h4>
+                                <div class="col-md-11">
+                                    <ul class="row list-inline">
+                                        <li ng-repeat="icon in activeDevice.icons">
+                                            <img ng-src="{{icon.url}}" />
+                                            <div class="row" ng-show="icon.mimeType">
+                                                <div class="col-md-12">{{icon.mimeType}}</div>
+                                            </div>
+                                            <div class="row">
+                                                <h5 class="col-md-12">
+                                                    {{icon.width}}<small>x</small>{{icon.height}}<small>x</small>{{icon.depth}}
+                                                </h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">&nbsp;</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" ng-show="activeDevice.rawDiscoveryInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawDiscoveryInfo}}">
+                                        raw discovery info
+                                    </button>
+                                    <button type="button" ng-show="activeDevice.rawProtocolInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawProtocolInfo}}">
+                                        raw protocol info
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" ng-show="activeDevice.rawDiscoveryInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawDiscoveryInfo}}">
-                                raw discovery info
-                            </button>
-                            <button type="button" ng-show="activeDevice.rawProtocolInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawProtocolInfo}}">
-                                raw protocol info
-                            </button>
-                        </div>
-                    </div>
-                    <div ng-show="activeDevice.showAudioPicker || activeDevice.showVideoPicker" class="picker group">
-                            <div class="picker-left">
-                                     Enter a url <br />
-                                     Choose a file
-                            </div>
-                            <div class="picker-right">
-                                <input class="input-url" type="text">
-                                <br />
-                                <button class="filePicker" ng-click="pickLocalFile(activeDevice)">Browse</button>
-                            </div>
-                            <div ng-show="activeDevice.file">
-                                <div>{{activeDevice.file.name}}</div>
-                                <button class="launch" ng-click="launch(activeDevice)">Launch</button>
-                            </div>
-                        </div>
-                    <div ng-show="activeDevice.isRunning" class="controls">
-                                <div class="slider"></div>
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                                <span ng-click="executeCommand(activeDevice,'play')" class="glyphicon glyphicon-play"></span>
-                                <span ng-click="executeCommand(activeDevice,'pause')" class="glyphicon glyphicon-pause"></span>
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                                <span ng-click="executeCommand(activeDevice,'stop')" class="glyphicon glyphicon-stop"><i></i></span>
-                            </div>
                 </div>
-            </div>                     
+            </div>
         </div>
-        
         
         <script src="tab.js"></script>
         <script src="../libs/angular.js"></script>
