@@ -1,0 +1,75 @@
+.navbar-header .media{
+    margin-top:0;
+}
+.icon {
+    max-height: 64px;
+    max-width: 100px;
+}
+
+.list-group{
+    max-width: 320px;
+}
+
+.list-group-item-heading {
+    font-weight: bold;
+    font-size: 18px;
+}
+.list-group-item-text {
+    font-size: 12px;
+    margin: 2px 0px 3px 0px;
+}
+.capability{
+    margin: 5px;
+}
+.row ul{
+    margin-bottom: 0;
+}
+.tab-padding{
+    padding: 10px 15px;
+}
+.tab-content{
+    background: #FFF;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent #DDD #DDD;
+}
+.padding-top{
+    padding-top: 10px;
+}
+.active-device-header{
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.pointer{
+    cursor:pointer;
+}
+
+.playlist{
+	text-align: center;
+	font-size: 22px;
+}
+
+.navbar .list-group-item{
+    border:none
+}
+.navbar .dropdown-menu{
+    padding:0;
+}
+
+.navbar .btn-group{
+    margin-top: 10px;
+    margin-left: 100px;
+}
+
+.navbar .progress {
+    width: 350px;
+}
+
+.navbar .progress, .navbar .file-time{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10px;
+    margin-bottom: 0;
+}

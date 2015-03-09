@@ -1,42 +1,60 @@
 "use strict";
 
-rotaryApp.controller('DeviceController', function DeviceController($scope, $window, deviceService) {
+rotaryApp.controller('DeviceController', function DeviceController($scope, $routeParams, eventService) {
     $scope.title = 'Devices on your network:';
     $scope.devices = [];
     $scope.deviceTypes = [];
     $scope.serviceTypes = [];
+    $scope.deviceId = $routeParams.deviceId;
+	$scope.playlist = [
+		{title: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, fileName: "test track 1" },
+		{title: "test8", currentTime:"1:35", currentTimeInSeconds: 95, duration: "3:25", durationInSeconds: 205, fileName: "test track 8" },
+		{title: "test3", currentTime:"2:03", currentTimeInSeconds: 123, duration: "2:35", durationInSeconds: 155, fileName: "test track 3" },
+		{title: "test4", currentTime:"3:00", currentTimeInSeconds: 180, duration: "3:05", durationInSeconds: 185, fileName: "test track 4" },
+		{title: "test6" , currentTime:"3:45", currentTimeInSeconds: 225, duration: "4:05", durationInSeconds: 245, fileName: "test track 6" },
+		{title: "test7" , currentTime:"0:35", currentTimeInSeconds: 35, duration: "1:55", durationInSeconds: 175, fileName: "test track 7" },
+		{title: "test2" , currentTime:"1:25", currentTimeInSeconds: 85, duration: "1:42", durationInSeconds: 162, fileName: "test track 2" },
+		{title: "test9" , currentTime:"0:05", currentTimeInSeconds: 5, duration: "3:56", durationInSeconds: 234, fileName: "test track 9" }
+    ];
     
-    $scope.setActiveDevice = function setActiveDevice(device){
-        $scope.activeDevice = device;
+    $scope.currentFilePercent = function currentFilePercent(){
+        return ($scope.activeFile.currentTimeInSeconds / $scope.activeFile.durationInSeconds) * 100;
     };
+	$scope.activeFile = $scope.playlist[0];    
+    
+    $scope.play = function(){
+        eventService.emit('play', $scope.activeDevice);
+    };
+    $scope.pause = function(){
+        eventService.emit('pause', $scope.activeDevice);
+    };
+    $scope.backward = function(){
+        eventService.emit('backward', $scope.activeDevice);
+    };
+    $scope.forward = function(){
+        eventService.emit('forward', $scope.activeDevice);
+    };
+    $scope.stop = function(){
+        eventService.emit('stop', $scope.activeDevice);
+    };
+	$scope.setActiveFile = function(file){
+		$scope.activeFile = file;
+	};
     $scope.pickLocalFile = function pickLocalFile(device){
-        deviceService.chooseFile(device, device.fileType);
+        eventService.emit('chooseFile', device, device.fileType);
     };
     $scope.launch = function launch(device){
-        deviceService.launch(device);
+        eventServiceemit('launch', device);
         hidePicker(device);
     };
     $scope.executeCommand = function executeCommand(device, command){
-        deviceService.executeCommand(device, command);
+        eventService.emit('executeCommand', device, command);
     };
-    var setFile = function setFile(device, file){
-        var dev = $scope.devices.filter(function(x){
-            return x.address == device.address;
-        })[0];
-        dev.file = file;
-    };
-    var hidePicker = function hidePicker(device){
-        device.isRunning = true;
-        device.showAudioPicker = false; 
-        device.showVideoPicker = false;  
-    };
-    
     $scope.openFocusTab = function openFocusTab(){
-        deviceService.openFocusTab();
+        eventService.emit('openFocusTab');
     };
-    
     $scope.setName = function setName(device, name){
-        deviceService.setName(device, name);
+        eventService.emit('setName', device, name);
     };
     $scope.showHideAudioPicker = function showHideAudioPicker(device){
         device.showVideoPicker = false;
@@ -76,9 +94,12 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
             device.services.forEach( service => service.htmlId = service.id.replace(/[\:\.]/g,"") );
             $scope.devices.push(device);
         }
-        
+		device.id = md5(device.address);
+		
+		if(device.id === $routeParams.deviceId)
+			$scope.activeDevice = device;
+
         addTypes(device);
-        $scope.$apply();
     };
     var removeDevice = function removeDevice(device) {
         for(var i=$scope.devices.length-1; i>=0; i--)
@@ -86,7 +107,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
             $scope.devices.splice(i, 1);
         
         removeTypes();
-        $scope.$apply();
     };
     var addTypes = function addTypes(device){
         if(!$scope.deviceTypes.some(x=> x.name === device.type.name && x.urn === device.type.urn))
@@ -100,8 +120,21 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $wind
         $scope.deviceTypes = $scope.deviceTypes.filter(deviceType => $scope.devices.some(device => device.type.name === deviceType.name && device.type.urn === deviceType.urn));
         $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
     };
+    var setFile = function setFile(device, file){
+        var dev = $scope.devices.filter(function(x){
+            return x.address == device.address;
+        })[0];
+        dev.file = file;
+    };
+    var hidePicker = function hidePicker(device){
+        device.isRunning = true;
+        device.showAudioPicker = false; 
+        device.showVideoPicker = false;  
+    };
     
-    deviceService.onDeviceLost(removeDevice);
-    deviceService.onDeviceFound(addUpdateDevice);
-    deviceService.onFileChosen(setFile);    
+    eventService.on('deviceLost',removeDevice);
+    eventService.on('deviceFound',addUpdateDevice);
+    eventService.on('fileChosen',setFile);
+
+	window.loadTestDevices();
 });

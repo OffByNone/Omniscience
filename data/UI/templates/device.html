@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
+					<img class="icon pull-left" ng-show="activeDevice.icons[0].url" ng-src="{{ activeDevice.icons[0].url }}" />
+					<h2 class="active-device-header pull-left">
+						<span>{{activeDevice.name}}</span>
+						<span class="caret"></span>	
+					</h2>
+                </span>
+                <div class="list-group dropdown-menu pull-left" role="menu">
+                    <a ng-href="#/device/{{device.id}}" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}" class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:'type'" id="{{ device.address }}">
+                        <span class="media-body">
+                            <h4 class="list-group-item-heading">{{ device.name }}</h4>
+                            <p class="list-group-item-text">
+                                <em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
+                            </p>
+                            <span class="capabilities">
+                            <span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
+                            <span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
+                            <span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
+                            <span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
+                            </span>
+                        </span>
+                        <span class="media-right media-middle">
+                        <img class="icon" ng-src="{{ device.icons[0].url }}" />
+                    </span>
+                    </a>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-content">
+                <div class="btn-group" role="group">
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="backward()" class="btn btn-default glyphicon glyphicon-backward"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="forward()" class="btn btn-default glyphicon glyphicon-forward"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{{activeFile.currentTimeInSeconds}}" aria-valuemin="0" aria-valuemax="{{activeFile.durationInSeconds}}" style="width: {{currentFilePercent()}}%;">
+                    <span class="sr-only">{{activeFile.currentTimeInSeconds}} seconds in</span>
+                  </div>
+                </div>
+                <div class="file-time">
+                    <span>{{activeFile.currentTime}}</span>
+                    <span>/</span>
+                    <span>{{activeFile.duration}}</span>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="" class="nav navbar-nav navbar-right">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+	<div class="row">
+        <div class="container col-md-2">
+            <ul class="list-group">
+                <li class="playlist list-group-item">
+                    Playlist
+                </li>
+                <li ng-click="setActiveFile(file)" ng-class="{active : file === activeFile}" class="list-group-item" ng-repeat="file in playlist | orderBy:'title'">
+                    <h4 class="list-group-item-heading">{{ file.title }}</h4>
+                </li>
+            </ul>
+        </div>
+        <div class="container col-md-10">
+            <div class="media">
+                <div class="media-left media-top">
+                    <img class="icon" ng-show="activeDevice.icons[0].url" ng-src="{{ activeDevice.icons[0].url }}" />
+                </div>
+                <div class="media-body">
+                    <h1 class="active-device-header">
+                        <a ng-href="{{activeDevice.webPage}}" ng-show="activeDevice.webPage">{{activeDevice.name}}</a>
+                        <span ng-hide="activeDevice.webPage">{{activeDevice.name}}</span>
+                        <small>
+                            <em>
+                                <a ng-show="activeDevice.model.url" ng-href="{{activeDevice.model.url}}">{{activeDevice.model.name}}</a>
+                                <span ng-hide="activeDevice.model.url">{{activeDevice.model.name}}</span>                                
+                            </em>
+                            by
+                            <em>
+                                <a ng-show="activeDevice.manufacturer.url" ng-href="{{activeDevice.manufacturer.url}}">{{activeDevice.manufacturer.name}}</a>
+                                <span ng-hide="activeDevice.manufacturer.url">{{activeDevice.manufacturer.name}}</span>
+                            </em>
+                        </small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
