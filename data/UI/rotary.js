@@ -1,7 +1,7 @@
 'use strict';
 var rotaryApp = angular.module('rotaryApp', ['ngRoute']);
 
-rotaryApp.config(function rotaryApp($routeProvider, $locationProvider) {
+rotaryApp.config(function rotaryApp($routeProvider, $locationProvider, $compileProvider) {
 	//$locationProvider.html5Mode({enabled:true});
 	$routeProvider
 		.when('/', {
@@ -21,4 +21,6 @@ rotaryApp.config(function rotaryApp($routeProvider, $locationProvider) {
 			controller  : 'DeviceController'
 		})
         .otherwise({redirectTo: '/home'});
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|ftp|mailto|resource):/);
+    
 });

@@ -45,9 +45,13 @@
     cursor:pointer;
 }
 
-.playlist{
+.playlist-title{
 	text-align: center;
 	font-size: 22px;
+}
+
+.playlist-item{
+    word-wrap: break-word;
 }
 
 .navbar .list-group-item{

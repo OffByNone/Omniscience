@@ -31,10 +31,10 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-content">
                 <div class="btn-group" role="group">
-                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="backward()" class="btn btn-default glyphicon glyphicon-backward"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
                     <button type="button" ng-class="{disabled : activeFile == null }" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
                     <button type="button" ng-class="{disabled : activeFile == null }" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
-                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="forward()" class="btn btn-default glyphicon glyphicon-forward"></button>
+                    <button type="button" ng-class="{disabled : activeFile == null }" ng-click="next()" class="btn btn-default glyphicon glyphicon-forward"></button>
                     <button type="button" ng-class="{disabled : activeFile == null }" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
                 </div>
                 <div class="progress">
@@ -56,12 +56,36 @@
     </nav>
 	<div class="row">
         <div class="container col-md-2">
-            <ul class="list-group">
-                <li class="playlist list-group-item">
-                    Playlist
+            <ul class="playlist list-group">
+                <li class="playlist-title list-group-item">
+                    <span>Playlist</span>
+                    <span class="glyphicon glyphicon-plus pointer" data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
+                    <span class="glyphicon glyphicon-repeat pointer"></span>
+                    <span class="glyphicon glyphicon-random pointer"></span>
                 </li>
-                <li ng-click="setActiveFile(file)" ng-class="{active : file === activeFile}" class="list-group-item" ng-repeat="file in playlist | orderBy:'title'">
-                    <h4 class="list-group-item-heading">{{ file.title }}</h4>
+                <li class="list-group-item">
+                    <div class="collapse clearfix" id="add-file">
+                        <div class="form-group">
+                            <label>Enter URL</label>
+                            <div><input class="form-control" type="url" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Choose File</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" ng-click="pickLocalFile()" type="button">Browse</button>
+                                </span>
+                                <input type="text" ng-value="activeDevice.file.path" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group  pull-right">
+                            <button type="button" class="btn btn-default" ng-click="launch()">Play</button>
+                            <button type="button" class="btn btn-default" ng-click="addToPlaylist()">Add To Playlist</button>                                
+                        </div>
+                    </div>
+                </li>
+                <li ng-click="setActiveFile(file)" ng-class="{active : file === activeFile}" class="list-group-item playlist-item" ng-repeat="file in playlist">
+                    <h4 class="list-group-item-heading">{{ file.name }}</h4>
                 </li>
             </ul>
         </div>
