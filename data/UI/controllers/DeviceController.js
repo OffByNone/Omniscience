@@ -6,62 +6,100 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     $scope.deviceTypes = [];
     $scope.serviceTypes = [];
     $scope.deviceId = $routeParams.deviceId;
-	$scope.playlist = [
-		{name: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, fileName: "test track 1" },
-		{name: "test8", currentTime:"1:35", currentTimeInSeconds: 95, duration: "3:25", durationInSeconds: 205, fileName: "test track 8" },
-		{name: "test3", currentTime:"2:03", currentTimeInSeconds: 123, duration: "2:35", durationInSeconds: 155, fileName: "test track 3" },
-		{name: "test4", currentTime:"3:00", currentTimeInSeconds: 180, duration: "3:05", durationInSeconds: 185, fileName: "test track 4" },
-		{name: "test6" , currentTime:"3:45", currentTimeInSeconds: 225, duration: "4:05", durationInSeconds: 245, fileName: "test track 6" },
-		{name: "test7" , currentTime:"0:35", currentTimeInSeconds: 35, duration: "1:55", durationInSeconds: 175, fileName: "test track 7" },
-		{name: "test2" , currentTime:"1:25", currentTimeInSeconds: 85, duration: "1:42", durationInSeconds: 162, fileName: "test track 2" },
-		{name: "test9" , currentTime:"0:05", currentTimeInSeconds: 5, duration: "3:56", durationInSeconds: 234, fileName: "test track 9" }
-    ];
+	$scope.playlist = [];
+    $scope.activeFile = {};    
+    $scope.filePicker = {};
+    $scope.filePickerOpen = false;
     
+    //{name: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, fileName: "test track 1", path= "file path here" }
+
     $scope.currentFilePercent = function currentFilePercent(){
-        return ($scope.activeFile.currentTimeInSeconds / $scope.activeFile.durationInSeconds) * 100;
+        return $scope.activeFile == null ? null : ($scope.activeFile.currentTimeInSeconds / $scope.activeFile.durationInSeconds) * 100;
     };
-	$scope.activeFile = $scope.playlist[0];    
-    
-    $scope.play = function(){
+    $scope.play = function play(){
         eventService.emit('play', $scope.activeDevice);
     };
-    $scope.pause = function(){
+    $scope.pause = function pause(){
         eventService.emit('pause', $scope.activeDevice);
     };
-    $scope.previous = function(){
-        eventService.emit('previous', $scope.activeDevice);
-    };
-    $scope.next = function(){
-        eventService.emit('next', $scope.activeDevice);
-    };
-    $scope.stop = function(){
+    $scope.stop = function stop(){
         eventService.emit('stop', $scope.activeDevice);
     };
-	$scope.setActiveFile = function(file){
-		$scope.activeFile = file;
-        $scope.activeDevice.file = file;
-        eventService.emit('launch', $scope.activeDevice);
-	};
+    $scope.previous = function previous(){
+        for(var i in $scope.playlist)
+            if($scope.playlist.hasOwnProperty(i) && $scope.playlist[i] === $scope.activeFile)
+                if(i == 0) return $scope.launch($scope.playlist[$scope.playlist.length-1]); //we are the first file, so launch the last file
+                else return $scope.launch($scope.playlist[Number(i)-1]); //we are not the first file so launch the previous
+    }
+    $scope.next = function next(){
+        for(var i in $scope.playlist)
+            if($scope.playlist.hasOwnProperty(i) && $scope.playlist[i] === $scope.activeFile)
+                if(i == $scope.playlist.length - 1) return $scope.launch($scope.playlist[0]); //we are the last file, so launch the first file
+                else return $scope.launch($scope.playlist[Number(i)+1]); //we are not the last file so launch the next
+    };
     $scope.pickLocalFile = function pickLocalFile(){
         eventService.emit('chooseFile', $scope.activeDevice, $scope.activeDevice.fileType);
     };
-    $scope.launch = function launch(){
-        eventService.emit('launch', $scope.activeDevice);
-        //todo: should close picker
-        //todo: pull in the file info, and what to do if both url and file are present
-        $scope.playlist = [$scope.activeDevice.file];
+    function setNewFile(file){
+        $scope.filePicker.localFile = file;
+    }    
+    function getChosenFile(){
+        //todo: pull in the file info - such as duration, artist, song/video name
+        var file;
+        
+        if($scope.filePicker.url && $scope.filePicker.url.path && $scope.filePicker.url.path.length > 0){
+            try{
+                new URL($scope.filePicker.url.path);
+            }
+            catch (e){
+                //todo: invalid url should report that to user and abort
+            }
+            
+            //set file name from url
+            $scope.filePicker.url.name = $scope.filePicker.url.path.replace(/^.*(\\|\/|\:)/, '');
+            
+            file = $scope.filePicker.url;
+        }
+        else if($scope.filePicker.localFile && $scope.filePicker.localFile.path && $scope.filePicker.localFile.path.length > 0)
+            file = $scope.filePicker.localFile;
+        
+        $scope.filePicker = {};
+            //clear out the url and local file fields
+        $scope.playlist.push(file);
+
+        return file;
+    }
+    $scope.launch = function launch(file){
+        //if a file is passed in, use that. Otherwise pull from the file picker box
+        if(!file) file = getChosenFile();
+        
+        //todo: this is going to cause the same files to be mapped more than once
+        //should make sure on the backend that if the file is already mapped we dont map it again
+        //also should throw in something random into the path of the map incase someone wants to
+        //play two files of the same name --maybe throw a folder with the name of a guid in the path
+        eventService.emit('launch', $scope.activeDevice, file);
+        $scope.activeFile = file;
     };
     $scope.addToPlaylist = function addToPlaylist(){
-        //should not close picker
-        //todo: pull in the file info, and what to do if both url and file are present
-        $scope.playlist.push($scope.activeDevice.file);
+        getChosenFile();
     };
-    var setFile = function setFile(file){
-        $scope.activeDevice.file = file;
+    $scope.removeFromPlaylist = function removeFromPlaylist(file){
+        for(var i in $scope.playlist)
+            if($scope.playlist.hasOwnProperty(i) && $scope.playlist[i] === file){
+                if(file === $scope.activeFile){
+                    if($scope.playlist.length > 1) $scope.next();
+                    else $scope.stop();
+                }
+                $scope.playlist.splice(i,1);
+                break;
+            }
     };
-    
-    $scope.openFocusTab = function openFocusTab(){
-        eventService.emit('openFocusTab');
+    $scope.clearPlaylist = function clearPlaylist(){
+        $scope.playlist = [];
+        $scope.stop();
+    };
+    $scope.randomizePlaylist = function randomizePlaylist(){
+        shuffle($scope.playlist);
     };
     $scope.setName = function setName(name){
         eventService.emit('setName', $scope.activeDevice, name);
@@ -72,6 +110,10 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
         $scope.devices.forEach(function(scopeDevice){
             if(scopeDevice.address === device.address) {
                 scopeDevice.name = device.name;
+                
+                //many of the below properties are found on the getAdditionalInformation search and therefore not
+                //defined when the device first appears.  This means that on a subsquent search if not for the null
+                //checks the devices would for a short time have incorrect information shown
                 if(typeof device.videoCapable !== 'undefined') scopeDevice.videoCapable = device.videoCapable;
                 if(typeof device.imageCapable !== 'undefined') scopeDevice.imageCapable = device.imageCapable;
                 if(typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
@@ -117,8 +159,28 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     
     eventService.on('deviceLost', removeDevice);
     eventService.on('deviceFound', addUpdateDevice);
-    eventService.on('fileChosen', setFile);
+    eventService.on('fileChosen', setNewFile);
 
 	//window.loadTestDevices();
     eventService.emit("loadDevices");
+    
+    function shuffle(array) {
+        ///Fisher–Yates Shuffle
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }    
+    
 });

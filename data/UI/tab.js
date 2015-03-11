@@ -1,7 +1,7 @@
 (function(){
-	//if is always true because it is not loaded through the extension, window.self.port is 
-	//only there when it is loaded through the extension with the scriptfiles param
     if(!window.self.port){
+	//always true because it is not loaded through the extension, window.self.port is 
+	//only there when it is loaded through the extension with the contentScriptFile param        
         window.self.port = {
             on: function(eventType, callback){
                 document.addEventListener(eventType, function(e){callback(e.detail);});

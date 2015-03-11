@@ -24,7 +24,7 @@
 .row ul{
     margin-bottom: 0;
 }
-.tab-padding{
+.tab-padding, .list-padding{
     padding: 10px 15px;
 }
 .tab-content{
@@ -48,6 +48,26 @@
 .playlist-title{
 	text-align: center;
 	font-size: 22px;
+}
+
+.playlist-footer{
+	font-size: 22px;
+}
+
+.playlist-footer .glyphicon {
+	padding:5px;
+}
+
+span.glyphicon:hover{
+	color: #337AB7;
+	font-weight: bold;
+}
+
+.playlist-item .close{
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    padding: 5px;
 }
 
 .playlist-item{
@@ -76,4 +96,8 @@
     vertical-align: middle;
     margin-top: 10px;
     margin-bottom: 0;
+}
+
+.no-padding{
+    padding: 0 !important;
 }

@@ -10,7 +10,7 @@
 					</h2>
                 </span>
                 <div class="list-group dropdown-menu pull-left" role="menu">
-                    <a ng-href="#/device/{{device.id}}" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}" class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:'type'" id="{{ device.address }}">
+                    <a ng-href="#/device/{{device.id}}" ng-click="setActiveDevice(device)" ng-class="{active : device === activeDevice}" class="list-group-item" ng-repeat="device in devices | filter:selectedType | orderBy:'type'" id="{{ device.id }}">
                         <span class="media-body">
                             <h4 class="list-group-item-heading">{{ device.name }}</h4>
                             <p class="list-group-item-text">
@@ -57,35 +57,43 @@
 	<div class="row">
         <div class="container col-md-2">
             <ul class="playlist list-group">
-                <li class="playlist-title list-group-item">
-                    <span>Playlist</span>
-                    <span class="glyphicon glyphicon-plus pointer" data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
-                    <span class="glyphicon glyphicon-repeat pointer"></span>
-                    <span class="glyphicon glyphicon-random pointer"></span>
+                <li class="playlist-title list-group-item clearfix">
+                    <span class="pull-left">Playlist</span>
+                    <span class="glyphicon pointer pull-right" ng-class="{'glyphicon-minus': filePickerOpen, 'glyphicon-plus': !filePickerOpen}" ng-click="filePickerOpen = !filePickerOpen"  data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
                 </li>
-                <li class="list-group-item">
-                    <div class="collapse clearfix" id="add-file">
-                        <div class="form-group">
-                            <label>Enter URL</label>
-                            <div><input class="form-control" type="url" /></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Choose File</label>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" ng-click="pickLocalFile()" type="button">Browse</button>
-                                </span>
-                                <input type="text" ng-value="activeDevice.file.path" class="form-control" />
+                <li class="list-group-item no-padding">
+                    <div class="collapse" id="add-file">
+                        <div class="clearfix list-padding">
+                            <div class="form-group">
+                                <label>Enter URL</label>
+                                <div><input class="form-control" type="url" ng-value="filePicker.url.path" /></div>
                             </div>
-                        </div>
-                        <div class="form-group  pull-right">
-                            <button type="button" class="btn btn-default" ng-click="launch()">Play</button>
+                            <div class="form-group">
+                                <label>Choose File</label>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="pickLocalFile()" type="button">Browse</button>
+                                    </span>
+                                    <input type="text" ng-value="filePicker.localFile.path" class="form-control" /> <!-- make readonly but don't apply readonly styles -->
+                                </div>
+                            </div>
+                            <div class="form-group pull-right">
+                            <button type="button" data-toggle="collapse" data-target="#add-file" class="btn btn-default" ng-click="launch(); filePickerOpen = false;">Play</button>
                             <button type="button" class="btn btn-default" ng-click="addToPlaylist()">Add To Playlist</button>                                
+                        </div>
                         </div>
                     </div>
                 </li>
-                <li ng-click="setActiveFile(file)" ng-class="{active : file === activeFile}" class="list-group-item playlist-item" ng-repeat="file in playlist">
-                    <h4 class="list-group-item-heading">{{ file.name }}</h4>
+                <li ng-class="{active : file === activeFile}" ng-dblclick="launch(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
+                    <!--todo: show buttons only on hover -->
+                    <!--todo: add handle to drag and drop reorder -->
+                    <h4 class="list-group-item-heading pull-left">{{ file.name }}</h4>
+                    <button type="button" ng-click="removeFromPlaylist(file)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>                    
+                </li>
+                <li class="playlist-footer list-group-item clearfix">
+                    <button class="btn btn-default pull-left" ng-click="clearPlaylist()">Clear Playlist</button>
+                    <span class="pull-right glyphicon glyphicon-repeat pointer"></span>
+                    <span class="pull-right glyphicon glyphicon-random pointer" ng-click="randomizePlaylist()"></span>
                 </li>
             </ul>
         </div>

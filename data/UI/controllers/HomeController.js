@@ -4,11 +4,7 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
     $scope.devices = [];
     $scope.deviceTypes = [];
     $scope.serviceTypes = [];
-    $scope.serviceTypes = [];
 	
-    $scope.setActiveDevice = function setActiveDevice(device) {
-        $scope.activeDevice = device;
-    };
     var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
         $scope.devices.forEach(function (scopeDevice) {
@@ -30,8 +26,6 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
             device.services.forEach( service => service.htmlId = service.id.replace(/[\:\.]/g,"") );
             $scope.devices.push(device);
         }
-        if (!$scope.activeDevice)
-            $scope.setActiveDevice(device);
 
 		device.id = md5(device.address);
         addTypes(device);
@@ -55,6 +49,7 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
         $scope.deviceTypes = $scope.deviceTypes.filter(deviceType => $scope.devices.some(device => device.type.name === deviceType.name && device.type.urn === deviceType.urn));
         $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
     };
+    
     eventService.on('deviceLost', removeDevice);
     eventService.on('deviceFound', addUpdateDevice);
     
