@@ -1,0 +1,32 @@
+<e:propertyset xmlns:e="urn:schemas-upnp-org:event-1-0">
+    <e:property>
+        <LastChange>
+            <Event xmlns="urn:schemas-upnp-org:metadata-1-0/AVT/">
+                <InstanceID val="0">
+                    <CurrentTransportActions val="Play,Stop,Pause" />
+                    <PossiblePlaybackStorageMedia val="" />
+                    <PossibleRecordStorageMedia val="" />
+                    <PossibleRecordQualityModes val="NOT_IMPLEMENTED" />
+                    <NumberOfTracks val="1" />
+                    <CurrentMediaDuration val="0:03:25.173" />
+                    <AVTransportURI val="http://192.168.1.2:50603/A%20Rocket%20To%20The%20Moon%20-%20Give%20A%20Damn.mp3" />
+                    <AVTransportURIMetaData val="" />
+                    <NextAVTransportURI val="" />
+                    <NextAVTransportURIMetaData val="" />
+                    <PlaybackStorageMedium val="UNKNOWN" />
+                    <RecordStorageMedium val="NOT_IMPLEMENTED" />
+                    <RecordMediumWriteStatus val="NOT_IMPLEMENTED" />
+                    <CurrentTrack val="1" />
+                    <CurrentTrackDuration val="0:03:25.173" />
+                    <CurrentTrackMetaData val="" />
+                    <CurrentTrackURI val="http://192.168.1.2:50603/A%20Rocket%20To%20The%20Moon%20-%20Give%20A%20Damn.mp3" />
+                    <TransportState val="PLAYING" />
+                    <TransportStatus val="OK" />
+                    <TransportPlaySpeed val="1" />
+                    <CurrentPlayMode val="NORMAL" />
+                    <CurrentRecordQualityMode val="NOT_IMPLEMENTED" />
+                </InstanceID>
+            </Event>
+        </LastChange>
+    </e:property>
+</e:propertyset>
