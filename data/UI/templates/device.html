@@ -62,7 +62,7 @@
                     <span class="glyphicon pointer pull-right" ng-class="{'glyphicon-minus': filePickerOpen, 'glyphicon-plus': !filePickerOpen}" ng-click="filePickerOpen = !filePickerOpen"  data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
                 </li>
                 <li class="list-group-item no-padding">
-                    <div class="collapse" id="add-file">
+                    <div class="collapse in" id="add-file">
                         <div class="clearfix list-padding">
                             <div class="form-group">
                                 <label>Enter URL</label>
@@ -202,7 +202,7 @@
                                 </li>
                             </ul>
                             <div class="tab-content tab-padding">
-                                <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video" ng-class="{active: activeDevice.videoCapable != null}">
+                                <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video-sink" ng-class="{active: activeDevice.videoCapable != null}">
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -226,7 +226,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
+                                <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio-sink" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -250,7 +250,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
+                                <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image-sink" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -365,12 +365,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button type="button" ng-show="activeDevice.rawDiscoveryInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawDiscoveryInfo}}">
+                                    <button type="button" ng-show="activeDevice.rawDiscoveryInfo" class="btn btn-default" data-toggle="collapse" data-target="#raw-discovery-info">
                                         raw discovery info
                                     </button>
-                                    <button type="button" ng-show="activeDevice.rawProtocolInfo" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-content="{{activeDevice.rawProtocolInfo}}">
+                                    <button type="button" ng-show="activeDevice.rawProtocolInfo" class="btn btn-default" data-toggle="collapse" data-target="#raw-protocol-info">
                                         raw protocol info
                                     </button>
+                                    <div class="collapse" id="raw-discovery-info">{{activeDevice.rawDiscoveryInfo}}</div>
+                                    <div class="collapse" id="raw-protocol-info">{{activeDevice.rawProtocolInfo}}</div>
                                 </div>
                             </div>
                         </div>

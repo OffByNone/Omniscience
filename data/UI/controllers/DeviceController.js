@@ -9,7 +9,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	$scope.playlist = [];
     $scope.activeFile = {};    
     $scope.filePicker = {};
-    $scope.filePickerOpen = false;
+    $scope.filePickerOpen = true;
     
     //{name: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, fileName: "test track 1", path= "file path here" }
 
