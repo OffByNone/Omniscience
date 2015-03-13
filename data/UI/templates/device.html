@@ -187,119 +187,119 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="supported-formats">
                         <div ng-show="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" ng-show="activeDevice.videoCapable != null" ng-class="{active: activeDevice.videoCapable != null}">
-                                            <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-video" aria-controls="video">Video</a>
-                                        </li>
-                                        <li role="presentation" ng-show="activeDevice.audioCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
-                                            <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-audio" aria-controls="audio">Audio</a>
-                                        </li>
-                                        <li role="presentation" ng-show="activeDevice.imageCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
-                                            <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-image" aria-controls="image">Image</a>
-                                        </li>
-                                        <li role="presentation" ng-show="activeDevice.mirrorCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
-                                            <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-mirror" aria-controls="mirror">Mirror</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content tab-padding">
-                                        <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video" ng-class="{active: activeDevice.videoCapable != null}">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Protocol</th>
-                                                        <th>Network</th>
-                                                        <th>Medium</th>
-                                                        <th>Container Type</th>
-                                                        <th>Container Type Info</th>
-                                                        <th>Additional Info</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'video'">
-                                                        <td>{{info.protocol}}</td>
-                                                        <td>{{info.network}}</td>
-                                                        <td>{{info.contentFormat.medium}}</td>
-                                                        <td>{{info.contentFormat.containerType}}</td>
-                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                        <td>{{info.additionalInfo}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Protocol</th>
-                                                        <th>Network</th>
-                                                        <th>Medium</th>
-                                                        <th>Container Type</th>
-                                                        <th>Container Type Info</th>
-                                                        <th>Additional Info</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'audio'">
-                                                        <td>{{info.protocol}}</td>
-                                                        <td>{{info.network}}</td>
-                                                        <td>{{info.contentFormat.medium}}</td>
-                                                        <td>{{info.contentFormat.containerType}}</td>
-                                                        <td>{{info.contentFormat.containerTypeInfo}}</td>
-                                                        <td>{{info.additionalInfo}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Protocol</th>
-                                                        <th>Network</th>
-                                                        <th>Medium</th>
-                                                        <th>Container Type</th>
-                                                        <th>Container Type Info</th>
-                                                        <th>Additional Info</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'image'">
-                                                        <td>{{info.protocol}}</td>
-                                                        <td>{{info.network}}</td>
-                                                        <td>{{info.contentFormat.medium}}</td>
-                                                        <td>{{info.contentFormat.containerType}}</td>
-                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                        <td>{{info.additionalInfo}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div role="tabpanel" ng-show="activeDevice.mirrorCapable != null" class="tab-pane" id="capabilities-tab-mirror" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Protocol</th>
-                                                        <th>Network</th>
-                                                        <th>Medium</th>
-                                                        <th>Container Type</th>
-                                                        <th>Container Type Info</th>
-                                                        <th>Additional Info</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="info in activeDevice.rawProtocolInfo | filter:'mirror'">
-                                                        <td>{{info.protocol}}</td>
-                                                        <td>{{info.network}}</td>
-                                                        <td>{{info.contentFormat.medium}}</td>
-                                                        <td>{{info.contentFormat.containerType}}</td>
-                                                        <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-                                                        <td>{{info.additionalInfo}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" ng-show="activeDevice.videoCapable != null" ng-class="{active: activeDevice.videoCapable != null}">
+                                    <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-video-sink" aria-controls="video sink">Video Sink</a>
+                                </li>
+                                <li role="presentation" ng-show="activeDevice.audioCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
+                                    <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-audio-sink" aria-controls="audio sink">Audio Sink</a>
+                                </li>
+                                <li role="presentation" ng-show="activeDevice.imageCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
+                                    <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-image-sink" aria-controls="image sink">Image Sink</a>
+                                </li>
+                                <li role="presentation" ng-show="activeDevice.mirrorCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
+                                    <a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-mirror" aria-controls="mirror">Mirror</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tab-padding">
+                                <div role="tabpanel" ng-show="activeDevice.videoCapable != null" class="tab-pane" id="capabilities-tab-video" ng-class="{active: activeDevice.videoCapable != null}">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Protocol</th>
+                                                <th>Network</th>
+                                                <th>Medium</th>
+                                                <th>Container Type</th>
+                                                <th>Container Type Info</th>
+                                                <th>Additional Info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo.sink | filter:'video'">
+                                                <td>{{info.protocol}}</td>
+                                                <td>{{info.network}}</td>
+                                                <td>{{info.contentFormat.medium}}</td>
+                                                <td>{{info.contentFormat.containerType}}</td>
+                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                <td>{{info.additionalInfo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                                <div role="tabpanel" ng-show="activeDevice.audioCapable != null" class="tab-pane" id="capabilities-tab-audio" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Protocol</th>
+                                                <th>Network</th>
+                                                <th>Medium</th>
+                                                <th>Container Type</th>
+                                                <th>Container Type Info</th>
+                                                <th>Additional Info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo.sink | filter:'audio'">
+                                                <td>{{info.protocol}}</td>
+                                                <td>{{info.network}}</td>
+                                                <td>{{info.contentFormat.medium}}</td>
+                                                <td>{{info.contentFormat.containerType}}</td>
+                                                <td>{{info.contentFormat.containerTypeInfo}}</td>
+                                                <td>{{info.additionalInfo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div role="tabpanel" ng-show="activeDevice.imageCapable != null" class="tab-pane" id="capabilities-tab-image" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Protocol</th>
+                                                <th>Network</th>
+                                                <th>Medium</th>
+                                                <th>Container Type</th>
+                                                <th>Container Type Info</th>
+                                                <th>Additional Info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo.sink | filter:'image'">
+                                                <td>{{info.protocol}}</td>
+                                                <td>{{info.network}}</td>
+                                                <td>{{info.contentFormat.medium}}</td>
+                                                <td>{{info.contentFormat.containerType}}</td>
+                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                <td>{{info.additionalInfo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div role="tabpanel" ng-show="activeDevice.mirrorCapable != null" class="tab-pane" id="capabilities-tab-mirror" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Protocol</th>
+                                                <th>Network</th>
+                                                <th>Medium</th>
+                                                <th>Container Type</th>
+                                                <th>Container Type Info</th>
+                                                <th>Additional Info</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="info in activeDevice.rawProtocolInfo.sink | filter:'mirror'">
+                                                <td>{{info.protocol}}</td>
+                                                <td>{{info.network}}</td>
+                                                <td>{{info.contentFormat.medium}}</td>
+                                                <td>{{info.contentFormat.containerType}}</td>
+                                                <td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+                                                <td>{{info.additionalInfo}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                         <h4 ng-hide="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
                                     Unknown
                                 </h4>
