@@ -5,21 +5,23 @@ Firefox extension to find and interact with UPnP (chromecast, matchstick, firetv
 
 How To Run
  CFX
+
  	--CFX is the old/current way of building/testing addons it uses python and you need to run activate first to be able to run cfx commands
 	--cfx run opens a new browser with a brand new profile
 	--cfx xpi builds the xpi file
 	--I have added the addonsdk/bin to my path so the "activate" command works anywhere in the command prompt
-	
+
 	activate
 	cfx run -b "C:\program files\nightly\firefox.exe"
 		--On my desktop something happened awhile back and I need to specify the binary, a reinstall of firefox would likely fix the issue and maybe someday I will do it but for now I just specify the binary manually with the -b flag 
 		--Needs to be run from the root of your addon
 JPM
+
 	--JPM is the new way of building/testing addons and uses node.
 	--Can be installed with npm 
 	--if node is in your path you are good to go
 	--Needs to be run from the root of your addon
-	
+
 	jpm run -b "C:\program files\nightly\firefox.exe" -p ExtensionDev --debug
 		-p ExtensionDev is telling it to use my existing profile with the name ExtensionDev.  This is significantly better than CFX which allows specifying profiles but you have to do it by path not name
 			Also note that it will copy that profile and you will use a copy of the profile which will be destroyed when you close the window.  Your original profile will not be touched
@@ -29,12 +31,13 @@ JPM
 	--You will also need the extension auto installer
 	jpm post --post-url http://localhost:8888/
 		--builds an xpi then posts it localhost:8888 if the extension auto installer is running and listening on that port it will auto install/update the extension for you
-	
+
 	jpm watchpost --post-url http://localhost:8888/
 		--watches for files to change when they do it auto builds and posts the xpi.  I could not get this to work in Cgywin
 
 
 View contents of simplestorage
+
 	--From addon-debugger console run 
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
@@ -53,7 +56,7 @@ Better workflow for working on the tab
 		Open DeviceController.js and HomeController.js and add "window.loadDevices()" as the final line before the final "});"
 		Find a static file server and fire it up - I use the node serve-static
 		Navigate to the tab page in your browser and you should be good to develop it like a normal website.
-		
+
 	Make sure to remove the window.loadDevices() and re-comment out the script files when you want to load it from the extension again or when you are done.
 
 To-Do
@@ -84,7 +87,7 @@ To-Do
                 [ ] Drag and Drop re-order
 				[ ] Allow selection of multiple files within the file picker dialog
 				[ ] Limit file types to supported types on the device
-				
+
             [ ] Break apart with ui router
             [ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
                 currently does this as if there are links to the device, device model, manufacturer they are shown in the top center of page
@@ -129,7 +132,7 @@ To-Do
                 [ ] re-write their sender daemon into something more sane and robust
             [ ] Support for Chromecast
                 [ ] Support configuring unsetup devices
-            [ ] Support DLNA media servers            
+            [ ] Support DLNA media servers
         Notifications
             [ ] Fix notifications appearing off screen problem
             [ ] Group notifications together because a new notification will not be shown if one already is, and many notifications in a short period of time are annoying
