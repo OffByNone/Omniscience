@@ -39,6 +39,7 @@ View contents of simplestorage
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
 Better workflow for working on the tab
+
 	Using cfx -or even JPM- isn't the best workflow as having to restart the browser to test a change takes awhile - the JPM is far slower than CFX and the JPM post isn't much if any faster than a cfx run.
 	In order to get around this when I have been working on the tab I have been loading it via a local file server as just a normal html file. 
 	To do this requires a few changes to the files:
