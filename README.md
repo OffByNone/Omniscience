@@ -3,6 +3,19 @@ Rotary
 
 Extension to find and interact with DIAL (chromecast, matchstick) devices on your local network
 
+assume I am on the same subnet as the device.
+
+activate
+cfx run -b "C:\program files\nightly\firefox.exe"
+
+jpm run -b "C:\program files\nightly\firefox.exe" -p ExtensionDev --debug
+
+from addon-debugger console run this to see contents of simplestorage loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
+
+jpm post --post-url http://localhost:8888/
+jpm watchpost --post-url http://localhost:8888/
+
+
 
 todo:
     New Name
@@ -42,7 +55,7 @@ todo:
             Show a grid of devices
             Show message if no devices found
         About Page
-            Create
+            Make it
         Add UI Router
         Better error handling
     Back-End
@@ -64,7 +77,6 @@ todo:
             Send metadata to device
             Remove hardcoded instance ids and other hardcoded options that seem to never change
         Devices
-            Fix and re-enable the logging of unknown devices
             Better understand DIAL spec - I should be able to use it to launch an app on the device, and I believe I can pass in some extra data.
                             If true I should be able to make a websocketserver in the extension and pass the path to communicate with the app on the device.  
                             This would help to unify the implementation across devices.
@@ -83,6 +95,7 @@ todo:
             Show notifications for new files playing as well as new devices found
         Searching
             Allow to search for devices on an interval
+			Getting responses with a header.LOCATION of 127.0.0.1 (no http://)(on both desktop and laptop).  The location can never be hit and it just seems to cause problems.  Look into this.
         Get metadata for files
         Replace my custom string.format with ES6 template strings
         Inject more dependencies

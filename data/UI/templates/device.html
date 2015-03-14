@@ -148,17 +148,33 @@
                                 <div class="col-md-1">UPnP</div>
                                 <div class="col-md-11">v{{activeDevice.upnpVersion}}</div>
                             </div>
+                            <div class="row" ng-show="activeDevice.langauge">
+                                <div class="col-md-1">Language</div>
+                                <div class="col-md-11">{{activeDevice.langauge}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.macAddress">
+                                <div class="col-md-1">Mac Address</div>
+                                <div class="col-md-11">{{activeDevice.macAddress}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.timezone">
+                                <div class="col-md-1">Timezone</div>
+                                <div class="col-md-11">{{activeDevice.timezone}}</div>
+                            </div>
+                            <div class="row" ng-show="activeDevice.softwareVersion">
+                                <div class="col-md-1">Software Ver</div>
+                                <div class="col-md-11">{{activeDevice.softwareVersion}}</div>
+                            </div>							
                             <div class="row" ng-show="activeDevice.serialNumber">
-                                <div class="col-md-2">Serial Number</div>
-                                <div class="col-md-10">{{activeDevice.serialNumber}}</div>
+                                <div class="col-md-1">Serial Num</div>
+                                <div class="col-md-11">{{activeDevice.serialNumber}}</div>
                             </div>
                             <div class="row" ng-show="activeDevice.model.number">
-                                <div class="col-md-2">Model Number</div>
-                                <div class="col-md-10">{{activeDevice.model.number}}</div>
+                                <div class="col-md-1">Model Num</div>
+                                <div class="col-md-11">{{activeDevice.model.number}}</div>
                             </div>
                             <div class="row" ng-show="activeDevice.model.description">
-                                <div class="col-md-2">Model Description</div>
-                                <div class="col-md-10">{{activeDevice.model.description}}</div>
+                                <div class="col-md-1">Model Desc</div>
+                                <div class="col-md-11">{{activeDevice.model.description}}</div>
                             </div>
                             <div ng-show="activeDevice.showAudioPicker || activeDevice.showVideoPicker" class="picker group">
                                     <div class="picker-left">
