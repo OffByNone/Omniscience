@@ -57,6 +57,7 @@ Better workflow for working on the tab
 	Make sure to remove the window.loadDevices() and re-comment out the script files when you want to load it from the extension again or when you are done.
 
 To-Do
+
 	[ ]	New Icon
 	[ ] Better understand Module/Export pattern
 
