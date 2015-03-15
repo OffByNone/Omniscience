@@ -7,10 +7,10 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     $scope.serviceTypes = [];
     $scope.deviceId = $routeParams.deviceId;
 	$scope.playlist = [];
-    $scope.activeFile = {};    
+    $scope.activeFile = {};
     $scope.filePicker = {};
     $scope.filePickerOpen = true;
-    
+
     //{name: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, fileName: "test track 1", path= "file path here" }
 
     $scope.currentFilePercent = function currentFilePercent(){
@@ -42,11 +42,11 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     };
     function setNewFile(file){
         $scope.filePicker.localFile = file;
-    }    
+    }
     function getChosenFile(){
         //todo: pull in the file info - such as duration, artist, song/video name
         var file;
-        
+
         if($scope.filePicker.url && $scope.filePicker.url.path && $scope.filePicker.url.path.length > 0){
             try{
                 new URL($scope.filePicker.url.path);
@@ -54,15 +54,15 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
             catch (e){
                 //todo: invalid url should report that to user and abort
             }
-            
+
             //set file name from url
             $scope.filePicker.url.name = $scope.filePicker.url.path.replace(/^.*(\\|\/|\:)/, '');
-            
+
             file = $scope.filePicker.url;
         }
         else if($scope.filePicker.localFile && $scope.filePicker.localFile.path && $scope.filePicker.localFile.path.length > 0)
             file = $scope.filePicker.localFile;
-        
+
         $scope.filePicker = {};
             //clear out the url and local file fields
         $scope.playlist.push(file);
@@ -72,7 +72,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     $scope.launch = function launch(file){
         //if a file is passed in, use that. Otherwise pull from the file picker box
         if(!file) file = getChosenFile();
-        
+
         //todo: this is going to cause the same files to be mapped more than once
         //should make sure on the backend that if the file is already mapped we dont map it again
         //also should throw in something random into the path of the map incase someone wants to
@@ -104,13 +104,13 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
     $scope.setName = function setName(name){
         eventService.emit('setName', $scope.activeDevice, name);
     };
-    
+
     var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
         $scope.devices.forEach(function(scopeDevice){
             if(scopeDevice.address === device.address) {
                 scopeDevice.name = device.name;
-                
+
                 //many of the below properties are found on the getAdditionalInformation search and therefore not
                 //defined when the device first appears.  This means that on a subsquent search if not for the null
                 //checks the devices would for a short time have incorrect information shown
@@ -118,21 +118,20 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
                 if(typeof device.imageCapable !== 'undefined') scopeDevice.imageCapable = device.imageCapable;
                 if(typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
                 if(typeof device.mirrorCapable !== 'undefined') scopeDevice.mirrorCapable = device.mirrorCapable;
-                
+
                 if(typeof device.rawProtocolInfo !== 'undefined')scopeDevice.rawProtocolInfo = device.rawProtocolInfo;
                 if(typeof device.rawDiscoveryInfo !== 'undefined')scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
-                
+
                 found = true;
             }
         });
-        
+
         if (!found){
             device.services.forEach( service => service.htmlId = service.id.replace(/[\:\.]/g,"") );
             $scope.devices.push(device);
         }
-		device.id = md5(device.address);
-		
-		if(device.id === $routeParams.deviceId)
+
+        if (device.id === $routeParams.deviceId)
 			$scope.activeDevice = device;
 
         addTypes(device);
@@ -141,7 +140,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
         for(var i=$scope.devices.length-1; i>=0; i--)
           if($scope.devices[i].address === device.address)
             $scope.devices.splice(i, 1);
-        
+
         removeTypes();
     };
     var addTypes = function addTypes(device){
@@ -156,14 +155,19 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
         $scope.deviceTypes = $scope.deviceTypes.filter(deviceType => $scope.devices.some(device => device.type.name === deviceType.name && device.type.urn === deviceType.urn));
         $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
     };
-    
+
+    var somethingHappened = function (device, request) {
+    	//console.log(device);
+    	//console.log(request);
+    };
+
     eventService.on('deviceLost', removeDevice);
     eventService.on('deviceFound', addUpdateDevice);
     eventService.on('fileChosen', setNewFile);
+    eventService.on( 'SomethingHappened', somethingHappened);
 
-	//window.loadTestDevices();
     eventService.emit("loadDevices");
-    
+
     function shuffle(array) {
         ///Fisher–Yates Shuffle
         var currentIndex = array.length, temporaryValue, randomIndex;
@@ -181,6 +185,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
         }
 
         return array;
-    }    
-    
+    }
+
+	//window.loadTestDevices();
 });

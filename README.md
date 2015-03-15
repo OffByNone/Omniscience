@@ -18,7 +18,7 @@ How To Run
 JPM
 
 	--JPM is the new way of building/testing addons and uses node.
-	--Can be installed with npm 
+	--Can be installed with npm
 	--if node is in your path you are good to go
 	--Needs to be run from the root of your addon
 
@@ -44,7 +44,7 @@ Obsecure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remo
 
 View contents of simplestorage
 
-	--From addon-debugger console run 
+	--From addon-debugger console run
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
 Better workflow for working on the tab
@@ -130,7 +130,7 @@ To-Do
             [ ] Remove hardcoded instance ids and other hardcoded options that seem to never change
         Devices
             [ ] Better understand DIAL spec - I should be able to use it to launch an app on the device, and I believe I can pass in some extra data.
-                            If true I should be able to make a websocketserver in the extension and pass the path to communicate with the app on the device.  
+                            If true I should be able to make a websocketserver in the extension and pass the path to communicate with the app on the device.
                             This would help to unify the implementation across devices.
             [ ] Support for FireTV Stick
             [ ] Support for MatchStick
@@ -153,7 +153,7 @@ To-Do
         Constants
 			[] Move in more strings
 			[] fix serviceTypes and deviceTypes.
-
+        [ ] Make a logger that can take different levels (info, warn, error) and allow the user to pick their verbosity level.
         [ ] Get metadata for files
         [ ] Inject more dependencies
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
