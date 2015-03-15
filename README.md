@@ -35,6 +35,12 @@ JPM
 	jpm watchpost --post-url http://localhost:8888/
 		--watches for files to change when they do it auto builds and posts the xpi.  I could not get this to work in Cgywin
 
+Obsecure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
+    devtools.debugger.force-local = false (if you want to connect from a different machine over the network)
+    devtools.debugger.remote-host (to change the TCP hostname where Firefox will listen for connections)
+    devtools.debugger.remote-port (to change the TCP port number where Firefox will listen for connections)
+    devtools.debugger.prompt-connection = false (Allow connections without displaying a confirmation prompt.  This can be a security risk, especially if you also set the force-local preference to false.)
+
 
 View contents of simplestorage
 
@@ -52,7 +58,7 @@ Better workflow for working on the tab
 		Copy the output, and paste into your favorite editor
 		Remove the first and last '"'
 		You should now have an array of your device objects, replace the testdevices array inside of data/UI/tab.js
-		Open data/UI/index.html and un-comment the script files at the bottom - these might be out of date to update them look at the constants file and find the contentscriptfiles for the tab, and make sure to add the data/ui/tab.js at the top of this block
+		Open data/UI/index.html and un-comment the script files at the bottom - these might be out of date to update them look at the Constants file and find the contentscriptfiles for the tab, and make sure to add the data/ui/tab.js at the top of this block
 		Open DeviceController.js and HomeController.js and add "window.loadDevices()" as the final line before the final "});"
 		Find a static file server and fire it up - I use the node serve-static
 		Navigate to the tab page in your browser and you should be good to develop it like a normal website.
@@ -140,10 +146,15 @@ To-Do
             [ ] Re-enable
             [ ] Show notifications for new files playing as well as new devices found
         Searching
+            [ ] Simple storage seems to not be working.
             [ ] Allow to search for devices on an interval
-			[ ] Getting responses with a header.LOCATION of 127.0.0.1 (no http://)(on both desktop and laptop).  The location can never be hit and it just seems to cause problems.  Look into this.
+			[ ] In _removeStaleDevices attempt to contact the device directly before throwing it away.
+			[ ] Getting responses with a header.LOCATION of 127.0.0.1 (no http://)(on both desktop and laptop).  The location can never be hit and it just seems to cause problems.  Look into this
+        Constants
+			[] Move in more strings
+			[] fix serviceTypes and deviceTypes.
+
         [ ] Get metadata for files
-        [ ] Replace my custom string.format with ES6 template strings
         [ ] Inject more dependencies
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
         [ ] Better error handling
