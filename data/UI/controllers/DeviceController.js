@@ -156,35 +156,82 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
         $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
     };
 
-    var somethingHappened = function (device, request) {
-    	//console.log(device);
-    	//console.log(request);
+    var eventOccured = function eventOccured(device, event, request) {
+    	if (!event) { console.log("event is undefined"); return; }
+    	if (event.hasOwnProperty('Mute'))
+    		device.isMuted = event.Mute === "1";
+    	if (event.hasOwnProperty('Volume'))
+    		device.Volume = Number(event.Volume);
+    	if (event.hasOwnProperty('TransportState'))
+    		device.TransportState = event.TransportState;
+    	if (event.hasOwnProperty('CurrentTransportActions'))
+    		device.CurrentTransportActions = event.CurrentTransportActions;
+    	if (event.hasOwnProperty('AVTransportURI'))
+    		device.AVTransportURI = event.AVTransportURI;
+    	if (event.hasOwnProperty('AVTransportURIMetaData'))
+    		device.AVTransportURIMetaData = event.AVTransportURIMetaData
+    	if (event.hasOwnProperty('CurrentTrackURI'))
+    		device.CurrentTrackURI = event.CurrentTrackURI;
+    	if (event.hasOwnProperty('CurrentTrackMetaData'))
+    		device.CurrentTrackMetaData = event.CurrentTrackMetaData;
+    	if (event.hasOwnProperty('PossiblePlaybackStorageMedia'))
+    		device.PossiblePlaybackStorageMedia = event.PossiblePlaybackStorageMedia;
+    	if (event.hasOwnProperty('PossibleRecordStorageMedia'))
+    		device.PossibleRecordStorageMedia = event.PossibleRecordStorageMedia;
+    	if (event.hasOwnProperty('PossibleRecordQualityModes'))
+    		device.PossibleRecordQualityModes = event.PossibleRecordQualityModes;
+    	if (event.hasOwnProperty('NumberOfTracks'))
+    		device.NumberOfTracks = event.NumberOfTracks
+    	if (event.hasOwnProperty('CurrentMediaDuration'))
+    		device.CurrentMediaDuration = event.CurrentMediaDuration;
+    	if (event.hasOwnProperty('NextAVTransportURI'))
+    		device.NextAVTransportURI = event.NextAVTransportURI;
+    	if (event.hasOwnProperty('NextAVTransportURIMetaData'))
+    		device.NextAVTransportURIMetaData = event.NextAVTransportURIMetaData;
+    	if (event.hasOwnProperty('PlaybackStorageMedium'))
+    		device.PlaybackStorageMedium = event.PlaybackStorageMedium;
+    	if (event.hasOwnProperty('RecordStorageMedium'))
+    		device.RecordStorageMedium = event.RecordStorageMedium;
+    	if (event.hasOwnProperty('RecordMediumWriteStatus'))
+    		device.RecordMediumWriteStatus = event.RecordMediumWriteStatus
+    	if (event.hasOwnProperty('CurrentTrack'))
+    		device.CurrentTrack = event.CurrentTrack;
+    	if (event.hasOwnProperty('TransportStatus'))
+    		device.TransportStatus = event.TransportStatus;
+    	if (event.hasOwnProperty('TransportPlaySpeed'))
+    		device.TransportPlaySpeed = event.TransportPlaySpeed
+    	if (event.hasOwnProperty('CurrentPlayMode'))
+    		device.CurrentPlayMode = event.CurrentPlayMode;
+    	if (event.hasOwnProperty('CurrentRecordQualityMode'))
+    		device.CurrentRecordQualityMode = event.CurrentRecordQualityMode;
+
+    	console.log(JSON.stringify(event));
     };
 
-    eventService.on('deviceLost', removeDevice);
-    eventService.on('deviceFound', addUpdateDevice);
-    eventService.on('fileChosen', setNewFile);
-    eventService.on( 'SomethingHappened', somethingHappened);
+    eventService.on( 'deviceLost', removeDevice );
+    eventService.on( 'deviceFound', addUpdateDevice );
+    eventService.on( 'fileChosen', setNewFile );
+    eventService.on( 'EventOccured', eventOccured );
 
     eventService.emit("loadDevices");
 
     function shuffle(array) {
-        ///Fisher–Yates Shuffle
-        var currentIndex = array.length, temporaryValue, randomIndex;
+    	///Fisher–Yates Shuffle
+    	var currentIndex = array.length, temporaryValue, randomIndex;
 
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
+    	// While there remain elements to shuffle...
+    	while (0 !== currentIndex) {
+    		// Pick a remaining element...
+    		randomIndex = Math.floor(Math.random() * currentIndex);
+    		currentIndex -= 1;
 
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
+    		// And swap it with the current element.
+    		temporaryValue = array[currentIndex];
+    		array[currentIndex] = array[randomIndex];
+    		array[randomIndex] = temporaryValue;
+    	}
 
-        return array;
+    	return array;
     }
 
 	//window.loadTestDevices();

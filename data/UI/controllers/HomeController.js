@@ -49,14 +49,12 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
         $scope.serviceTypes = $scope.serviceTypes.filter(serviceType => $scope.devices.some(device => device.services.some(service => service.type.name === serviceType.name && service.type.urn === serviceType.urn)));
     };
 
-    var somethingHappened = function (device, request) {
-    	//console.log(device);
-    	//console.log(request);
+    var eventOccured = function eventOccured(device, event, request) {
     };
 
     eventService.on('deviceLost', removeDevice);
     eventService.on('deviceFound', addUpdateDevice);
-    eventService.on('SomethingHappened', somethingHappened);
+    eventService.on('EventOccured', eventOccured);
 
     eventService.emit("loadDevices");
 });

@@ -71,7 +71,7 @@ span.glyphicon:hover{
 }
 
 .playlist-item{
-    word-wrap: break-word;
+	word-break: break-all;
 }
 
 .navbar .list-group-item{
