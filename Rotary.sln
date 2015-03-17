@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22609.0
@@ -8,20 +8,20 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Rotary(2)", "http://localho
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_5972"
-		Debug.AspNetCompiler.PhysicalPath = "Y:\Projects\Rotary\"
+		Debug.AspNetCompiler.PhysicalPath = "./"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_5972\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_5972"
-		Release.AspNetCompiler.PhysicalPath = "Y:\Projects\Rotary\"
+		Release.AspNetCompiler.PhysicalPath = "./"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_5972\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "Y:\Projects\Rotary\"
+		SlnRelativePath = "./"
 	EndProjectSection
 EndProject
 Global

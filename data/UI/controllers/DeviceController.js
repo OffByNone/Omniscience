@@ -20,7 +20,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		return $scope.availableActions == null ? true : $scope.availableActions.every(availableAction => availableAction != action);
 	};
 	function setState(newState) {
-		$scope.playback || {};
+		$scope.playback = $scope.playback || {};
 		$scope.playback.state = newState;
 	}
 	$scope.play = function play() {
