@@ -24,3 +24,17 @@ DLNA.ORG_FLAGS - padded with 24 trailing 0s
      0x00200000  21  connectionStallingSupported
      0x00100000  20  dlnaVersion15Supported
 DLNA.ORG_MAXSP - I've seen 5 here more than once but I don’t know what it represents
+
+
+
+AVTransportURI(MetaData) can be either a playlist or a single item.  If it is a single item then its values will be equal to CurrentTrackURI(MetaData)
+	If it is a playlist then it's uri will stay the same for each track in the list, but the CurrentTrack will change.
+CurrentMediaDuration is the duration of the item identified by the AVTransportURI
+CurrentTrackDuration:
+	[+-]H+:MM:SS[.F+] or H+:MM:SS[.F0/F1]
+	
+	H+ means one or more digits to indicate elapsed hours
+	MM means exactly 2 digits to indicate minutes (00 to 59)
+	SS means exactly 2 digits to indicate seconds (00 to 59)
+	[.F+] means optionally a dot followed by one or more digits to indicate fractions of seconds
+	[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
