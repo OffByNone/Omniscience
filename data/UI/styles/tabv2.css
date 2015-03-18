@@ -16,7 +16,7 @@
 }
 .list-group-item-text {
     font-size: 12px;
-    margin: 2px 0px 3px 0px;
+    margin: 2px 0 3px 0;
 }
 .capability{
     margin: 5px;
@@ -41,12 +41,8 @@
     margin-left: 5px;
 }
 
-.pointer{
-    cursor:pointer;
-}
-
 .playlist-title{
-	-align: center;
+	text-align: center;
 	font-size: 22px;
 }
 
@@ -61,11 +57,12 @@
 span.glyphicon:hover{
 	color: #337AB7;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 .playlist-item .close{
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     position: absolute;
     padding: 5px;
 }
@@ -83,7 +80,6 @@ span.glyphicon:hover{
 
 .navbar .btn-group{
     margin-top: 10px;
-    margin-left: 100px;
 }
 
 .navbar .progress {
@@ -100,4 +96,45 @@ span.glyphicon:hover{
 
 .no-padding{
     padding: 0 !important;
+}
+
+.volume-detail {
+	position: absolute;
+	width: 70px;
+	font-weight: bold;
+	background-color: #FFF;
+	margin-left: -25px;
+	text-align: center;
+	z-index: 1;
+	display: none;
+	font-size:16px;
+}
+
+	.volume-detail .glyphicon-minus {
+		float: left;
+	}
+	.volume-detail .glyphicon-plus {
+		float: right;
+	}
+
+.volume-speaker {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 100px;
+	margin-top: 15px;
+	margin-right: 5px;
+}
+
+.volume-speaker .glyphicon-volume-up,
+.volume-speaker .glyphicon-volume-off {
+	font-size:20px;
+}
+
+.volume-speaker:hover .volume-detail {
+	display: block;
+}
+
+.nav.nav-tabs li {
+	cursor:pointer;
 }

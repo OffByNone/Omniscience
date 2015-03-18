@@ -30,12 +30,20 @@
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="navbar-content">
+				<div class="volume-speaker">
+					<span class="glyphicon" ng-class="{'glyphicon-volume-off': activeDevice.isMuted, 'glyphicon-volume-up': !activeDevice.isMuted}" ng-click="toggleMute(activeDevice)"></span>
+					<div class="volume-detail">
+						<span class="glyphicon glyphicon-minus" ng-click="decrementVolume(activeDevice)"></span>
+						<span>{{activeDevice.volume}}</span>
+						<span class="glyphicon glyphicon-plus" ng-click="incrementVolume(activeDevice)"></span>
+					</div>
+				</div>
                 <div class="btn-group" role="group">
-                    <button type="button" ng-class="{disabled : playlist.length == 0 }" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
-                    <button type="button" ng-class="{disabled : canExecuteAction('Play')  }" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
-                    <button type="button" ng-class="{disabled : canExecuteAction('Pause') }" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
-                    <button type="button" ng-class="{disabled : playlist.length == 0 }" ng-click="next()" class="btn btn-default glyphicon glyphicon-forward"></button>
-                    <button type="button" ng-class="{disabled : canExecuteAction('Stop') }" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
+                    <button type="button" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
+                    <button type="button" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
+                    <button type="button" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
+                    <button type="button" ng-click="next()" class="btn btn-default glyphicon glyphicon-forward"></button>
+                    <button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
                 </div>
                 <div class="progress">
                   <div class="progress-bar" role="progressbar" aria-valuenow="{{activeFile.currentTimeInSeconds}}" aria-valuemin="0" aria-valuemax="{{activeFile.durationInSeconds}}" style="width: {{currentFilePercent()}}%;">
@@ -60,7 +68,7 @@
             <ul class="playlist list-group">
                 <li class="playlist-title list-group-item clearfix">
                     <span class="pull-left">Playlist</span>
-                    <span class="glyphicon pointer pull-right" ng-class="{'glyphicon-minus': filePickerOpen, 'glyphicon-plus': !filePickerOpen}" ng-click="filePickerOpen = !filePickerOpen"  data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
+                    <span class="glyphicon pull-right" ng-class="{'glyphicon-minus': filePickerOpen, 'glyphicon-plus': !filePickerOpen}" ng-click="filePickerOpen = !filePickerOpen"  data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
                 </li>
                 <li class="list-group-item no-padding">
                     <div class="collapse in" id="add-file">
@@ -93,8 +101,8 @@
                 </li>
                 <li class="playlist-footer list-group-item clearfix">
                     <button class="btn btn-default pull-left" ng-click="clearPlaylist()">Clear Playlist</button>
-                    <span class="pull-right glyphicon glyphicon-repeat pointer" ng-click="playback.repeat = !playback.repeat" ng-class="{active: playback.repeat}"></span>
-                    <span class="pull-right glyphicon glyphicon-random pointer" ng-click="randomizePlaylist()"></span>
+                    <span class="pull-right glyphicon glyphicon-repeat" ng-click="playback.repeat = !playback.repeat" ng-class="{active: playback.repeat}"></span>
+                    <span class="pull-right glyphicon glyphicon-random" ng-click="randomizePlaylist()"></span>
                 </li>
             </ul>
         </div>
@@ -124,11 +132,11 @@
             <div role="tabpanel">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="pointer active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-                    <li role="presentation" class="pointer"><a data-target="#supported-formats" aria-controls="supported-formats" role="tab" data-toggle="tab">Supported Formats</a></li>
-                    <li role="presentation" class="pointer"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
-                    <li role="presentation" class="pointer"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-                    <li role="presentation" class="pointer pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
+                    <li role="presentation" class=" active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+                    <li role="presentation"><a data-target="#supported-formats" aria-controls="supported-formats" role="tab" data-toggle="tab">Supported Formats</a></li>
+                    <li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
+                    <li role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                    <li role="presentation" class=" pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">

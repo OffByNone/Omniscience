@@ -50,7 +50,7 @@ View contents of simplestorage
 Better workflow for working on the tab
 
 	Using cfx -or even JPM- isn't the best workflow as having to restart the browser to test a change takes awhile - the JPM is far slower than CFX and the JPM post isn't much if any faster than a cfx run.
-	In order to get around this when I have been working on the tab I have been loading it via a local file server as just a normal html file. 
+	In order to get around this when I have been working on the tab I have been loading it via a local file server as just a normal html file.
 	To do this requires a few changes to the files:
 		Make sure all the devices are found and run the extension and put a breakpoint inside of main.js where it is sending the updatedevice message to the panel/tab (as of this writing it is around line 77).
 		Run the following command in the addon-debugger window while paused at the breakpoint: JSON.stringify(deviceLocatorService.devices)
@@ -75,12 +75,15 @@ To-Do
 	[ ] Better understand Module/Export pattern
 
 	Front-End
+
         Panel
             [ ] re-enable, maybe under a second button
             [ ] Start with list of devices
             [ ] Clicking on device will slide either right or left to the playlist for the device
             [ ] Indicate if something is playing currently on the device
+
         Device Template
+
             Header Media Controls
                 [ ] Current/total duration
                 [ ] Time slider shows current duration
@@ -88,8 +91,9 @@ To-Do
                 [ ] Show current media info (at least file name/title)
                 [ ] Show only play or pause
                 [ ] Fix button disabling logic
+
             Playlist
-                [ ] Auto play next
+                [x] Auto play next
                 [ ] Navigating away from page and back shouldn't lose the list
                 [ ] File path input readonly
                 [ ] Click on play/add to playlist where fields are empty/invalid won't add blank to playlist
@@ -102,18 +106,24 @@ To-Do
             [ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
                 currently does this as if there are links to the device, device model, manufacturer they are shown in the top center of page
             [ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
-            [ ] Add control of device settings under settings tab
+            [ ] Add ability to change device settings on settings tab
             [ ] Clean up device info tab
             [ ] Fix popovers not rendering - one liner needs to be fired after jquery and others load, which are dynamically loaded from the back-end
-            [ ] Increase usability on smaller screen sizes - probably a phone/tablet/desktop (phone would look like the panel)
+            [ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
+
         Home Template
+
             [ ] Show a grid of devices
             [ ] Show message if no devices found
+
         About Page
             [ ] Make it
+
         Add UI Router
         Better error handling
+
     Back-End
+
         HTTP Server
             [x] Fix the fxos-web-server so it works in extension context or remove it
 			[ ] Use fxos-web-server for serving the files
@@ -122,6 +132,7 @@ To-Do
             [ ] Fix issue with xbox 360 restarting audio files from begining a few seconds in
             [ ] Do no re-map already mapped files
             [ ] Add guid folder to path of mapped files so files with the same name can co-exist
+
         DLNA
             [ ] Add/Merge sub-devices from devicelist xml
             [ ] Support (un)Subscribe Events
@@ -132,9 +143,10 @@ To-Do
             [ ] Seek
             [ ] Send metadata to device
             [ ] Remove hardcoded instance ids and other hardcoded options that seem to never change
+
         Devices
             [ ] Better understand DIAL spec - I should be able to use it to launch an app on the device, and I believe I can pass in some extra data.
-                            If true I should be able to make a websocketserver in the extension and pass the path to communicate with the app on the device.
+                            If true I should be able to make a websocketserver in the extension and pass the url of said server to communicate with the app on the device.
                             This would help to unify the implementation across devices.
             [ ] Support for FireTV Stick
             [ ] Support for MatchStick
@@ -143,21 +155,26 @@ To-Do
             [ ] Support for Chromecast
                 [ ] Support configuring unsetup devices
             [ ] Support DLNA media servers
+                    Media servers have a Connection Manager service with a GetProtocolInfo method, instead of being inside the "sink" element it will be inside the "source" element
+
         Notifications
             [ ] Fix notifications appearing off screen problem
-            [ ] Group notifications together because a new notification will not be shown if one already is, and many notifications in a short period of time are annoying
+            [ ] Group notifications together because a new notification will not be shown if one already is, and many notifications in a short period of time is annoying
             [ ] Add setting to disable notifications
             [ ] Re-enable
             [ ] Show notifications for new files playing as well as new devices found
+
         Searching
             [ ] Simple storage seems to not be working.
-            [ ] Allow to search for devices on an interval
+            [ ] Allow searching for devices on an interval
 			[ ] In _removeStaleDevices attempt to contact the device directly before throwing it away.
 			[ ] Getting responses with a header.LOCATION of 127.0.0.1 (no http://)(on both desktop and laptop).  The location can never be hit and it just seems to cause problems.  Look into this
+
         Constants
-			[] Move in more strings
-			[] fix serviceTypes and deviceTypes.
-        [ ] Make a logger that can take different levels (info, warn, error) and allow the user to pick their verbosity level.
+			[ ] Move more strings into this file.
+			[ ] fix serviceTypes and deviceTypes.
+
+        [ ] Make a logger that can take different levels (info, warn, error) and allow user to pick verbosity.
         [ ] Get metadata for files
         [ ] Inject more dependencies
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported

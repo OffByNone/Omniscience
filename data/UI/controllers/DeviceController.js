@@ -23,6 +23,8 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		$scope.playback = $scope.playback || {};
 		$scope.playback.state = newState;
 	}
+
+
 	$scope.play = function play() {
 		setState('Play');
 		eventService.emit('play', $scope.activeDevice);
@@ -50,6 +52,26 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	$scope.pickLocalFile = function pickLocalFile() {
 		eventService.emit('chooseFile', $scope.activeDevice, $scope.activeDevice.fileType);
 	};
+	$scope.toggleMute = function toggleMute(device) {
+		eventService.emit('toggleMute', device);
+		device.isMuted = !device.isMuted;
+	};
+	$scope.setVolume = function setVolume(device, newVolume) {
+		device.volume = newVolume;
+		eventService.emit('setVolume', device, newVolume);
+	};
+	$scope.incrementVolume = function incrementVolume(device) {
+		$scope.setVolume(device, Number(device.volume)+1);
+	};
+	$scope.decrementVolume = function decrementVolume(device) {
+		$scope.setVolume(device, Number(device.volume)-1);
+	};
+
+
+
+
+
+
 	function setNewFile(file) {
 		$scope.filePicker.localFile = file;
 	}
@@ -215,7 +237,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		if (event.hasOwnProperty('Mute'))
 			$scope.activeDevice.isMuted = event.Mute === "1";
 		if (event.hasOwnProperty('Volume'))
-			$scope.activeDevice.Volume = Number(event.Volume);
+			$scope.activeDevice.volume = Number(event.Volume);
 
 		var CurrentTransportActions = {
 			0: 'Play',
