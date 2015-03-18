@@ -65,6 +65,10 @@ Better workflow for working on the tab
 
 	Make sure to remove the window.loadDevices() and re-comment out the script files when you want to load it from the extension again or when you are done.
 
+TroubleShooting Tips
+    If you are having problems with the fxoswebserver check for casing mismatch issues.  I had an issue
+    where the header was coming in as CONTENT-LENGTH but the code was looking for Content-Length.
+
 To-Do
 
 	[ ]	New Icon
