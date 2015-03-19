@@ -15,7 +15,7 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
                 if(typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
                 if(typeof device.mirrorCapable !== 'undefined') scopeDevice.mirrorCapable = device.mirrorCapable;
 
-                if(typeof device.rawProtocolInfo !== 'undefined')scopeDevice.rawProtocolInfo = device.rawProtocolInfo;
+                if(typeof device.protocolInfo !== 'undefined')scopeDevice.protocolInfo = device.protocolInfo;
                 if(typeof device.rawDiscoveryInfo !== 'undefined')scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
 
                 found = true;

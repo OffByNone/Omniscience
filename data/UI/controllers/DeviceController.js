@@ -106,8 +106,8 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		if (!file) file = getChosenFile();
 
 		//todo: this is going to cause the same files to be mapped more than once
-		//should make sure on the backend that if the file is already mapped we dont map it again
-		//also should throw in something random into the path of the map incase someone wants to
+		//should make sure on the backend that if the file is already mapped we don't map it again
+		//also should throw in something random into the path of the map in case someone wants to
 		//play two files of the same name --maybe throw a folder with the name of a guid in the path
 		eventService.emit('launch', $scope.activeDevice, file);
 		$scope.activeFile = file;
@@ -148,15 +148,19 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 				scopeDevice.name = device.name;
 
 				//many of the below properties are found on the getAdditionalInformation search and therefore not
-				//defined when the device first appears.  This means that on a subsquent search if not for the null
+				//defined when the device first appears.  This means that on a subsequent search if not for the null
 				//checks the devices would for a short time have incorrect information shown
-				if (typeof device.videoCapable !== 'undefined') scopeDevice.videoCapable = device.videoCapable;
-				if (typeof device.imageCapable !== 'undefined') scopeDevice.imageCapable = device.imageCapable;
-				if (typeof device.audioCapable !== 'undefined') scopeDevice.audioCapable = device.audioCapable;
-				if (typeof device.mirrorCapable !== 'undefined') scopeDevice.mirrorCapable = device.mirrorCapable;
+				if (device.hasOwnProperty(device.videoCapable)) scopeDevice.videoCapable = device.videoCapable;
+				if (device.hasOwnProperty(device.imageCapable)) scopeDevice.imageCapable = device.imageCapable;
+				if (device.hasOwnProperty(device.audioCapable)) scopeDevice.audioCapable = device.audioCapable;
+				if (device.hasOwnProperty(device.mirrorCapable)) scopeDevice.mirrorCapable = device.mirrorCapable;
 
-				if (typeof device.rawProtocolInfo !== 'undefined') scopeDevice.rawProtocolInfo = device.rawProtocolInfo;
-				if (typeof device.rawDiscoveryInfo !== 'undefined') scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
+				if (device.hasOwnProperty(device.protocolInfo)) {
+					scopeDevice.protocolInfo = device.protocolInfo;
+					console.log("here!");
+					console.log(device.protocolInfo);
+				}
+				if (device.hasOwnProperty(device.rawDiscoveryInfo)) scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
 
 				found = true;
 			}
