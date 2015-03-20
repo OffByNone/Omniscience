@@ -69,9 +69,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 
 
-
-
-
 	function setNewFile(file) {
 		$scope.filePicker.localFile = file;
 	}
@@ -155,12 +152,21 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 				if (device.hasOwnProperty(device.audioCapable)) scopeDevice.audioCapable = device.audioCapable;
 				if (device.hasOwnProperty(device.mirrorCapable)) scopeDevice.mirrorCapable = device.mirrorCapable;
 
-				if (device.hasOwnProperty(device.protocolInfo)) {
-					scopeDevice.protocolInfo = device.protocolInfo;
-					console.log("here!");
-					console.log(device.protocolInfo);
-				}
+				if (device.hasOwnProperty(device.isMuted)) scopeDevice.isMuted = device.isMuted;
+				if (device.hasOwnProperty(device.volume)) scopeDevice.volume = device.volume;
+				if (device.hasOwnProperty(device.presets)) scopeDevice.presets = device.presets;
+				if (device.hasOwnProperty(device.currentConnectionIds)) scopeDevice.currentConnectionIds = device.currentConnectionIds;
+
+				if (device.hasOwnProperty(device.protocolInfo)) scopeDevice.protocolInfo = device.protocolInfo;
 				if (device.hasOwnProperty(device.rawDiscoveryInfo)) scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
+				if (device.hasOwnProperty(device.currentConnectionInfo)) scopeDevice.currentConnectionInfo = device.currentConnectionInfo;
+				if (device.hasOwnProperty(device.mediaInfo)) scopeDevice.mediaInfo = device.mediaInfo;
+				if (device.hasOwnProperty(device.transportInfo)) scopeDevice.transportInfo = device.transportInfo;
+				if (device.hasOwnProperty(device.positionInfo)) scopeDevice.positionInfo = device.positionInfo;
+				if (device.hasOwnProperty(device.deviceCapabilities)) scopeDevice.deviceCapabilities = device.deviceCapabilities;
+				if (device.hasOwnProperty(device.transportSettings)) scopeDevice.transportSettings = device.transportSettings;
+				if (device.hasOwnProperty(device.currentTransportActions)) scopeDevice.currentTransportActions = device.currentTransportActions;
+				
 
 				found = true;
 			}
