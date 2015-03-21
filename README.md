@@ -90,7 +90,6 @@ To-Do
                 [ ] Time slider allows to seek
                 [ ] Show current media info (at least file name/title)
                 [ ] Show only play or pause
-                [ ] Fix button disabling logic
 
             Playlist
                 [x] Auto play next
@@ -102,6 +101,24 @@ To-Do
 				[ ] Allow selection of multiple files within the file picker dialog
 				[ ] Limit file types to supported types on the device
 
+            Services
+                Properties
+                    [ ] Clean up possible values
+                    [ ] Clean up range
+                    [ ] Create legend
+                    [ ] Show current value (if possible)
+                Methods
+                    [ ] Clean up hover for parameters
+                    [ ] Better display related properties
+                    [ ] If property is known (ex. instanceid is almost always 0 and we can determine this) somehow display to user
+                    [ ] Display return values
+
+            Info
+                [ ] Clean up
+                [ ] Better show not implemented values
+                [ ] Add refresh button to each section?
+                [ ] Parse "Protocol Info" under "Current Connection Info"
+
             [ ] Break apart with ui router
             [ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
                 currently does this as if there are links to the device, device model, manufacturer they are shown in the top center of page
@@ -110,10 +127,12 @@ To-Do
             [ ] Clean up device info tab
             [ ] Fix popovers not rendering - one liner needs to be fired after jquery and others load, which are dynamically loaded from the back-end
             [ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
+            [ ] Add server icon
+            [ ] Add router icon
 
         Home Template
 
-            [ ] Show a grid of devices
+            [X] Show a grid of devices
             [ ] Show message if no devices found
 
         About Page
@@ -138,8 +157,8 @@ To-Do
             [ ] Support (un)Subscribe Events
                 [ ] Get current duration
                 [ ] Get total duration
-            [ ] Get/Set Volume
-            [ ] Get/Set Mute
+            [X] Get/Set Volume
+            [X] Get/Set Mute
             [ ] Seek
             [ ] Send metadata to device
             [ ] Remove hardcoded instance ids and other hardcoded options that seem to never change
@@ -172,7 +191,7 @@ To-Do
 
         Constants
 			[ ] Move more strings into this file.
-			[ ] fix serviceTypes and deviceTypes.
+			[ ] Fix serviceTypes and deviceTypes.
 
         [ ] Make a logger that can take different levels (info, warn, error) and allow user to pick verbosity.
         [ ] Get metadata for files

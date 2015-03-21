@@ -7,7 +7,7 @@
 	max-width: 100px;
 }
 
-.list-group {
+.navbar .list-group {
 	max-width: 320px;
 }
 
@@ -78,7 +78,7 @@
 		word-break: break-all;
 	}
 
-span.glyphicon:hover {
+span.glyphicon:hover, small.glyphicon:hover {
 	color: #337AB7;
 	font-weight: bold;
 	cursor: pointer;
@@ -150,6 +150,64 @@ span.glyphicon:hover {
 		display: block;
 	}
 
-.nav.nav-tabs li {
+.navbar-header .caret {
+	border-top-width: 6px;
+	border-right-width: 6px;
+	border-left-width: 6px;
+}
+
+.nav.nav-tabs li, .navbar-header .dropdown-toggle {
 	cursor: pointer;
+}
+
+.methods ul, .methods h5, .property .allowedValues, .property .values {
+	display: inline;
+}
+
+.methods h4 {
+	display: inline;
+	vertical-align: bottom;
+}
+
+.methods .parameter {
+	padding-right: 0;
+}
+
+.methods .method, .properties .property {
+	display: block;
+}
+
+.property h4 {
+	display: inline;
+	padding: 0 5px;
+}
+
+.service .label {
+	position: relative;
+	top: -2px;
+}
+
+.home-list {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+	.home-list a.list-group-item {
+		border: 0;
+		width: 320px;
+	}
+
+@media(min-width: 1200px) {
+	.home-container.container {
+		width: 990px;
+	}
+}
+.home-container h1 {
+	text-align: center;
+}
+
+#info ul li.label {
+	margin-left: 5px;
+	position: relative;
+	top: -2px;
 }

@@ -66,8 +66,12 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	$scope.decrementVolume = function decrementVolume(device) {
 		$scope.setVolume(device, Number(device.volume)-1);
 	};
-
-
+	$scope.refreshDevices = function refreshDevices() {
+		eventService.emit('refreshDevices');
+	};
+	$scope.loadDevices = function loadDevices() {
+		eventService.emit("loadDevices");
+	};
 
 	function setNewFile(file) {
 		$scope.filePicker.localFile = file;
@@ -166,7 +170,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 				if (device.hasOwnProperty(device.deviceCapabilities)) scopeDevice.deviceCapabilities = device.deviceCapabilities;
 				if (device.hasOwnProperty(device.transportSettings)) scopeDevice.transportSettings = device.transportSettings;
 				if (device.hasOwnProperty(device.currentTransportActions)) scopeDevice.currentTransportActions = device.currentTransportActions;
-				
+
 
 				found = true;
 			}

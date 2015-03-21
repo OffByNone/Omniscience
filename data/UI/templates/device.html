@@ -2,7 +2,7 @@
 	<nav class="navbar">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<div class="dropdown-toggle pointer" data-toggle="dropdown" role="button" aria-expanded="false">
+				<div class="dropdown-toggle clearfix" data-toggle="dropdown" role="button" aria-expanded="false">
 					<img class="icon pull-left" ng-show="activeDevice.icons[0].url" ng-src="{{ activeDevice.icons[0].url }}" />
 					<h2 class="active-device-header pull-left">
 						<span>{{activeDevice.name}}</span>
@@ -21,6 +21,8 @@
 								<span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
 								<span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
 								<span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
+								<span class="icon-router" ng-show="device.isRouter"></span>
+								<span class="fa fa-server" ng-show="device.isServer"></span>
 							</span>
 						</div>
 						<span class="media-right media-middle">
@@ -158,9 +160,21 @@
 										<dt ng-show="activeDevice.timezone">Timezone</dt>
 										<dd ng-show="activeDevice.timezone">{{activeDevice.timezone}}</dd>
 										<dt ng-show="activeDevice.currentConnectionIds">Current Connection Ids</dt>
-										<dd ng-show="activeDevice.currentConnectionIds">{{activeDevice.currentConnectionIds}}</dd>
+										<dd ng-show="activeDevice.currentConnectionIds">
+											<ul class="list-inline">
+												<li class="label label-default" ng-repeat="currentConnectionId in activeDevice.currentConnectionIds">
+													{{currentConnectionId}}
+												</li>
+											</ul>
+										</dd>
 										<dt ng-show="activeDevice.presets">Presets</dt>
-										<dd ng-show="activeDevice.presets">{{activeDevice.presets}}</dd>
+										<dd ng-show="activeDevice.presets">
+											<ul class="list-inline">
+												<li class="label label-default" ng-repeat="preset in activeDevice.presets">
+													{{preset}}
+												</li>
+											</ul>
+										</dd>
 										<dt ng-show="activeDevice.udn">UUID</dt>
 										<dd ng-show="activeDevice.udn">{{activeDevice.udn}}</dd>
 										<dt ng-show="activeDevice.upnpVersion">UPnP</dt>
@@ -204,11 +218,29 @@
 								<div class="col-md-12">
 									<dl class="dl-horizontal">
 										<dt ng-show="activeDevice.deviceCapabilities.playMedia">Play Media</dt>
-										<dd ng-show="activeDevice.deviceCapabilities.playMedia">{{activeDevice.deviceCapabilities.playMedia}}</dd>
+										<dd ng-show="activeDevice.deviceCapabilities.playMedia">
+											<ul class="list-inline">
+												<li class="label label-default" ng-repeat="mediaType in activeDevice.deviceCapabilities.playMedia">
+													{{mediaType}}
+												</li>
+											</ul>
+										</dd>
 										<dt ng-show="activeDevice.deviceCapabilities.recMedia">Rec Media</dt>
-										<dd ng-show="activeDevice.deviceCapabilities.recMedia">{{activeDevice.deviceCapabilities.recMedia}}</dd>
+										<dd ng-show="activeDevice.deviceCapabilities.recMedia">
+											<ul class="list-inline">
+												<li class="label label-default" ng-repeat="mediaType in activeDevice.deviceCapabilities.recMedia">
+													{{mediaType}}
+												</li>
+											</ul>
+										</dd>
 										<dt ng-show="activeDevice.deviceCapabilities.recQualityModes">Rec Quality Modes</dt>
-										<dd ng-show="activeDevice.deviceCapabilities.recQualityModes">{{activeDevice.deviceCapabilities.recQualityModes}}</dd>
+										<dd ng-show="activeDevice.deviceCapabilities.recQualityModes">
+											<ul class="list-inline">
+												<li class="label label-default" ng-repeat="mediaType in activeDevice.deviceCapabilities.recQualityModes">
+													{{mediaType}}
+												</li>
+											</ul>
+										</dd>
 									</dl>
 								</div>
 							</div>
@@ -301,16 +333,16 @@
 					<div ng-show="activeDevice.imageCapable != null || activeDevice.videoCapable != null || activeDevice.audioCapable != null || activeDevice.mirrorCapable != null">
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" ng-show="activeDevice.videoCapable != null" ng-class="{active: activeDevice.videoCapable != null}">
-								<a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-video-sink" aria-controls="video sink">Video Sink</a>
+								<a role="tab" data-toggle="tab" data-target="#capabilities-tab-video-sink" aria-controls="video sink">Video Sink</a>
 							</li>
 							<li role="presentation" ng-show="activeDevice.audioCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable != null}">
-								<a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-audio-sink" aria-controls="audio sink">Audio Sink</a>
+								<a role="tab" data-toggle="tab" data-target="#capabilities-tab-audio-sink" aria-controls="audio sink">Audio Sink</a>
 							</li>
 							<li role="presentation" ng-show="activeDevice.imageCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable != null}">
-								<a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-image-sink" aria-controls="image sink">Image Sink</a>
+								<a role="tab" data-toggle="tab" data-target="#capabilities-tab-image-sink" aria-controls="image sink">Image Sink</a>
 							</li>
 							<li role="presentation" ng-show="activeDevice.mirrorCapable != null" ng-class="{active: activeDevice.videoCapable == null && activeDevice.audioCapable == null && activeDevice.imageCapable == null && activeDevice.mirrorCapable != null}">
-								<a role="tab" data-toggle="tab" class="pointer" data-target="#capabilities-tab-mirror" aria-controls="mirror">Mirror</a>
+								<a role="tab" data-toggle="tab" data-target="#capabilities-tab-mirror" aria-controls="mirror">Mirror</a>
 							</li>
 						</ul>
 						<div class="tab-content tab-padding">
@@ -420,11 +452,11 @@
 					<div class="well">
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" ng-class="{active: $first}" ng-repeat="service in activeDevice.services">
-								<a data-target="#{{service.htmlId}}" class="pointer" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
+								<a data-target="#{{service.htmlId}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
 							</li>
 						</ul>
 						<div class="tab-content tab-padding">
-							<div ng-repeat="service in activeDevice.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane" id="{{service.htmlId}}">
+							<div ng-repeat="service in activeDevice.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.htmlId}}">
 								<div class="row" ng-show="service.type.urn">
 									<div class="col-md-12">
 										<dl class="dl-horizontal">
@@ -444,46 +476,37 @@
 								</div>
 								<div class="row" ng-show="service.methods">
 									<h3>Methods</h3>
-									<ul class="col-md-12 list-inline">
-										<li ng-repeat="method in service.methods">
+									<ul class="col-md-12 list-inline methods">
+										<li class="method" ng-repeat="method in service.methods">
 											<h4>{{method.name}}</h4>
-											<ul>
-												<li ng-repeat="argument in method.arguments">
-													<h5 data-toggle="tooltip" title="{{argument.relatedStateVariable}}">{{argument.name}}</h5>
-													<dl class="dl-horizontal">
-														<dt>Direction</dt>
-														<dd>{{argument.direction}}</dd>
-													</dl>
+											(<ul class="list-inline">
+												<li class="parameter" ng-repeat="parameter in method.parameters">
+													<h5 data-toggle="tooltip" title="{{parameter.backingProperty}}">
+														<span>{{parameter.type}}</span>
+														<span>{{parameter.name}}<span ng-hide="$last">,</span></span>
+													</h5>
 												</li>
-											</ul>
+											</ul>)
 										</li>
 									</ul>
 								</div>
-								<div class="row" ng-show="service.properties">
+								<div class="row properties" ng-show="service.properties">
 									<h3>Properties</h3>
 									<ul class="col-md-12 list-inline">
-										<li ng-repeat="property in service.properties">
+										<li class="property" ng-repeat="property in service.properties">
+											<span>{{property.datatype}}</span>
 											<h4>{{property.name}}</h4>
-											<dl class="dl-horizontal">
-												<dt>Data Type</dt>
-												<dd>{{property.datatype}}</dd>
-												<dt>Send Events</dt>
-												<dd>{{property.sendEvents}}</dd>
-											</dl>
-											<div ng-show="property.allowedValueRange">
-												<h5>Allowed Value Range</h5>
-												<dl class="dl-horizontal">
-													<dt>Minimum</dt>
-													<dd>{{property.allowedValueRange.minimum}}</dd>
-													<dt>Maximum</dt>
-													<dd>{{property.allowedValueRange.maximum}}</dd>
-													<dt>Step</dt>
-													<dd>{{property.allowedValueRange.step}}</dd>
-												</dl>
-											</div>
-											<div ng-show="property.allowedValues">
-												<h5>Allowed Values</h5>
-												<ul>
+											<span ng-show="property.sendEvents" class="label label-primary">Evented</span>
+											<span ng-show="property.defaultValue" class="label label-default">{{property.defaultValue}}</span>
+											<span ng-show="property.allowedValueRange">
+												<span>Range</span>
+												<span>({{property.allowedValueRange.minimum}} - {{property.allowedValueRange.maximum}})</span>
+												<span>increment by {{property.allowedValueRange.step}}</span>
+											</span>
+											<span class="label label-danger" ng-show="property.allowedValues[0] == 'NOT_IMPLEMENTED'">Not Implemented</span>
+											<div class="allowedValues" ng-show="property.allowedValues && property.allowedValues[0] != 'NOT_IMPLEMENTED'">
+												<span>Possible Value<span ng-show="property.allowedValues.length > 1">s</span></span>
+												<ul class="list-inline values">
 													<li ng-repeat="value in property.allowedValues">
 														{{value}}
 													</li>

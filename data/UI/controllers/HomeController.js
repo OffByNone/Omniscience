@@ -52,6 +52,14 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
     var eventOccured = function eventOccured(device, event, request) {
     };
 
+    $scope.refreshDevices = function refreshDevices() {
+    	eventService.emit('refreshDevices');
+    };
+    $scope.loadDevices = function loadDevices() {
+    	eventService.emit("loadDevices");
+    };
+
+
     eventService.on('deviceLost', removeDevice);
     eventService.on('deviceFound', addUpdateDevice);
     eventService.on('EventOccured', eventOccured);
