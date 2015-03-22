@@ -125,8 +125,8 @@ To-Do
             [ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
             [ ] Add ability to change device settings on settings tab
             [ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
-            [ ] Add server icon
-            [ ] Add router icon
+            [x] Add server icon
+            [x] Add router icon
 
         Home Template
 

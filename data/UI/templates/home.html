@@ -8,12 +8,12 @@
 					<em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
 				</p>
 				<span class="capabilities">
+					<span class="fa fa-server" ng-show="device.isServer"></span>
 					<span class="glyphicon glyphicon-headphones" ng-show="device.audioCapable"></span>
 					<span class="glyphicon glyphicon-film" ng-show="device.videoCapable"></span>
 					<span class="glyphicon glyphicon-picture" ng-show="device.imageCapable"></span>
 					<span class="glyphicon glyphicon-blackboard" ng-show="device.mirrorCapable"></span>
 					<span class="icon-router" ng-show="device.isRouter"></span>
-					<span class="fa fa-server" ng-show="device.isServer"></span>
 				</span>
 			</span>
 			<span class="media-right media-middle">

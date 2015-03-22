@@ -204,8 +204,17 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 			$scope.devices.push(device);
 		}
 
-		if (device.id === $routeParams.deviceId)
+		if (device.id === $routeParams.deviceId) {
 			$scope.activeDevice = device;
+			if (device.videoCapable)
+				$scope.protocolInfoFilter = 'video';
+			else if (device.audioCapable)
+				$scope.protocolInfoFilter = 'audio';
+			else if (device.imageCapable)
+				$scope.protocolInfoFilter = 'image';
+			else if (device.mirrorCapable)
+				$scope.protocolInfoFilter = 'mirror';
+		}
 
 		addTypes(device);
 	}
