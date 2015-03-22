@@ -211,3 +211,8 @@ span.glyphicon:hover, small.glyphicon:hover {
 	position: relative;
 	top: -2px;
 }
+
+.playlist .local-file input[readonly] {
+	cursor: auto;
+	background-color: #FFF;
+}

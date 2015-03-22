@@ -61,10 +61,10 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		eventService.emit('setVolume', device, newVolume);
 	};
 	$scope.incrementVolume = function incrementVolume(device) {
-		$scope.setVolume(device, Number(device.volume)+1);
+		$scope.setVolume(device, Number(device.volume) + 1);
 	};
 	$scope.decrementVolume = function decrementVolume(device) {
-		$scope.setVolume(device, Number(device.volume)-1);
+		$scope.setVolume(device, Number(device.volume) - 1);
 	};
 	$scope.refreshDevices = function refreshDevices() {
 		eventService.emit('refreshDevices');
@@ -73,12 +73,25 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		eventService.emit("loadDevices");
 	};
 
-	function setNewFile(file) {
-		$scope.filePicker.localFile = file;
+	function setNewFiles(files) {
+		$scope.filePicker.localFiles = files;
+
+		if (files == null || files.length == 0) { // no files selected
+			$scope.filePicker.localFile = "";
+			$scope.filePicker.paths = "";
+		}
+		else if (files.length == 1) { // one file selected
+			$scope.filePicker.localFile = files[0].path;
+			$scope.filePicker.paths = "";
+		}
+		else {  // multiple files selected
+			$scope.filePicker.localFile = "Multiple Files Selected";
+			$scope.filePicker.paths = files.map(file => file.path).join("\n");
+		}
 	}
-	function getChosenFile() {
+	function getChosenFiles() {
 		//todo: pull in the file info - such as duration, artist, song/video name
-		var file;
+		var files = [];
 
 		if ($scope.filePicker.url && $scope.filePicker.url.path && $scope.filePicker.url.path.length > 0) {
 			try {
@@ -90,31 +103,41 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 			//set file name from url
 			$scope.filePicker.url.name = $scope.filePicker.url.path.replace(/^.*(\\|\/|\:)/, '');
-
-			file = $scope.filePicker.url;
+			files.push($scope.filePicker.url);
 		}
-		else if ($scope.filePicker.localFile && $scope.filePicker.localFile.path && $scope.filePicker.localFile.path.length > 0)
-			file = $scope.filePicker.localFile;
+		else if ($scope.filePicker.localFiles.length > 0)
+			files = $scope.filePicker.localFiles;
+		else return; //no files are selected and url isn't set so don't do anything, just return
 
-		$scope.filePicker = {};
-		//clear out the url and local file fields
-		$scope.playlist.push(file);
+		$scope.filePicker = {}; //clear out the url and local file fields
 
-		return file;
+		return files;
 	}
 	$scope.launch = function launch(file) {
 		//if a file is passed in, use that. Otherwise pull from the file picker box
-		if (!file) file = getChosenFile();
+		var files = [];
+
+		if (!file) // no file is passed in, try to get a file from the file picker box
+		{
+			files = $scope.addToPlaylist();
+			if (files.length == 0) return null; //no file in the picker box either, return null.  todo: probably handle this better
+		}
+		else
+			files.push(file);
 
 		//todo: this is going to cause the same files to be mapped more than once
 		//should make sure on the backend that if the file is already mapped we don't map it again
 		//also should throw in something random into the path of the map in case someone wants to
 		//play two files of the same name --maybe throw a folder with the name of a guid in the path
-		eventService.emit('launch', $scope.activeDevice, file);
-		$scope.activeFile = file;
+		eventService.emit('launch', $scope.activeDevice, files[0]);
+		$scope.activeFile = files[0];
 	};
 	$scope.addToPlaylist = function addToPlaylist() {
-		getChosenFile();
+		//Adds files to playlist from file picker box and returns the added files
+		var files = getChosenFiles();
+		files.forEach(file => $scope.playlist.push(file));
+
+		return files;
 	};
 	$scope.removeFromPlaylist = function removeFromPlaylist(file) {
 		for (var i in $scope.playlist)
@@ -357,7 +380,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 	eventService.on('deviceLost', removeDevice);
 	eventService.on('deviceFound', addUpdateDevice);
-	eventService.on('fileChosen', setNewFile);
+	eventService.on('filesChosen', setNewFiles);
 	eventService.on('EventOccured', eventOccured);
 
 	eventService.emit("loadDevices");

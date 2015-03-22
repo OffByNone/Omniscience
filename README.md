@@ -35,7 +35,7 @@ JPM
 	jpm watchpost --post-url http://localhost:8888/
 		--watches for files to change when they do it auto builds and posts the xpi.  I could not get this to work in Cgywin
 
-Obsecure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
+Obscure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
     devtools.debugger.force-local = false (if you want to connect from a different machine over the network)
     devtools.debugger.remote-host (to change the TCP hostname where Firefox will listen for connections)
     devtools.debugger.remote-port (to change the TCP port number where Firefox will listen for connections)
@@ -47,7 +47,7 @@ View contents of simplestorage
 	--From addon-debugger console run
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
-Better workflow for working on the tab
+Better work flow for working on the tab
 
 	Using cfx -or even JPM- isn't the best workflow as having to restart the browser to test a change takes awhile - the JPM is far slower than CFX and the JPM post isn't much if any faster than a cfx run.
 	In order to get around this when I have been working on the tab I have been loading it via a local file server as just a normal html file.
@@ -94,11 +94,11 @@ To-Do
             Playlist
                 [x] Auto play next
                 [ ] Navigating away from page and back shouldn't lose the list
-                [ ] File path input readonly
-                [ ] Click on play/add to playlist where fields are empty/invalid won't add blank to playlist
+                [x] File path input readonly
+                [x] Click on play/add to playlist where fields are empty/invalid won't add blank to playlist
                 [ ] Show metadata info if available
                 [ ] Drag and Drop re-order
-				[ ] Allow selection of multiple files within the file picker dialog
+				[x] Allow selection of multiple files within the file picker dialog
 				[ ] Limit file types to supported types on the device
 
             Services
@@ -115,17 +115,15 @@ To-Do
 
             Info
                 [ ] Clean up
-                [ ] Better show not implemented values
+                [ ] Better display for not implemented values
                 [ ] Add refresh button to each section?
                 [ ] Parse "Protocol Info" under "Current Connection Info"
 
             [ ] Break apart with ui router
             [ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
-                currently does this as if there are links to the device, device model, manufacturer they are shown in the top center of page
+                Currently does this because if there are links to the device, device model, or manufacturer they are only shown in the top center of page
             [ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
             [ ] Add ability to change device settings on settings tab
-            [ ] Clean up device info tab
-            [ ] Fix popovers not rendering - one liner needs to be fired after jquery and others load, which are dynamically loaded from the back-end
             [ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
             [ ] Add server icon
             [ ] Add router icon

@@ -78,13 +78,13 @@
 						<label>Enter URL</label>
 						<div><input class="form-control" type="url" ng-value="filePicker.url.path" /></div>
 					</div>
-					<div class="form-group">
+					<div class="form-group local-file">
 						<label>Choose File</label>
 						<div class="input-group">
 							<span class="input-group-btn">
 								<button class="btn btn-default" ng-click="pickLocalFile()" type="button">Browse</button>
 							</span>
-							<input type="text" ng-value="filePicker.localFile.path" class="form-control" /> <!-- todo: make readonly but don't apply readonly styles -->
+							<input type="text" readonly="readonly" ng-value="filePicker.localFile" title="{{filePicker.paths}}" class="form-control" />
 						</div>
 					</div>
 					<div class="form-group pull-right">
