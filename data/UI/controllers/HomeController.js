@@ -8,7 +8,7 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
     var addUpdateDevice = function addUpdateDevice(device) {
         var found = false;
         $scope.devices.forEach(function (scopeDevice) {
-            if (scopeDevice.address === device.address) {
+            if (scopeDevice.id === device.id) {
                 scopeDevice.name = device.name;
                 if(typeof device.videoCapable !== 'undefined') scopeDevice.videoCapable = device.videoCapable;
                 if(typeof device.imageCapable !== 'undefined') scopeDevice.imageCapable = device.imageCapable;
@@ -31,7 +31,7 @@ rotaryApp.controller('HomeController', function HomeController($scope, eventServ
     };
     var removeDevice = function removeDevice(device) {
         for(var i=$scope.devices.length-1; i>=0; i--)
-          if($scope.devices[i].address === device.address)
+          if($scope.devices[i].id === device.id)
             $scope.devices.splice(i, 1);
 
         removeTypes();

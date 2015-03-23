@@ -202,6 +202,7 @@ span.glyphicon:hover, small.glyphicon:hover {
 		width: 990px;
 	}
 }
+
 .home-container h1 {
 	text-align: center;
 }
@@ -215,4 +216,18 @@ span.glyphicon:hover, small.glyphicon:hover {
 .playlist .local-file input[readonly] {
 	cursor: auto;
 	background-color: #FFF;
+}
+
+.nav .glyphicon-refresh {
+	font-size: 21px;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 100px;
+	margin-top: 13px;
+	margin-right: 5px;
+}
+
+.home-list h3 {
+	margin: 0 auto;
 }

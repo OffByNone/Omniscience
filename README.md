@@ -92,13 +92,9 @@ To-Do
                 [ ] Show only play or pause
 
             Playlist
-                [x] Auto play next
                 [ ] Navigating away from page and back shouldn't lose the list
-                [x] File path input readonly
-                [x] Click on play/add to playlist where fields are empty/invalid won't add blank to playlist
                 [ ] Show metadata info if available
                 [ ] Drag and Drop re-order
-				[x] Allow selection of multiple files within the file picker dialog
 				[ ] Limit file types to supported types on the device
 
             Services
@@ -125,13 +121,6 @@ To-Do
             [ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
             [ ] Add ability to change device settings on settings tab
             [ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
-            [x] Add server icon
-            [x] Add router icon
-
-        Home Template
-
-            [X] Show a grid of devices
-            [ ] Show message if no devices found
 
         About Page
             [ ] Make it
@@ -142,21 +131,15 @@ To-Do
     Back-End
 
         HTTP Server
-            [x] Fix the fxos-web-server so it works in extension context or remove it
 			[ ] Use fxos-web-server for serving the files
             [ ] Remove httpd
-            [ ] Do not route non-local files through current computer - currently all files including ones added via url get a url on the current machine and routed through it.
             [ ] Fix issue with xbox 360 restarting audio files from begining a few seconds in
-            [ ] Do no re-map already mapped files
-            [ ] Add guid folder to path of mapped files so files with the same name can co-exist
 
         DLNA
             [ ] Add/Merge sub-devices from devicelist xml
             [ ] Support (un)Subscribe Events
                 [ ] Get current duration
                 [ ] Get total duration
-            [X] Get/Set Volume
-            [X] Get/Set Mute
             [ ] Seek
             [ ] Send metadata to device
             [ ] Remove hardcoded instance ids and other hardcoded options that seem to never change
@@ -171,8 +154,6 @@ To-Do
                 [ ] re-write their sender daemon into something more sane and robust
             [ ] Support for Chromecast
                 [ ] Support configuring unsetup devices
-            [ ] Support DLNA media servers
-                    Media servers have a Connection Manager service with a GetProtocolInfo method, instead of being inside the "sink" element it will be inside the "source" element
 
         Notifications
             [ ] Fix notifications appearing off screen problem
@@ -182,10 +163,7 @@ To-Do
             [ ] Show notifications for new files playing as well as new devices found
 
         Searching
-            [ ] Simple storage seems to not be working.
             [ ] Allow searching for devices on an interval
-			[ ] In _removeStaleDevices attempt to contact the device directly before throwing it away.
-			[ ] Getting responses with a header.LOCATION of 127.0.0.1 (no http://)(on both desktop and laptop).  The location can never be hit and it just seems to cause problems.  Look into this
 
         Constants
 			[ ] Move more strings into this file.
@@ -197,3 +175,6 @@ To-Do
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
         [ ] Better error handling
         [ ] Better understand/remove TransportService
+
+
+fix hardcoded ip on line 23 of subscription service

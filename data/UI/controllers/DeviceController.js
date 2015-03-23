@@ -74,6 +74,8 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	};
 
 	function setNewFiles(files) {
+		files.forEach(file => file.isLocal = true);
+
 		$scope.filePicker.localFiles = files;
 
 		if (files == null || files.length == 0) { // no files selected
@@ -168,7 +170,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	function addUpdateDevice(device) {
 		var found = false;
 		$scope.devices.forEach(function (scopeDevice) {
-			if (scopeDevice.address === device.address) {
+			if (scopeDevice.id === device.id) {
 				scopeDevice.name = device.name;
 
 				//many of the below properties are found on the getAdditionalInformation search and therefore not
@@ -193,7 +195,6 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 				if (device.hasOwnProperty(device.deviceCapabilities)) scopeDevice.deviceCapabilities = device.deviceCapabilities;
 				if (device.hasOwnProperty(device.transportSettings)) scopeDevice.transportSettings = device.transportSettings;
 				if (device.hasOwnProperty(device.currentTransportActions)) scopeDevice.currentTransportActions = device.currentTransportActions;
-
 
 				found = true;
 			}
@@ -220,7 +221,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	}
 	function removeDevice(device) {
 		for (var i = $scope.devices.length - 1; i >= 0; i--)
-			if ($scope.devices[i].address === device.address)
+			if ($scope.devices[i].id === device.id)
 				$scope.devices.splice(i, 1);
 
 		removeTypes();
