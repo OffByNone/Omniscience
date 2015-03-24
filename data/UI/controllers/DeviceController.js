@@ -8,7 +8,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	$scope.deviceId = $routeParams.deviceId;
 	$scope.playlist = [];
 	$scope.activeFile = {};
-	$scope.filePicker = {};
+	$scope.filePicker = { };
 	$scope.filePickerOpen = true;
 
 	//{name: "test1", currentTime:"2:35", currentTimeInSeconds: 155, duration: "3:15", durationInSeconds: 195, name: "test track 1", path= "file path here" }
@@ -95,21 +95,23 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 		//todo: pull in the file info - such as duration, artist, song/video name
 		var files = [];
 
-		if ($scope.filePicker.url && $scope.filePicker.url.path && $scope.filePicker.url.path.length > 0) {
+		if ($scope.filePicker.urlPath && $scope.filePicker.urlPath.length > 0) {
 			try {
-				new URL($scope.filePicker.url.path);
+				new URL($scope.filePicker.urlPath);
 			}
 			catch (e) {
 				//todo: invalid url should report that to user and abort
 			}
-
-			//set file name from url
-			$scope.filePicker.url.name = $scope.filePicker.url.path.replace(/^.*(\\|\/|\:)/, '');
+			$scope.filePicker.url = {
+				path: $scope.filePicker.urlPath, 
+				name: $scope.filePicker.urlPath.replace(/^.*(\\|\/|\:)/, '')//set file name from url
+			};
+			
 			files.push($scope.filePicker.url);
 		}
-		else if ($scope.filePicker.localFiles.length > 0)
+		else if ($scope.filePicker.localFiles && $scope.filePicker.localFiles.length > 0)
 			files = $scope.filePicker.localFiles;
-		else return; //no files are selected and url isn't set so don't do anything, just return
+		else return []; //no files are selected and url isn't set so don't do anything, just return
 
 		$scope.filePicker = {}; //clear out the url and local file fields
 
@@ -275,8 +277,9 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 		if (event.hasOwnProperty('CurrentTrackDuration'))
 			file.duration = event.CurrentTrackDuration;
-		if (event.hasOwnProperty('CurrentMediaDuration'))
+		else if (event.hasOwnProperty('CurrentMediaDuration'))
 			file.duration = event.CurrentMediaDuration;
+
 		if (event.hasOwnProperty('CurrentTrack'))
 			file.trackNumber = event.CurrentTrack;
 	}
