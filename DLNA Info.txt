@@ -28,7 +28,7 @@ DLNA.ORG_MAXSP - I've seen 5 here more than once but I don’t know what it repr
 
 
 AVTransportURI(MetaData) can be either a playlist or a single item.  If it is a single item then its values will be equal to CurrentTrackURI(MetaData)
-	If it is a playlist then it's uri will stay the same for each track in the list, but the CurrentTrack will change.
+	If it is a playlist then it's Uri will stay the same for each track in the list, but the CurrentTrack will change.
 CurrentMediaDuration is the duration of the item identified by the AVTransportURI
 CurrentTrackDuration:
 	[+-]H+:MM:SS[.F+] or H+:MM:SS[.F0/F1]
