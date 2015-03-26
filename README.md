@@ -85,10 +85,7 @@ To-Do
         Device Template
 
             Header Media Controls
-                [ ] Current/total duration
-                [ ] Time slider shows current duration
                 [ ] Time slider allows to seek
-                [ ] Show current media info (at least file name/title)
                 [ ] Show only play or pause
 
             Playlist
@@ -137,9 +134,6 @@ To-Do
 
         DLNA
             [ ] Add/Merge sub-devices from devicelist xml
-            [ ] Support (un)Subscribe Events
-                [ ] Get current duration
-                [ ] Get total duration
             [ ] Seek
             [ ] Send metadata to device
             [ ] Remove hardcoded instance ids and other hardcoded options that seem to never change
@@ -162,9 +156,6 @@ To-Do
             [ ] Re-enable
             [ ] Show notifications for new files playing as well as new devices found
 
-        Searching
-            [ ] Allow searching for devices on an interval
-
         Constants
 			[ ] Move more strings into this file.
 			[ ] Fix serviceTypes and deviceTypes.
@@ -175,6 +166,3 @@ To-Do
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
         [ ] Better error handling
         [ ] Better understand/remove TransportService
-
-
-fix hardcoded ip on line 23 of subscription service

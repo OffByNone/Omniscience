@@ -12,6 +12,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	$scope.filePicker = {};
 	$scope.filePickerOpen = true;
 	$scope.playback = {};
+	$scope.eventLog = [];
 
 
 	$scope.currentFilePercent = function currentFilePercent() {
@@ -298,6 +299,8 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 			if (device.id === $routeParams.deviceId) {
 				$scope.activeDevice = device;
 
+				$scope.interval = $window.setInterval(()=>eventService.emit('getPositionInfo',$scope.activeDevice),1000);
+
 				if (!$scope.protocolInfoFilter) { //todo: I don't like this.  Find a better way to show the first available capability
 					if (device.videoCapable)
 						$scope.protocolInfoFilter = 'video';
@@ -371,7 +374,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 		events.forEach(event => {
 
-			$window.toastr["info"](JSON.stringify(event));
+			$scope.eventLog.push(event);
 
 			setDeviceProperties(event);
 			setFileInformation(event);
@@ -443,38 +446,56 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 		});
 	}
+	function setPositionInfo(deviceId, response) {
+		if (deviceId !== $scope.activeDevice.id) return;
 
+		var currentTimeSeconds = durationToSeconds(response.relTime);
+		var totalSeconds = durationToSeconds(response.trackDuration); 
+		
+		$scope.currentTrack.currentTime = secondsToMinutes(currentTimeSeconds);
+		$scope.currentTrack.duration = secondsToMinutes(totalSeconds);
+		$scope.currentTrack.currentTimeInSeconds = currentTimeSeconds;
+		$scope.currentTrack.durationInSeconds = totalSeconds;
+		
+	}
+
+	function secondsToMinutes(duration){
+		var minutesPart = parseInt(duration/60);
+		var secondsPart = duration%60;
+
+		if( secondsPart.toString().length === 1 ) secondsPart = "0" + secondsPart;
+
+		return minutesPart + ":" + secondsPart;
+	}
+
+	function durationToSeconds(duration){
+		//[+-]H+:MM:SS[.F+] or H+:MM:SS[.F0/F1]
+		//H+ means one or more digits to indicate elapsed hours
+		//MM means exactly 2 digits to indicate minutes (00 to 59)
+		//SS means exactly 2 digits to indicate seconds (00 to 59)
+		//[.F+] means optionally a dot followed by one or more digits to indicate fractions of seconds
+		//[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
+		
+		duration = duration.replace(/[\+\-]/g,""); //remove any + or -
+		duration = duration.replace(/\..*/,""); //remove any fractional seconds
+
+		var [ hours, minutes, seconds ] = duration.split(':');
+
+		return parseInt(seconds) + (parseInt(minutes) * 60) + (parseInt(hours) * 3600);
+	}
 
 
 	eventService.on('deviceLost', removeDevice);
 	eventService.on('deviceFound', addUpdateDevice);
 	eventService.on('filesChosen', setNewFiles);
 	eventService.on('EventOccured', eventOccured);
+	eventService.on('positionInfo', setPositionInfo);
+
 
 	eventService.emit("loadDevices");
-
-	
-	$scope.clearToastr = function clearToastr() {
-		$window.toastr.clear();
-	};
-	$window.toastr.options = {
-		"newestOnTop": false,
-		"positionClass": "toast-bottom-right",
-		"preventDuplicates": false,
-		"onclick": null,
-		"showDuration": "300",
-		"hideDuration": "1000",
-		"timeOut": 0,
-		"extendedTimeOut": 0,
-		"showEasing": "swing",
-		"hideEasing": "linear",
-		"showMethod": "fadeIn",
-		"hideMethod": "fadeOut",
-		"tapToDismiss": true
-	};
 	
 
-	$scope.$on('keydown', function (g, event) {
+	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;
 
 		switch (event.key.toLowerCase()) {

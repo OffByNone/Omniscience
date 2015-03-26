@@ -236,3 +236,23 @@ span.glyphicon:hover, small.glyphicon:hover {
 	color: #468847;
 	font-weight: bold;
 }
+
+.event-log {
+	border: 1px solid black;
+	min-height: 20px;
+	max-height: 750px;
+	overflow: auto;
+}
+
+	ul.event-log li {
+		background: white;
+		display: block;
+		padding: 5px;
+	}
+
+		.event-log li:hover {
+			background-color: aliceblue;
+		}
+.event-log .dl-horizontal {
+	margin-bottom:0;
+}
