@@ -7,17 +7,18 @@
         <link href="../libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="../libs/whhg-font/css/whhg.css"rel="stylesheet" />
 		<link href="../libs/font-awesome/font-awesome.min.css" rel="stylesheet" />
+		<link href="../libs/toastr/toastr.min.css" rel="stylesheet" />
     </head>
-    <body>
+    <body ng-Keydown="$broadcast('keydown', $event)">
         <div class="container-fluid">
             <ng-view></ng-view>
         </div>
-
         <!--
         <script src="tab.js"></script>
         <script src="../libs/jquery-2.1.3.min.js"></script>
         <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../libs/angular.js"></script>
+        <script src="../libs/angular.min.js"></script>
+        <script src="../libs/toastr/toastr.min.js"></script>
         <script src="../libs/angular-route.min.js"></script>
 		<script src="../libs/md5.js"></script>
         <script src="rotary.js"></script>
@@ -25,6 +26,5 @@
         <script src="controllers/HomeController.js"></script>
         <script src="services/EventService.js"></script>
         -->
-
     </body>
 </html>

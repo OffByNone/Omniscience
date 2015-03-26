@@ -231,3 +231,8 @@ span.glyphicon:hover, small.glyphicon:hover {
 .home-list h3 {
 	margin: 0 auto;
 }
+
+.glyphicon.enabled {
+	color: #468847;
+	font-weight: bold;
+}

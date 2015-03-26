@@ -48,17 +48,20 @@
 					<button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
 				</div>
 				<div class="progress">
-					<div class="progress-bar" role="progressbar" aria-valuenow="{{activeFile.currentTimeInSeconds}}" aria-valuemin="0" aria-valuemax="{{activeFile.durationInSeconds}}" style="width: {{currentFilePercent()}}%;">
-						<span class="sr-only">{{activeFile.currentTimeInSeconds}} seconds in</span>
+					<div class="progress-bar" role="progressbar" aria-valuenow="{{currentTrack.currentTimeInSeconds}}" aria-valuemin="0" aria-valuemax="{{currentTrack.durationInSeconds}}" style="width: {{currentFilePercent()}}%;">
+						<span class="sr-only">{{currentTrack.currentTimeInSeconds}} seconds in</span>
 					</div>
 				</div>
 				<div class="file-time">
-					<span>{{activeFile.currentTime}}</span>
+					<span>{{currentTrack.currentTime}}</span>
 					<span>/</span>
-					<span>{{activeFile.duration}}</span>
-					<span>{{activeFile.name}}</span>
+					<span>{{currentTrack.duration}}</span>
+					<span>{{currentTrack.activeFile.name}}</span>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<button type="button" class="btn btn-danger" id="cleartoasts" ng-click="clearToastr()">Clear Toasts</button>
+					</li>
 					<li>
 						<span class="glyphicon glyphicon-refresh" ng-click="refreshDevices()"></span>
 					</li>
@@ -97,7 +100,7 @@
 				</div>
 			</div>
 		</li>
-		<li ng-class="{active : file === activeFile}" ng-dblclick="launch(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
+		<li ng-class="{active : file === currentTrack.activeFile}" ng-dblclick="launch(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
 			<!--todo: show buttons only on hover -->
 			<!--todo: add handle to drag and drop reorder -->
 			<h4 class="list-group-item-heading pull-left">{{ file.name }}</h4>
@@ -105,7 +108,7 @@
 		</li>
 		<li class="playlist-footer list-group-item clearfix">
 			<button class="btn btn-default pull-left" ng-click="clearPlaylist()">Clear Playlist</button>
-			<span class="pull-right glyphicon glyphicon-repeat" ng-click="playback.repeat = !playback.repeat" ng-class="{active: playback.repeat}"></span>
+			<span class="pull-right glyphicon glyphicon-repeat" ng-click="playback.repeat = !playback.repeat" ng-class="{enabled: playback.repeat}"></span>
 			<span class="pull-right glyphicon glyphicon-random" ng-click="randomizePlaylist()"></span>
 		</li>
 	</ul>
@@ -399,6 +402,8 @@
 								<div class="row" ng-show="service.type.urn">
 									<div class="col-md-12">
 										<dl class="dl-horizontal">
+											<dt ng-show="service.subscriptionId">SID</dt>
+											<dd ng-show="service.subscriptionId">{{service.subscriptionId}}</dd>
 											<dt ng-show="service.type.urn">Type</dt>
 											<dd ng-show="service.type.urn">{{service.type.urn}}</dd>
 											<dt ng-show="service.id">Id</dt>
@@ -530,4 +535,5 @@
 			</div>
 		</div>
 	</div>
+	<toaster-container></toaster-container>
 </div>
