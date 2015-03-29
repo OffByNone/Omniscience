@@ -92,7 +92,8 @@ To-Do
                 [ ] Navigating away from page and back shouldn't lose the list
                 [ ] Show metadata info if available
                 [ ] Drag and Drop re-order
-				[ ] Limit file types to supported types on the device
+				[ ] Limit to mediums supported on device (if device only supports audio only allow users to add audio file types) same for video and images
+                [ ] Adding a folder should cause all items in said folder to get added.
 
             Services
                 Properties
@@ -166,3 +167,4 @@ To-Do
         [ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
         [ ] Better error handling
         [ ] Better understand/remove TransportService
+        [ ] Use apply to pass in n number of arguments to the emit/on functions that simply forward on where I have added a, b, c, d, e

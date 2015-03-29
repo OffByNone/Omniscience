@@ -1,0 +1,40 @@
+﻿<ul class="playlist list-group pull-left">
+	<li class="playlist-title list-group-item clearfix">
+		<span class="pull-left">Playlist</span>
+		<span class="glyphicon pull-right" ng-class="{'glyphicon-minus': filePickerOpen, 'glyphicon-plus': !filePickerOpen}" ng-click="filePickerOpen = !filePickerOpen" data-target="#add-file" data-toggle="collapse" aria-expanded="false" aria-controls="add-file"></span>
+	</li>
+	<li class="list-group-item no-padding">
+		<div class="collapse in" id="add-file">
+			<div class="clearfix list-padding">
+				<div class="form-group">
+					<label>Enter URL</label>
+					<div><input class="form-control" type="url" ng-model="filePicker.urlPath" /></div>
+				</div>
+				<div class="form-group local-file">
+					<label>Choose File</label>
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-click="pickLocalFile(device)" type="button">Browse</button>
+						</span>
+						<input type="text" readonly="readonly" ng-value="filePicker.localFile" title="{{filePicker.paths}}" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group pull-right">
+					<button type="button" data-toggle="collapse" data-target="#add-file" class="btn btn-default" ng-click="add(device, true); filePickerOpen = false;">Play</button>
+					<button type="button" class="btn btn-default" ng-click="add(device, false)">Add To Playlist</button>
+				</div>
+			</div>
+		</div>
+	</li>
+	<li ng-class="{active : file === track.file}" ng-dblclick="play(device, file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
+		<!--todo: show buttons only on hover -->
+		<!--todo: add handle to drag and drop reorder -->
+		<h4 class="list-group-item-heading pull-left">{{ file.name }}</h4>
+		<button type="button" ng-click="remove(device, file)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	</li>
+	<li class="playlist-footer list-group-item clearfix">
+		<button class="btn btn-default pull-left" ng-click="clear(device)">Clear Playlist</button>
+		<span class="pull-right glyphicon glyphicon-repeat" ng-click="playback.repeat = !playback.repeat" ng-class="{enabled: playback.repeat}"></span>
+		<span class="pull-right glyphicon glyphicon-random" ng-click="randomize()"></span>
+	</li>
+</ul>

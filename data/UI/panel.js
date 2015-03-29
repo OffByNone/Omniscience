@@ -1,1 +1,0 @@
-var rotaryApp = angular.module('rotaryApp',[]);
