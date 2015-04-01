@@ -1,6 +1,4 @@
 rotaryApp.factory('eventService', function($rootScope, $window){
-    var service = {};
-
     return {
         on: function on(messageName, callback){
             $window.self.port.on(messageName, function(a, b, c, d, e){
@@ -11,5 +9,4 @@ rotaryApp.factory('eventService', function($rootScope, $window){
             $window.self.port.emit(messageName, a, b, c, d, e);
         }
     }
-    return service;
 });

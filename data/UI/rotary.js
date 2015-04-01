@@ -5,22 +5,21 @@ rotaryApp.config(function rotaryApp($routeProvider, $locationProvider, $compileP
 	//$locationProvider.html5Mode({enabled:true});
 	$routeProvider
 		.when('/', {
-			templateUrl : 'templates/home.html',
+			templateUrl : 'templates/Home.html',
 			controller  : 'HomeController'
 		})
 		.when('/home', {
-			templateUrl : 'templates/home.html',
+			templateUrl : 'templates/Home.html',
 			controller  : 'HomeController'
 		})
 		.when('/about', {
-			templateUrl : 'templates/about.html',
-			controller  : 'aboutController'
+			templateUrl : 'templates/About.html',
+			controller  : 'AboutController'
 		})
 		.when('/device/:deviceId', {
-			templateUrl : 'templates/device.html',
+			templateUrl : 'templates/Device.html',
 			controller  : 'DeviceController'
 		})
         .otherwise({redirectTo: '/home'});
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|ftp|mailto|resource):/);
-    
 });
