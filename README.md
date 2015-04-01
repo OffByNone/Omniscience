@@ -113,7 +113,6 @@ To-Do
 				[ ] Add refresh button to each section?
 				[ ] Parse "Protocol Info" under "Current Connection Info"
 
-			[ ] Break apart with ui router
 			[ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
 				Currently does this because if there are links to the device, device model, or manufacturer they are only shown in the top center of page
 			[ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
@@ -170,3 +169,6 @@ To-Do
 		[ ] Use apply to pass in n number of arguments to the emit/on functions that simply forward on where I have added a, b, c, d, e
 
 matchstick, chromecast, and firestick will need extra setup in the new service oriented arch.  They will need to setup a service on the device in the device factory of themselves
+
+
+when calling methods on deviceservices, pass in the service type urn or friendly name, method to call on service and args to pass to service
