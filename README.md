@@ -6,7 +6,7 @@ Firefox extension to find and interact with UPnP (chromecast, matchstick, firetv
 How To Run
  CFX
 
-	 --CFX is the old/current way of building/testing addons it uses python and you need to run activate first to be able to run cfx commands
+	--CFX is the old/current way of building/testing addons it uses python and you need to run activate first to be able to run cfx commands
 	--cfx run opens a new browser with a brand new profile
 	--cfx xpi builds the xpi file
 	--I have added the addonsdk/bin to my path so the "activate" command works anywhere in the command prompt
