@@ -3,7 +3,7 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 
 	$scope.deviceId = $routeParams.deviceId;
 	$scope.device = $rootScope.devices.filter(device => device.id === $scope.deviceId)[0] || {};
-	$scope.interval = $interval(() => eventService.emit('getPositionInfo', $scope.device), 1000);
+	//$scope.interval = $interval(() => eventService.emit('getPositionInfo', $scope.device), 1000);
 
 	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;
@@ -25,13 +25,13 @@ rotaryApp.controller('DeviceController', function DeviceController($scope, $rout
 	});
 
 	if (!$scope.protocolInfoFilter) { //todo: I don't like this.  Find a better way to show the first available capability
-		if ($scope.device.videoCapable)
+		if ($scope.device.capabilities.video)
 			$scope.protocolInfoFilter = 'video';
-		else if ($scope.device.audioCapable)
+		else if ($scope.device.capabilities.audio)
 			$scope.protocolInfoFilter = 'audio';
-		else if ($scope.device.imageCapable)
+		else if ($scope.device.capabilities.image)
 			$scope.protocolInfoFilter = 'image';
-		else if ($scope.device.mirrorCapable)
+		else if ($scope.device.capabilities.mirror)
 			$scope.protocolInfoFilter = 'mirror';
 	}
 });
