@@ -1,9 +1,14 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $interval, $rootScope, eventService, pubSub) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $injector, eventService, pubSub) {
 	"use strict";
 
 	$scope.deviceId = $routeParams.deviceId;
 	$scope.device = $rootScope.devices.filter(device => device.id === $scope.deviceId)[0] || {};
-	//$scope.interval = $interval(() => eventService.emit('getPositionInfo', $scope.device), 1000);
+	$scope.hasService = function hasService(serviceName) {
+		if ($scope.device && Array.isArray($scope.device.services))
+			return $scope.device.services.some(service => service.type.name === serviceName);
+
+		return false;
+	};
 
 	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;

@@ -1,436 +1,187 @@
-﻿<div class="container pull-left">
-	<div class="media">
-		<div class="media-left media-top">
-			<img class="icon" ng-show="device.icons[0].url" ng-src="{{ device.icons[0].url }}" />
-		</div>
-		<div class="media-body">
-			<h1 class="active-device-header">
-				<a ng-href="{{device.webPage}}" ng-show="device.webPage">{{device.name}}</a>
-				<span ng-hide="device.webPage">{{device.name}}</span>
-				<small>
-					<em>
-						<a ng-show="device.model.url" ng-href="{{device.model.url}}">{{device.model.name}}</a>
-						<span ng-hide="device.model.url">{{device.model.name}}</span>
-					</em>
-					by
-					<em>
-						<a ng-show="device.manufacturer.url" ng-href="{{device.manufacturer.url}}">{{device.manufacturer.name}}</a>
-						<span ng-hide="device.manufacturer.url">{{device.manufacturer.name}}</span>
-					</em>
-				</small>
-			</h1>
-		</div>
-	</div>
-	<div role="tabpanel">
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" class=" active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-			<li role="presentation"><a data-target="#supported-formats" aria-controls="supported-formats" role="tab" data-toggle="tab">Supported Formats</a></li>
-			<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
-			<li role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-			<li role="presentation" class=" pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
-		</ul>
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="info">
-				<div class="well clearfix">
-					<div class="container-fluid pull-left">
-						<div class="row"><h3 class="col-md-12">Basic Info</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.type.name">Type</dt>
-									<dd ng-show="device.type.name">{{device.type.name}}</dd>
-									<dt ng-show="device.type.urn">Urn</dt>
-									<dd ng-show="device.type.urn">{{device.type.urn}}</dd>
-									<dt ng-show="device.langauge">Language</dt>
-									<dd ng-show="device.langauge">{{device.langauge}}</dd>
-									<dt ng-show="device.model.number">Model Number</dt>
-									<dd ng-show="device.model.number">{{device.model.number}}</dd>
-									<dt ng-show="device.model.description">Model Description</dt>
-									<dd ng-show="device.model.description">{{device.model.description}}</dd>
-									<dt ng-show="device.timezone">Timezone</dt>
-									<dd ng-show="device.timezone">{{device.timezone}}</dd>
-									<dt ng-show="device.currentConnectionIds">Current Connection Ids</dt>
-									<dd ng-show="device.currentConnectionIds">
-										<ul class="list-inline">
-											<li class="label label-default" ng-repeat="currentConnectionId in device.currentConnectionIds">
-												{{currentConnectionId}}
-											</li>
-										</ul>
-									</dd>
-									<dt ng-show="device.presets">Presets</dt>
-									<dd ng-show="device.presets">
-										<ul class="list-inline">
-											<li class="label label-default" ng-repeat="preset in device.presets">
-												{{preset}}
-											</li>
-										</ul>
-									</dd>
-									<dt ng-show="device.udn">UUID</dt>
-									<dd ng-show="device.udn">{{device.udn}}</dd>
-									<dt ng-show="device.upnpVersion">UPnP</dt>
-									<dd ng-show="device.upnpVersion">v{{device.upnpVersion}}</dd>
-									<dt ng-show="device.macAddress">Mac Address</dt>
-									<dd ng-show="device.macAddress">{{device.macAddress}}</dd>
-									<dt ng-show="device.serialNumber">Serial Number</dt>
-									<dd ng-show="device.serialNumber">{{device.serialNumber}}</dd>
-									<dt ng-show="device.softwareVersion">Software Version</dt>
-									<dd ng-show="device.softwareVersion">{{device.softwareVersion}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- Basic Info -->
-					<div class="container-fluid pull-left" ng-show="device.currentConnectionInfo">
-						<div class="row"><h3 class="col-md-12">Current Connection Info</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.currentConnectionInfo.status">Status</dt>
-									<dd ng-show="device.currentConnectionInfo.status">{{device.currentConnectionInfo.status}}</dd>
-									<dt ng-show="device.currentConnectionInfo.direction">Direction</dt>
-									<dd ng-show="device.currentConnectionInfo.direction">{{device.currentConnectionInfo.direction}}</dd>
-									<dt ng-show="device.currentConnectionInfo.peerConnectionId">Peer Connection Id</dt>
-									<dd ng-show="device.currentConnectionInfo.peerConnectionId">{{device.currentConnectionInfo.peerConnectionId}}</dd>
-									<dt ng-show="device.currentConnectionInfo.peerConnectionManager">Peer Connection Manager</dt>
-									<dd ng-show="device.currentConnectionInfo.peerConnectionManager">{{device.currentConnectionInfo.peerConnectionManager}}</dd>
-									<dt ng-show="device.currentConnectionInfo.protocolInfo">Protocol Info</dt>
-									<dd ng-show="device.currentConnectionInfo.protocolInfo">{{device.currentConnectionInfo.protocolInfo}}</dd>
-									<dt ng-show="device.currentConnectionInfo.avTransportId">AV Transport Id</dt>
-									<dd ng-show="device.currentConnectionInfo.avTransportId">{{device.currentConnectionInfo.avTransportId}}</dd>
-									<dt ng-show="device.currentConnectionInfo.rcsID">RCS Id</dt>
-									<dd ng-show="device.currentConnectionInfo.rcsID">{{device.currentConnectionInfo.rcsID}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.currentConnectionInfo-->
-					<div class="container-fluid pull-left" ng-show="device.deviceCapabilities">
-						<div class="row"><h3 class="col-md-12">Device Capabilities</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.deviceCapabilities.playMedia">Play Media</dt>
-									<dd ng-show="device.deviceCapabilities.playMedia">
-										<ul class="list-inline">
-											<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.playMedia">
-												{{mediaType}}
-											</li>
-										</ul>
-									</dd>
-									<dt ng-show="device.deviceCapabilities.recMedia">Rec Media</dt>
-									<dd ng-show="device.deviceCapabilities.recMedia">
-										<ul class="list-inline">
-											<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.recMedia">
-												{{mediaType}}
-											</li>
-										</ul>
-									</dd>
-									<dt ng-show="device.deviceCapabilities.recQualityModes">Rec Quality Modes</dt>
-									<dd ng-show="device.deviceCapabilities.recQualityModes">
-										<ul class="list-inline">
-											<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.recQualityModes">
-												{{mediaType}}
-											</li>
-										</ul>
-									</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.deviceCapabilities -->
-					<div class="container-fluid pull-left" ng-show="device.transportSettings">
-						<div class="row"><h3 class="col-md-12">Transport Settings</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.transportSettings.playMode">Play Mode</dt>
-									<dd ng-show="device.transportSettings.playMode">{{device.transportSettings.playMode}}</dd>
-									<dt ng-show="device.transportSettings.recQualityMode">Rec Quality Mode</dt>
-									<dd ng-show="device.transportSettings.recQualityMode">{{device.transportSettings.recQualityMode}}</dd>
-									<dt ng-show="device.transportSettings.actions">Actions</dt>
-									<dd ng-show="device.transportSettings.actions">{{device.transportSettings.actions}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.transportSettings -->
-					<div class="container-fluid pull-left" ng-show="device.transportInfo">
-						<div class="row"><h3 class="col-md-12">Transport Information</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.transportInfo.currentSpeed">Current Speed</dt>
-									<dd ng-show="device.transportInfo.currentSpeed">{{device.transportInfo.currentSpeed}}</dd>
-									<dt ng-show="device.transportInfo.currentTransportStatus">Current Status</dt>
-									<dd ng-show="device.transportInfo.currentTransportStatus">{{device.transportInfo.currentTransportStatus}}</dd>
-									<dt ng-show="device.transportInfo.currentTransportState">Current State</dt>
-									<dd ng-show="device.transportInfo.currentTransportState">{{device.transportInfo.currentTransportState}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.transportInfo -->
-					<div class="container-fluid pull-left" ng-show="device.mediaInfo">
-						<div class="row"><h3 class="col-md-12">Media Information</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.mediaInfo.writeStatus">Write Status</dt>
-									<dd ng-show="device.mediaInfo.writeStatus">{{device.mediaInfo.writeStatus}}</dd>
-									<dt ng-show="device.mediaInfo.recordMedium">Record Medium</dt>
-									<dd ng-show="device.mediaInfo.recordMedium">{{device.mediaInfo.recordMedium}}</dd>
-									<dt ng-show="device.mediaInfo.playMedium">Play Medium</dt>
-									<dd ng-show="device.mediaInfo.playMedium">{{device.mediaInfo.playMedium}}</dd>
-									<dt ng-show="device.mediaInfo.nextURIMetaData">Next URI Meta Data</dt>
-									<dd ng-show="device.mediaInfo.nextURIMetaData">{{device.mediaInfo.nextURIMetaData}}</dd>
-									<dt ng-show="device.mediaInfo.nextURI">Next URI</dt>
-									<dd ng-show="device.mediaInfo.nextURI">{{device.mediaInfo.nextURI}}</dd>
-									<dt ng-show="device.mediaInfo.currentURIMetaData">Current URI Meta Data</dt>
-									<dd ng-show="device.mediaInfo.currentURIMetaData">{{device.mediaInfo.currentURIMetaData}}</dd>
-									<dt ng-show="device.mediaInfo.currentURI">Current URI</dt>
-									<dd ng-show="device.mediaInfo.currentURI">{{device.mediaInfo.currentURI}}</dd>
-									<dt ng-show="device.mediaInfo.mediaDuration">Duration</dt>
-									<dd ng-show="device.mediaInfo.mediaDuration">{{device.mediaInfo.mediaDuration}}</dd>
-									<dt ng-show="device.mediaInfo.nrTracks">Number of Tracks</dt>
-									<dd ng-show="device.mediaInfo.nrTracks">{{device.mediaInfo.nrTracks}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.mediaInfo -->
-					<div class="container-fluid pull-left" ng-show="device.positionInfo">
-						<div class="row"><h3 class="col-md-12">Current Track Information</h3></div>
-						<div class="row">
-							<div class="col-md-12">
-								<dl class="dl-horizontal">
-									<dt ng-show="device.positionInfo.track">Track</dt>
-									<dd ng-show="device.positionInfo.track">{{device.positionInfo.track}}</dd>
-									<dt ng-show="device.positionInfo.trackDuration">Duration</dt>
-									<dd ng-show="device.positionInfo.trackDuration">{{device.positionInfo.trackDuration}}</dd>
-									<dt ng-show="device.positionInfo.trackMetaData">Metadata</dt>
-									<dd ng-show="device.positionInfo.trackMetaData">{{device.positionInfo.trackMetaData}}</dd>
-									<dt ng-show="device.positionInfo.trackURI">URI</dt>
-									<dd ng-show="device.positionInfo.trackURI">{{device.positionInfo.trackURI}}</dd>
-									<dt ng-show="device.positionInfo.relTime">Relative Time</dt>
-									<dd ng-show="device.positionInfo.relTime">{{device.positionInfo.relTime}}</dd>
-									<dt ng-show="device.positionInfo.absTime">Absolute Time</dt>
-									<dd ng-show="device.positionInfo.absTime">{{device.positionInfo.absTime}}</dd>
-									<dt ng-show="device.positionInfo.relCount">Relative Count</dt>
-									<dd ng-show="device.positionInfo.relCount">{{device.positionInfo.relCount}}</dd>
-									<dt ng-show="device.positionInfo.absCount">Absolute Count</dt>
-									<dd ng-show="device.positionInfo.absCount">{{device.positionInfo.absCount}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div> <!-- device.positionInfo -->
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="supported-formats">
-				<div ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
-					<ul class="nav nav-tabs" role="tablist">
-						<li role="presentation" ng-show="device.videoCapable != null" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.videoCapable != null}">
-							<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="video">Video</a>
-						</li>
-						<li role="presentation" ng-show="device.audioCapable != null" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: device.videoCapable == null && device.audioCapable != null}">
-							<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="audio">Audio</a>
-						</li>
-						<li role="presentation" ng-show="device.imageCapable != null" ng-click="protocolInfoFilter = 'image'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable != null}">
-							<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="image">Image</a>
-						</li>
-						<li role="presentation" ng-show="device.mirrorCapable != null" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable == null && device.mirrorCapable != null}">
-							<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="mirror">Mirror</a>
-						</li>
-					</ul>
-					<div class="tab-content tab-padding">
-						<div role="tabpanel" ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null" class="tab-pane active" id="capabilities-tab">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Protocol</th>
-										<th>Network</th>
-										<th>Medium</th>
-										<th>Container Type</th>
-										<th>Container Type Info</th>
-										<th>Additional Info</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="info in device.protocolInfo.sink | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
-										<td>{{info.protocol}}</td>
-										<td>{{info.network}}</td>
-										<td>{{info.contentFormat.medium}}</td>
-										<td>{{info.contentFormat.containerType}}</td>
-										<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-										<td>{{info.additionalInfo}}</td>
-									</tr>
-									<tr ng-repeat="info in device.protocolInfo.source | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
-										<td>{{info.protocol}}</td>
-										<td>{{info.network}}</td>
-										<td>{{info.contentFormat.medium}}</td>
-										<td>{{info.contentFormat.containerType}}</td>
-										<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-										<td>{{info.additionalInfo}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<h4 ng-hide="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
-					Unknown
-				</h4>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="services">
-				<div class="well">
-					<ul class="nav nav-tabs" role="tablist">
-						<li role="presentation" ng-class="{active: $first}" ng-repeat="service in device.services">
-							<a data-target="#{{service.htmlId}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
-						</li>
-					</ul>
-					<div class="tab-content tab-padding">
-						<div ng-repeat="service in device.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.htmlId}}">
-							<div class="row" ng-show="service.type.urn">
-								<div class="col-md-12">
-									<dl class="dl-horizontal">
-										<dt ng-show="service.subscriptionId">SID</dt>
-										<dd ng-show="service.subscriptionId">{{service.subscriptionId}}</dd>
-										<dt ng-show="service.type.urn">Type</dt>
-										<dd ng-show="service.type.urn">{{service.type.urn}}</dd>
-										<dt ng-show="service.id">Id</dt>
-										<dd ng-show="service.id">{{service.id}}</dd>
-									</dl>
-								</div>
-							</div>
-							<div class="row" ng-show="service.scpdUrl || service.controlUrl || service.eventSubUrl">
-								<ul class="col-md-12 list-inline">
-									<li ng-show="service.scpdUrl"><a ng-href="{{service.scpdUrl}}">Control Point Document</a></li>
-									<li ng-show="service.controlUrl"><a ng-href="{{service.controlUrl}}">Control</a></li>
-									<li ng-show="service.eventSubUrl"><a ng-href="{{service.eventSubUrl}}">Event Subscription</a></li>
-								</ul>
-							</div>
-							<div class="row" ng-show="service.methods">
-								<h3>Methods</h3>
-								<ul class="col-md-12 list-inline methods">
-									<li class="method" ng-repeat="method in service.methods">
-										<h4>{{method.name}}</h4>
-										(<ul class="list-inline">
-											<li class="parameter" ng-repeat="parameter in method.parameters">
-												<h5 data-toggle="tooltip" title="{{parameter.backingProperty}}">
-													<span>{{parameter.datatype}}</span>
-													<span>{{parameter.name}}<span ng-hide="$last">,</span></span>
-												</h5>
-											</li>
-										</ul>)
-									</li>
-								</ul>
-							</div>
-							<div class="row properties" ng-show="service.properties">
-								<h3>Properties</h3>
-								<ul class="col-md-12 list-inline">
-									<li class="property" ng-repeat="property in service.properties">
-										<span>{{property.datatype}}</span>
-										<h4>{{property.name}}</h4>
-										<span ng-show="property.sendEvents" class="label label-primary">Evented</span>
-										<span ng-show="property.defaultValue" class="label label-default">{{property.defaultValue}}</span>
-										<span ng-show="property.allowedValueRange">
-											<span>Range</span>
-											<span>({{property.allowedValueRange.minimum}} - {{property.allowedValueRange.maximum}})</span>
-											<span>increment by {{property.allowedValueRange.step}}</span>
-										</span>
-										<span class="label label-danger" ng-show="property.allowedValues[0] == 'NOT_IMPLEMENTED'">Not Implemented</span>
-										<div class="allowedValues" ng-show="property.allowedValues && property.allowedValues[0] != 'NOT_IMPLEMENTED'">
-											<span>Possible Value<span ng-show="property.allowedValues.length > 1">s</span></span>
-											<ul class="list-inline values">
-												<li ng-repeat="value in property.allowedValues">
-													{{value}}
-												</li>
-											</ul>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="settings">
-				<device-settings></device-settings>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="debug">
-				<div class="well">
-					<div class="row" ng-show="device.ssdpDescription">
-						<div class="col-md-12">
-							<a ng-href="{{device.ssdpDescription}}" ng-show="device.ssdpDescription">SSDP Description</a>
-						</div>
-					</div>
-					<div class="row" ng-show="device.icons">
-						<h4 class="col-md-1">Icons</h4>
-						<div class="col-md-11">
-							<ul class="row list-inline">
-								<li ng-repeat="icon in device.icons">
-									<img ng-src="{{icon.url}}" />
-									<div class="row" ng-show="icon.mimeType">
-										<div class="col-md-12">{{icon.mimeType}}</div>
-									</div>
-									<div class="row">
-										<h5 class="col-md-12">
-											{{icon.width}}<small>x</small>{{icon.height}}<small>x</small>{{icon.depth}}
-										</h5>
-									</div>
-									<div class="row">
-										<div class="col-md-12">&nbsp;</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							Event Log
-							<ul class="list-inline event-log">
-								<li ng-repeat="event in eventLog">
-									<dl class="dl-horizontal" ng-repeat="(key, value) in event.event">
-										<dt>{{key}}</dt>
-										<dd>{{value}}</dd>
-									</dl>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<button type="button" ng-show="device.rawDiscoveryInfo" class="btn btn-default" data-toggle="collapse" data-target="#raw-discovery-info">
-								raw discovery info
-							</button>
-							<button type="button" ng-show="device.protocolInfo._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-protocol-info">
-								raw protocol info
-							</button>
-							<button type="button" ng-show="device.currentConnectionInfo._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-current-connection-info">
-								raw current connection info
-							</button>
-							<button type="button" ng-show="device.mediaInfo._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-media-info">
-								raw media info
-							</button>
-							<button type="button" ng-show="device.transportInfo._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-transport-info">
-								raw transport info
-							</button>
-							<button type="button" ng-show="device.positionInfo._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-position-info">
-								raw position info
-							</button>
-							<button type="button" ng-show="device.deviceCapabilities._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-device-capabilities">
-								raw device capabilities
-							</button>
-							<button type="button" ng-show="device.transportSettings._raw" class="btn btn-default" data-toggle="collapse" data-target="#raw-current-transport-settings">
-								raw current transport settings
-							</button>
-							<div class="collapse" id="raw-discovery-info">{{device.rawDiscoveryInfo}}</div>
-							<div class="collapse" id="raw-protocol-info">{{device.protocolInfo._raw}}</div>
-							<div class="collapse" id="raw-current-connection-info">{{device.currentConnectionInfo._raw}}</div>
-							<div class="collapse" id="raw-media-info">{{device.mediaInfo._raw}}</div>
-							<div class="collapse" id="raw-transport-info">{{device.transportInfo._raw}}</div>
-							<div class="collapse" id="raw-position-info">{{device.positionInfo._raw}}</div>
-							<div class="collapse" id="raw-device-capabilities">{{device.deviceCapabilities._raw}}</div>
-							<div class="collapse" id="raw-current-transport-settings">{{device.transportSettings._raw}}</div>
-						</div>
-					</div>
-				</div>
+﻿<div class="well clearfix">
+	<div class="container-fluid pull-left">
+		<div class="row"><h3 class="col-md-12">Basic Info</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.type.name">Type</dt>
+					<dd ng-show="device.type.name">{{device.type.name}}</dd>
+					<dt ng-show="device.type.urn">Urn</dt>
+					<dd ng-show="device.type.urn">{{device.type.urn}}</dd>
+					<dt ng-show="device.langauge">Language</dt>
+					<dd ng-show="device.langauge">{{device.langauge}}</dd>
+					<dt ng-show="device.model.number">Model Number</dt>
+					<dd ng-show="device.model.number">{{device.model.number}}</dd>
+					<dt ng-show="device.model.description">Model Description</dt>
+					<dd ng-show="device.model.description">{{device.model.description}}</dd>
+					<dt ng-show="device.timezone">Timezone</dt>
+					<dd ng-show="device.timezone">{{device.timezone}}</dd>
+					<dt ng-show="device.currentConnectionIds">Current Connection Ids</dt>
+					<dd ng-show="device.currentConnectionIds">
+						<ul class="list-inline">
+							<li class="label label-default" ng-repeat="currentConnectionId in device.currentConnectionIds">
+								{{currentConnectionId}}
+							</li>
+						</ul>
+					</dd>
+					<dt ng-show="device.presets">Presets</dt>
+					<dd ng-show="device.presets">
+						<ul class="list-inline">
+							<li class="label label-default" ng-repeat="preset in device.presets">
+								{{preset}}
+							</li>
+						</ul>
+					</dd>
+					<dt ng-show="device.udn">UUID</dt>
+					<dd ng-show="device.udn">{{device.udn}}</dd>
+					<dt ng-show="device.upnpVersion">UPnP</dt>
+					<dd ng-show="device.upnpVersion">v{{device.upnpVersion.major}}.{{device.upnpVersion.minor}}</dd>
+					<dt ng-show="device.macAddress">Mac Address</dt>
+					<dd ng-show="device.macAddress">{{device.macAddress}}</dd>
+					<dt ng-show="device.serialNumber">Serial Number</dt>
+					<dd ng-show="device.serialNumber">{{device.serialNumber}}</dd>
+					<dt ng-show="device.softwareVersion">Software Version</dt>
+					<dd ng-show="device.softwareVersion">{{device.softwareVersion}}</dd>
+				</dl>
 			</div>
 		</div>
-	</div>
+	</div> <!-- Basic Info -->
+	<div class="container-fluid pull-left" ng-show="device.currentConnectionInfo">
+		<div class="row"><h3 class="col-md-12">Current Connection Info</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.currentConnectionInfo.status">Status</dt>
+					<dd ng-show="device.currentConnectionInfo.status">{{device.currentConnectionInfo.status}}</dd>
+					<dt ng-show="device.currentConnectionInfo.direction">Direction</dt>
+					<dd ng-show="device.currentConnectionInfo.direction">{{device.currentConnectionInfo.direction}}</dd>
+					<dt ng-show="device.currentConnectionInfo.peerConnectionId">Peer Connection Id</dt>
+					<dd ng-show="device.currentConnectionInfo.peerConnectionId">{{device.currentConnectionInfo.peerConnectionId}}</dd>
+					<dt ng-show="device.currentConnectionInfo.peerConnectionManager">Peer Connection Manager</dt>
+					<dd ng-show="device.currentConnectionInfo.peerConnectionManager">{{device.currentConnectionInfo.peerConnectionManager}}</dd>
+					<dt ng-show="device.currentConnectionInfo.protocolInfo">Protocol Info</dt>
+					<dd ng-show="device.currentConnectionInfo.protocolInfo">{{device.currentConnectionInfo.protocolInfo}}</dd>
+					<dt ng-show="device.currentConnectionInfo.avTransportId">AV Transport Id</dt>
+					<dd ng-show="device.currentConnectionInfo.avTransportId">{{device.currentConnectionInfo.avTransportId}}</dd>
+					<dt ng-show="device.currentConnectionInfo.rcsID">RCS Id</dt>
+					<dd ng-show="device.currentConnectionInfo.rcsID">{{device.currentConnectionInfo.rcsID}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.currentConnectionInfo-->
+	<div class="container-fluid pull-left" ng-show="device.deviceCapabilities">
+		<div class="row"><h3 class="col-md-12">Device Capabilities</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.deviceCapabilities.playMedia">Play Media</dt>
+					<dd ng-show="device.deviceCapabilities.playMedia">
+						<ul class="list-inline">
+							<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.playMedia">
+								{{mediaType}}
+							</li>
+						</ul>
+					</dd>
+					<dt ng-show="device.deviceCapabilities.recMedia">Rec Media</dt>
+					<dd ng-show="device.deviceCapabilities.recMedia">
+						<ul class="list-inline">
+							<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.recMedia">
+								{{mediaType}}
+							</li>
+						</ul>
+					</dd>
+					<dt ng-show="device.deviceCapabilities.recQualityModes">Rec Quality Modes</dt>
+					<dd ng-show="device.deviceCapabilities.recQualityModes">
+						<ul class="list-inline">
+							<li class="label label-default" ng-repeat="mediaType in device.deviceCapabilities.recQualityModes">
+								{{mediaType}}
+							</li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.deviceCapabilities -->
+	<div class="container-fluid pull-left" ng-show="device.transportSettings">
+		<div class="row"><h3 class="col-md-12">Transport Settings</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.transportSettings.playMode">Play Mode</dt>
+					<dd ng-show="device.transportSettings.playMode">{{device.transportSettings.playMode}}</dd>
+					<dt ng-show="device.transportSettings.recQualityMode">Rec Quality Mode</dt>
+					<dd ng-show="device.transportSettings.recQualityMode">{{device.transportSettings.recQualityMode}}</dd>
+					<dt ng-show="device.transportSettings.actions">Actions</dt>
+					<dd ng-show="device.transportSettings.actions">{{device.transportSettings.actions}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.transportSettings -->
+	<div class="container-fluid pull-left" ng-show="device.transportInfo">
+		<div class="row"><h3 class="col-md-12">Transport Information</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.transportInfo.currentSpeed">Current Speed</dt>
+					<dd ng-show="device.transportInfo.currentSpeed">{{device.transportInfo.currentSpeed}}</dd>
+					<dt ng-show="device.transportInfo.currentTransportStatus">Current Status</dt>
+					<dd ng-show="device.transportInfo.currentTransportStatus">{{device.transportInfo.currentTransportStatus}}</dd>
+					<dt ng-show="device.transportInfo.currentTransportState">Current State</dt>
+					<dd ng-show="device.transportInfo.currentTransportState">{{device.transportInfo.currentTransportState}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.transportInfo -->
+	<div class="container-fluid pull-left" ng-show="device.mediaInfo">
+		<div class="row"><h3 class="col-md-12">Media Information</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.mediaInfo.writeStatus">Write Status</dt>
+					<dd ng-show="device.mediaInfo.writeStatus">{{device.mediaInfo.writeStatus}}</dd>
+					<dt ng-show="device.mediaInfo.recordMedium">Record Medium</dt>
+					<dd ng-show="device.mediaInfo.recordMedium">{{device.mediaInfo.recordMedium}}</dd>
+					<dt ng-show="device.mediaInfo.playMedium">Play Medium</dt>
+					<dd ng-show="device.mediaInfo.playMedium">{{device.mediaInfo.playMedium}}</dd>
+					<dt ng-show="device.mediaInfo.nextURIMetaData">Next URI Meta Data</dt>
+					<dd ng-show="device.mediaInfo.nextURIMetaData">{{device.mediaInfo.nextURIMetaData}}</dd>
+					<dt ng-show="device.mediaInfo.nextURI">Next URI</dt>
+					<dd ng-show="device.mediaInfo.nextURI">{{device.mediaInfo.nextURI}}</dd>
+					<dt ng-show="device.mediaInfo.currentURIMetaData">Current URI Meta Data</dt>
+					<dd ng-show="device.mediaInfo.currentURIMetaData">{{device.mediaInfo.currentURIMetaData}}</dd>
+					<dt ng-show="device.mediaInfo.currentURI">Current URI</dt>
+					<dd ng-show="device.mediaInfo.currentURI">{{device.mediaInfo.currentURI}}</dd>
+					<dt ng-show="device.mediaInfo.mediaDuration">Duration</dt>
+					<dd ng-show="device.mediaInfo.mediaDuration">{{device.mediaInfo.mediaDuration}}</dd>
+					<dt ng-show="device.mediaInfo.nrTracks">Number of Tracks</dt>
+					<dd ng-show="device.mediaInfo.nrTracks">{{device.mediaInfo.nrTracks}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.mediaInfo -->
+	<div class="container-fluid pull-left" ng-show="device.positionInfo">
+		<div class="row"><h3 class="col-md-12">Current Track Information</h3></div>
+		<div class="row">
+			<div class="col-md-12">
+				<dl class="dl-horizontal">
+					<dt ng-show="device.positionInfo.track">Track</dt>
+					<dd ng-show="device.positionInfo.track">{{device.positionInfo.track}}</dd>
+					<dt ng-show="device.positionInfo.trackDuration">Duration</dt>
+					<dd ng-show="device.positionInfo.trackDuration">{{device.positionInfo.trackDuration}}</dd>
+					<dt ng-show="device.positionInfo.trackMetaData">Metadata</dt>
+					<dd ng-show="device.positionInfo.trackMetaData">{{device.positionInfo.trackMetaData}}</dd>
+					<dt ng-show="device.positionInfo.trackURI">URI</dt>
+					<dd ng-show="device.positionInfo.trackURI">{{device.positionInfo.trackURI}}</dd>
+					<dt ng-show="device.positionInfo.relTime">Relative Time</dt>
+					<dd ng-show="device.positionInfo.relTime">{{device.positionInfo.relTime}}</dd>
+					<dt ng-show="device.positionInfo.absTime">Absolute Time</dt>
+					<dd ng-show="device.positionInfo.absTime">{{device.positionInfo.absTime}}</dd>
+					<dt ng-show="device.positionInfo.relCount">Relative Count</dt>
+					<dd ng-show="device.positionInfo.relCount">{{device.positionInfo.relCount}}</dd>
+					<dt ng-show="device.positionInfo.absCount">Absolute Count</dt>
+					<dd ng-show="device.positionInfo.absCount">{{device.positionInfo.absCount}}</dd>
+				</dl>
+			</div>
+		</div>
+	</div> <!-- device.positionInfo -->
 </div>

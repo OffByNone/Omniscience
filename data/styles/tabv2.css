@@ -244,15 +244,28 @@ span.glyphicon:hover, small.glyphicon:hover {
 	overflow: auto;
 }
 
-	ul.event-log li {
-		background: white;
-		display: block;
-		padding: 5px;
-	}
+ul.event-log li {
+	background: white;
+	display: block;
+	padding: 5px;
+}
 
-		.event-log li:hover {
-			background-color: aliceblue;
-		}
+.event-log li:hover {
+	background-color: aliceblue;
+}
+
 .event-log .dl-horizontal {
-	margin-bottom:0;
+	margin-bottom: 0;
+}
+
+.return-values {
+	display: inline-block;
+}
+
+
+#services .dl-horizontal dd {
+	margin-left:55px;
+}
+#services .dl-horizontal dt {
+	width:35px;
 }

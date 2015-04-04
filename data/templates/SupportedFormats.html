@@ -1,0 +1,55 @@
+﻿<div>
+	<div ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" ng-show="device.videoCapable != null" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.videoCapable != null}">
+				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="video">Video</a>
+			</li>
+			<li role="presentation" ng-show="device.audioCapable != null" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: device.videoCapable == null && device.audioCapable != null}">
+				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="audio">Audio</a>
+			</li>
+			<li role="presentation" ng-show="device.imageCapable != null" ng-click="protocolInfoFilter = 'image'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable != null}">
+				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="image">Image</a>
+			</li>
+			<li role="presentation" ng-show="device.mirrorCapable != null" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable == null && device.mirrorCapable != null}">
+				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="mirror">Mirror</a>
+			</li>
+		</ul>
+		<div class="tab-content tab-padding">
+			<div role="tabpanel" ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null" class="tab-pane active" id="capabilities-tab">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Protocol</th>
+							<th>Network</th>
+							<th>Medium</th>
+							<th>Container Type</th>
+							<th>Container Type Info</th>
+							<th>Additional Info</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="info in device.protocolInfo.sink | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+							<td>{{info.protocol}}</td>
+							<td>{{info.network}}</td>
+							<td>{{info.contentFormat.medium}}</td>
+							<td>{{info.contentFormat.containerType}}</td>
+							<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+							<td>{{info.additionalInfo}}</td>
+						</tr>
+						<tr ng-repeat="info in device.protocolInfo.source | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+							<td>{{info.protocol}}</td>
+							<td>{{info.network}}</td>
+							<td>{{info.contentFormat.medium}}</td>
+							<td>{{info.contentFormat.containerType}}</td>
+							<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+							<td>{{info.additionalInfo}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<h4 ng-hide="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
+		Unknown
+	</h4>
+</div>

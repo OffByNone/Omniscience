@@ -22,6 +22,48 @@
 		</div>
 	</nav>
 	<playlist></playlist>
-	<device-info></device-info>
-	<connection-manager></connection-manager>
+	<div class="container pull-left">
+		<div class="media">
+			<div class="media-left media-top">
+				<img class="icon" ng-show="device.icons[0].url" ng-src="{{ device.icons[0].url }}" />
+			</div>
+			<div class="media-body">
+				<h1 class="active-device-header">
+					<a target="_blank" ng-href="{{device.webPage}}" ng-show="device.webPage">{{device.name}}</a>
+					<span ng-hide="device.webPage">{{device.name}}</span>
+					<small>
+						<em>
+							<a target="_blank" ng-show="device.model.url" ng-href="{{device.model.url}}">{{device.model.name}}</a>
+							<span ng-hide="device.model.url">{{device.model.name}}</span>
+						</em>
+						by
+						<em>
+							<a target="_blank" ng-show="device.manufacturer.url" ng-href="{{device.manufacturer.url}}">{{device.manufacturer.name}}</a>
+							<span ng-hide="device.manufacturer.url">{{device.manufacturer.name}}</span>
+						</em>
+					</small>
+				</h1>
+			</div>
+		</div>
+		<div role="tabpanel">
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+				<li role="presentation"><a data-target="#supported-formats" aria-controls="supported-formats" role="tab" data-toggle="tab">Supported Formats</a></li>
+				<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
+				<li role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+				<li role="presentation" class="pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
+			</ul><!-- Nav tabs -->
+			<div class="tab-content">
+				<div ng-include="'templates/DeviceInfo.html'" role="tabpanel" class="tab-pane active" id="info">
+				</div>
+				<div ng-include="'templates/SupportedFormats.html'" role="tabpanel" class="tab-pane" id="supported-formats"></div>
+				<div ng-include="'templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
+				<div role="tabpanel" class="tab-pane" id="settings">
+					<device-settings></device-settings>
+				</div>
+				<div ng-include="'templates/DebugInfo.html'" role="tabpanel" class="tab-pane" id="debug"></div>
+			</div><!-- Tab panes -->
+		</div>
+	</div>
+	<connection-manager ng-if="hasService('Connection Manager')"></connection-manager>
 </div>

@@ -13,7 +13,7 @@ How To Run
 
 	activate
 	cfx run -b "C:\program files\nightly\firefox.exe"
-		--On my desktop something happened awhile back and I need to specify the binary, a reinstall of firefox would likely fix the issue and maybe someday I will do it but for now I just specify the binary manually with the -b flag
+		--On my desktop something happened awhile back and I need to specify the binary, with the -b flag
 		--Needs to be run from the root of your addon
 JPM
 
@@ -47,24 +47,6 @@ View contents of simplestorage
 	--From addon-debugger console run
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
-Better work flow for working on the tab
-
-	Using cfx -or even JPM- isn't the best workflow as having to restart the browser to test a change takes awhile - the JPM is far slower than CFX and the JPM post isn't much if any faster than a cfx run.
-	In order to get around this when I have been working on the tab I have been loading it via a local file server as just a normal html file.
-	To do this requires a few changes to the files:
-		Make sure all the devices are found and run the extension and put a breakpoint inside of main.js where it is sending the updatedevice message to the panel/tab (as of this writing it is around line 77).
-		Run the following command in the addon-debugger window while paused at the breakpoint: JSON.stringify(deviceLocatorService.devices)
-		There will likely be a [...] somewhere in the output make sure to click that to expand so you can see the entire output
-		Copy the output, and paste into your favorite editor
-		Remove the first and last '"'
-		You should now have an array of your device objects, replace the testdevices array inside of data/UI/tab.js
-		Open data/UI/index.html and un-comment the script files at the bottom - these might be out of date to update them look at the Constants file and find the contentscriptfiles for the tab, and make sure to add the data/ui/tab.js at the top of this block
-		Open DeviceController.js and HomeController.js and add "window.loadDevices()" as the final line before the final "});"
-		Find a static file server and fire it up - I use the node serve-static
-		Navigate to the tab page in your browser and you should be good to develop it like a normal website.
-
-	Make sure to remove the window.loadDevices() and re-comment out the script files when you want to load it from the extension again or when you are done.
-
 TroubleShooting Tips
 	If you are having problems with the fxoswebserver check for casing mismatch issues.  I had an issue
 	where the header was coming in as CONTENT-LENGTH but the code was looking for Content-Length.
@@ -72,7 +54,6 @@ TroubleShooting Tips
 To-Do
 
 	[ ]	New Icon
-	[ ] Better understand Module/Export pattern
 
 	Front-End
 
@@ -122,7 +103,6 @@ To-Do
 		About Page
 			[ ] Make it
 
-		Add UI Router
 		Better error handling
 
 	Back-End
@@ -162,7 +142,6 @@ To-Do
 
 		[ ] Make a logger that can take different levels (info, warn, error) and allow user to pick verbosity.
 		[ ] Get metadata for files
-		[ ] Inject more dependencies
 		[ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
 		[ ] Better error handling
 		[ ] Better understand/remove TransportService
@@ -171,4 +150,4 @@ To-Do
 matchstick, chromecast, and firestick will need extra setup in the new service oriented arch.  They will need to setup a service on the device in the device factory of themselves
 
 
-when calling methods on deviceservices, pass in the service type urn or friendly name, method to call on service and args to pass to service
+Need to find a way to add manufacturer specific methods to services

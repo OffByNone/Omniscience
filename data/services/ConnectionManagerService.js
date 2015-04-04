@@ -1,11 +1,8 @@
 omniscience.factory('connectionManagerService', function ($rootScope, eventService){
-
-	//this._subscriptionService.on( 'EventOccured', ( service, request ) => {
-	//	this._emitter.emit( this, 'EventOccured', service, null, request );
-	//})
+	"use strict";
 
 	var constants = {};
-		constants.DLNA = {
+	constants.DLNA = {
 		'DLNA.ORG_PN': 'mediaType', //"MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
 		'DLNA.ORG_OP': 'operations',
 		'DLNA.ORG_PS': 'playSpeed',
@@ -35,24 +32,6 @@ omniscience.factory('connectionManagerService', function ($rootScope, eventServi
 			dlnaVersion15Supported: 20 //0x00100000
 		}
 	};
-
-
-	function getCurrentConnectionInfo(service){
-		return eventService.callService(service, "GetCurrentConnectionInfo", { ConnectionID: 0/*this comes from gettingcurrentconnectionids*/ });
-	}
-	function getProtocolInfo(service){
-		return eventService.callService(service, "GetProtocolInfo").
-			then(response => {
-				return {
-					sink: _parseProtocolResponse(response.Sink),
-					source: _parseProtocolResponse(response.Source),
-					_raw: response._raw
-				};
-			});
-	}
-	function getCurrentConnectionIds(service){
-		return eventService.callService(service, "GetCurrentConnectionIDs");
-	}
 
 	function _parseProtocolResponse(protocolResponse){
 		var protocolInfo = [];
@@ -150,8 +129,26 @@ omniscience.factory('connectionManagerService', function ($rootScope, eventServi
 	}
 
 	return {
-		getCurrentConnectionInfo: getCurrentConnectionInfo,
-		getCurrentConnectionIds: getCurrentConnectionIds,
-		getProtocolInfo: getProtocolInfo
+		getAdditionalInformation: function getAddtionalInformation(service){
+			this.getCurrentConnectionInfo(service),
+			this.getCurrentConnectionIds(service),
+			this.getProtocolInfo(service)
+		},
+		getCurrentConnectionInfo: function getCurrentConnectionInfo(service, connectionId){
+			return eventService.callService(service, "GetCurrentConnectionInfo", { ConnectionID: connectionId });
+		},
+		getProtocolInfo: function getProtocolInfo(service){
+			return eventService.callService(service, "GetProtocolInfo").
+				then(response => {
+					return {
+						sink: _parseProtocolResponse(response.Sink),
+						source: _parseProtocolResponse(response.Source),
+						_raw: response._raw
+					};
+				});
+		},
+		getCurrentConnectionIds: function getCurrentConnectionIds(service){
+			return eventService.callService(service, "GetCurrentConnectionIDs");
+		}
 	}
 });

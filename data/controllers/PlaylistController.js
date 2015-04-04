@@ -1,4 +1,4 @@
-﻿omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, eventService, pubSub) {
+﻿omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, $interval, eventService, pubSub) {
 	"use strict";
 
 	$scope.playback = { state: "stopped" };
@@ -105,6 +105,7 @@
 		eventService.emit('chooseFile', device);
 	};
 
+	$scope.interval = $interval(() => eventService.emit('getPositionInfo', $scope.device), 1000);
 
 	function getFile(fileUri) {
 		var file = $scope.playlist == null ? null : $scope.playlist.filter(item => item.path === fileUri);
@@ -204,7 +205,7 @@
 		//SS means exactly 2 digits to indicate seconds (00 to 59)
 		//[.F+] means optionally a dot followed by one or more digits to indicate fractions of seconds
 		//[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
-		
+
 		duration = duration.replace(/[\+\-]/g,""); //remove any + or -
 		duration = duration.replace(/\..*/,""); //remove any fractional seconds
 
@@ -253,7 +254,7 @@
 		if (event.hasOwnProperty('CurrentTrackDuration')){
 			var [ totalSeconds, totalMinutes ] = getTime(event.CurrentTrackDuration);
 			$scope.track.totalTime = totalMinutes;
-			$scope.track.totalSeconds = totalSeconds;	
+			$scope.track.totalSeconds = totalSeconds;
 		}
 		if (event.hasOwnProperty("RelTime")) {
 			var [ currentSeconds, CurrentMinutes  ] = getTime(event.RelTime);
@@ -263,8 +264,8 @@
 		if (event.hasOwnProperty('CurrentMediaDuration')){
 			var [ totalSeconds, totalMinutes ] = getTime(event.CurrentMediaDuration);
 			$scope.media.totalTime = totalMinutes;
-			$scope.media.totalSeconds = totalSeconds;	
-		}		
+			$scope.media.totalSeconds = totalSeconds;
+		}
 		if (event.hasOwnProperty("AbsTime") && event.AbsTime != "NOT_IMPLEMENTED") {
 			var [ currentSeconds, CurrentMinutes  ] = getTime(event.AbsTime);
 			$scope.media.currentSeconds = currentSeconds;

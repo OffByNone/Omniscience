@@ -12,6 +12,7 @@
 	$rootScope.loadDevices = function loadDevices() {
 		eventService.emit("loadDevices");
 	};
+
 	function addUpdateDevice(device) {
 		var found = false;
 		$rootScope.devices.forEach(function (scopeDevice) {
