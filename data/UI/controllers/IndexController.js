@@ -1,4 +1,4 @@
-﻿rotaryApp.controller('IndexController', function IndexController($scope, $rootScope, eventService, pubSub) {
+﻿omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService, pubSub) {
 	"use strict";
 
 	$rootScope.devices = [];

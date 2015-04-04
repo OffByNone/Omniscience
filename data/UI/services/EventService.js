@@ -1,4 +1,6 @@
-rotaryApp.factory('eventService', function($rootScope, $window, $q){
+omniscience.factory('eventService', function($rootScope, $window, $q){
+	var serviceResponsePromises = {};
+
 	function generateQuickGuidish() { //e7 from http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 		var lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
 		var d0 = Math.random() * 0xffffffff | 0;
@@ -18,17 +20,23 @@ rotaryApp.factory('eventService', function($rootScope, $window, $q){
 	function emit(messageName, a, b, c, d, e) {
 		$window.self.port.emit(messageName, a, b, c, d, e); //todo change this to call so I can get rid of this ugly hack
 	}
+
+	on("CallServiceResponse", function (uniqueId, data) {
+		var deferred = serviceResponsePromises[uniqueId];
+		if (deferred) {
+			delete serviceResponsePromises[uniqueId];
+			deferred.resolve(data);
+		}
+		else console.log("no deferred for the response");
+	});
+
 	function callService(service, serviceMethod, data) {
 		var uniqueId = generateQuickGuidish();
 		var deferred = $q.defer();
 
-		on(serviceMethod + "Response" + uniqueId, function (data) { //figure out how to unbind this (might actually be a once in the firefox addon sdk if so use it instead), so it is only a once. NOTE we are not using angular $on we are using the firefox extension self.port.on
-			console.log(data);
-			deferred.resolve(data);
-		});
+		serviceResponsePromises[uniqueId] = deferred;
 
 		$window.self.port.emit("CallService", uniqueId, service, serviceMethod, data);
-
 		return deferred.promise;
 	}
 

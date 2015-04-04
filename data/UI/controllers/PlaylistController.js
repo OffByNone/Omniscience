@@ -1,4 +1,4 @@
-﻿rotaryApp.controller('PlaylistController', function PlaylistController($scope, $timeout, eventService, pubSub) {
+﻿omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, eventService, pubSub) {
 	"use strict";
 
 	$scope.playback = { state: "stopped" };

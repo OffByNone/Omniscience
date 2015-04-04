@@ -1,5 +1,5 @@
 ﻿"use strict";
 
-rotaryApp.controller('AboutController', function AboutController($scope) {
+omniscience.controller('AboutController', function AboutController($scope) {
 
 });

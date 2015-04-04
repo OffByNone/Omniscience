@@ -1,7 +1,7 @@
 'use strict';
-var rotaryApp = angular.module('rotaryApp', ['ngRoute']);
+var omniscience = angular.module('omniscience', ['ngRoute']);
 
-rotaryApp.config(function rotaryApp($routeProvider, $locationProvider, $compileProvider) {
+omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
 	//$locationProvider.html5Mode({enabled:true});
 	$routeProvider
 		.when('/', {

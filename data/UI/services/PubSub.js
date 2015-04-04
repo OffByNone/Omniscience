@@ -1,4 +1,4 @@
-﻿rotaryApp.service('pubSub', function ($rootScope) {
+﻿omniscience.service('pubSub', function ($rootScope) {
 	return {
 		pub: function (message, data) {
 			$rootScope.$emit(message, data);

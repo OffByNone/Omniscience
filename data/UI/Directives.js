@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-angular.module("rotaryApp").directive("about", function () {
+angular.module("omniscience").directive("about", function () {
 	return ({
 		controller: "AboutController",
 		link: link,
@@ -10,7 +10,7 @@ angular.module("rotaryApp").directive("about", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("rotaryApp").directive("deviceInfo", function () {
+angular.module("omniscience").directive("deviceInfo", function () {
 	return ({
 		controller: "DeviceInfoController",
 		link: link,
@@ -20,7 +20,7 @@ angular.module("rotaryApp").directive("deviceInfo", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("rotaryApp").directive("deviceList", function () {
+angular.module("omniscience").directive("deviceList", function () {
 	return ({
 		controller: "DeviceListController",
 		link: link,
@@ -31,7 +31,7 @@ angular.module("rotaryApp").directive("deviceList", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("rotaryApp").directive("deviceSettings", function () {
+angular.module("omniscience").directive("deviceSettings", function () {
 	return ({
 		controller: "DeviceSettingsController",
 		link: link,
@@ -41,7 +41,7 @@ angular.module("rotaryApp").directive("deviceSettings", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("rotaryApp").directive("playback", function () {
+angular.module("omniscience").directive("playback", function () {
 	return ({
 		controller: "PlaylistController",
 		link: link,
@@ -51,12 +51,24 @@ angular.module("rotaryApp").directive("playback", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("rotaryApp").directive("playlist", function () {
+angular.module("omniscience").directive("playlist", function () {
 	return ({
 		controller: "PlaylistController",
 		link: link,
 		restrict: "E",
 		templateUrl: "templates/Playlist.html"
+	});
+
+	function link(scope, element, attributes) {}
+});
+
+
+angular.module("omniscience").directive("connectionManager", function () {
+	return ({
+		controller: "ConnectionManager",
+		link: link,
+		restrict: "E",
+		templateUrl: "templates/ConnectionManager.html"
 	});
 
 	function link(scope, element, attributes) {}

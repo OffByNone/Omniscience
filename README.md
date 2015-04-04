@@ -1,4 +1,4 @@
-Rotary
+Omniscience
 ======
 
 Firefox extension to find and interact with UPnP (chromecast, matchstick, firetv stick, xbox 360, xbox one, etc..) devices on your local network

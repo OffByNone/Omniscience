@@ -1,18 +1,51 @@
-rotaryApp.factory('connectionManagerService', function ($rootScope, eventService){
+omniscience.factory('connectionManagerService', function ($rootScope, eventService){
 
 	//this._subscriptionService.on( 'EventOccured', ( service, request ) => {
 	//	this._emitter.emit( this, 'EventOccured', service, null, request );
 	//})
 
+	var constants = {};
+		constants.DLNA = {
+		'DLNA.ORG_PN': 'mediaType', //"MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
+		'DLNA.ORG_OP': 'operations',
+		'DLNA.ORG_PS': 'playSpeed',
+		'DLNA.ORG_CI': 'conversionIndicator',
+		'DLNA.ORG_FLAGS': 'flags',
+		'DLNA.ORG_MAXSP': 'maxSP',
+
+		mediaType: 'DLNA.ORG_PN',
+		operations: 'DLNA.ORG_OP',
+		playSpeed: 'DLNA.ORG_PS',
+		conversionIndicator: 'DLNA.ORG_CI',
+		flags: 'DLNA.ORG_FLAGS',
+		maxSP: 'DLNA.ORG_MAXSP',
+
+		flagValueMap: {
+			senderPaced: 31, //0x80000000
+			lsopTimeBasedSeekSupported: 30, //0x40000000
+			lsopByteBasedSeekSupported: 29, //0x20000000
+			playcontainerSupported: 28, //0x10000000
+			s0IncreasingSupported: 27, //0x08000000
+			sNIncreasingSupported: 26, //0x04000000
+			rtspPauseSupported: 25, //0x02000000
+			streamingTransferModeSupported: 24, //0x01000000
+			interactiveTransferModeSupported: 23, //0x00800000
+			backgroundTransferModeSupported: 22, //0x00400000
+			connectionStallingSupported: 21, //0x00200000
+			dlnaVersion15Supported: 20 //0x00100000
+		}
+	};
+
+
 	function getCurrentConnectionInfo(service){
-		return eventService.callService(service, "GetCurrentConnectionInfo", { ConnectionID: service.connectionId });
+		return eventService.callService(service, "GetCurrentConnectionInfo", { ConnectionID: 0/*this comes from gettingcurrentconnectionids*/ });
 	}
 	function getProtocolInfo(service){
 		return eventService.callService(service, "GetProtocolInfo").
 			then(response => {
 				return {
-					sink: _parseProtocolResponse(response.sink),
-					source: _parseProtocolResponse(response.source),
+					sink: _parseProtocolResponse(response.Sink),
+					source: _parseProtocolResponse(response.Source),
 					_raw: response._raw
 				};
 			});
@@ -74,40 +107,46 @@ rotaryApp.factory('connectionManagerService', function ($rootScope, eventService
 	}
 	function _parseDLNA(key, value){
 		var valueObject = {};
-		var newKey = Constants.DLNA[key];
+		var newKey = constants.DLNA[key];
 
-		if(key === Constants.DLNA.mediaType){
+		if(key === constants.DLNA.mediaType){
 			return [newKey, value];
 		}
-		if(key === Constants.DLNA.operations){
+		if(key === constants.DLNA.operations){
 			valueObject.canTimeSeekRange = value.charAt(0) === 1;
 			valueObject.canRange = value.charAt(1) === 1;
 			return [newKey, valueObject];
 		}
-		if(key === Constants.DLNA.playSpeed){
+		if(key === constants.DLNA.playSpeed){
 			value = value === 1;
 			newKey = "isValidPlaySpeed";
 			return [newKey, value];
 		}
-		if(key === Constants.DLNA.conversionIndicator){
+		if(key === constants.DLNA.conversionIndicator){
 			value = value === 1;
 			newKey = "isTranscoded";
 			return [newKey, value];
 		}
-		if(key === Constants.DLNA.flags){
+		if(key === constants.DLNA.flags){
 			var flags = parseInt(value.substring(0, value.length-24), 16);//it is in hex and padded with 24 0s
-			var arrayOfBools = this._utilities.arrayFromMask(flags);
-			var flagVals = Constants.DLNA.flagValueMap;
+			var arrayOfBools = _arrayFromMask(flags);
+			var flagVals = constants.DLNA.flagValueMap;
 			for (var prop in flagVals)
 				if(flagVals.hasOwnProperty(prop))
 					valueObject[prop] = arrayOfBools[flagVals[prop]];
 			return [newKey, valueObject];
 		}
-		if(key === Constants.maxSP){
+		if(key === constants.maxSP){
 			return [newKey, value];
 		}
 
 		return [key, value];
+	}
+	function _arrayFromMask (nMask) {
+		//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators
+		for (var nShifted = nMask, aFromMask = []; nShifted;
+			 aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+		return aFromMask;
 	}
 
 	return {

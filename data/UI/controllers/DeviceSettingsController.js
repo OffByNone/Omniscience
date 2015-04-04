@@ -1,4 +1,4 @@
-﻿rotaryApp.controller('DeviceSettingsController', function DeviceSettingsController($scope, eventService, pubSub) {
+﻿omniscience.controller('DeviceSettingsController', function DeviceSettingsController($scope, eventService, pubSub) {
 	"use strict";
 
 	$scope.setName = function setName(device, name) {

@@ -1,4 +1,4 @@
-rotaryApp.controller('DeviceController', function DeviceController($scope, $routeParams, $interval, $rootScope, eventService, pubSub) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $interval, $rootScope, eventService, pubSub) {
 	"use strict";
 
 	$scope.deviceId = $routeParams.deviceId;

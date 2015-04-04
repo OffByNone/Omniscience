@@ -1,19 +1,19 @@
 {
-  "name": "rotary",
-  "title": "Rotary",
+  "name": "omniscience",
+  "title": "Omniscience",
   "id": "jid1-AJEftiSmCtDBxA@jetpack",
-  "description": "Finds DIAL devices on the local network",
+  "description": "Finds UPnP devices on the local network",
   "author": "Off By None",
   "main": "lib/main.js",
   "license": "yes",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "icon": "data/icons/rotary-32.png",
   "icon64": "data/icons/rotary-64.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OffByNone/Rotary"
+    "url": "https://github.com/OffByNone/Omniscience"
   },
   "bugs": {
-    "url": "https://github.com/OffByNone/Rotary/issues"
+    "url": "https://github.com/OffByNone/Omniscience/issues"
   }
 }
