@@ -145,7 +145,6 @@ To-Do
 		[ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
 		[ ] Better error handling
 		[ ] Better understand/remove TransportService
-		[ ] Use apply to pass in n number of arguments to the emit/on functions that simply forward on where I have added a, b, c, d, e
 
 matchstick, chromecast, and firestick will need extra setup in the new service oriented arch.  They will need to setup a service on the device in the device factory of themselves
 

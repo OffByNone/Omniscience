@@ -1,5 +1,6 @@
 omniscience.factory('eventService', function($rootScope, $window, $q){
 	var serviceResponsePromises = {};
+	var emitWithPromisePromises = {};
 
 	function generateQuickGuidish() { //e7 from http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 		var lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
@@ -13,13 +14,36 @@ omniscience.factory('eventService', function($rootScope, $window, $q){
 			lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];
 	}
 	function on(messageName, callback){
-		$window.self.port.on(messageName, function(a, b, c, d, e){
-			$rootScope.$apply(callback(a, b, c, d, e)); //todo: change this to call so I can get rid of this ugly hack
+		$window.self.port.on(messageName, function(){
+			$rootScope.$apply(callback.apply(this, arguments));
 		});
 	}
-	function emit(messageName, a, b, c, d, e) {
-		$window.self.port.emit(messageName, a, b, c, d, e); //todo change this to call so I can get rid of this ugly hack
+	function emit(messageName) {
+		//accepts n number of arguments, messageName must be first
+		$window.self.port.emit.apply(this, arguments); 
 	}
+
+	function emitWithPromise(messageName) {
+		//accepts n number of arguments, messageName must be first
+		var uniqueId = generateQuickGuidish();
+		var deferred = $q.defer();
+
+		emitWithPromisePromises[uniqueId] = deferred;
+		var args = ["emitWithPromise", uniqueId].concat(arguments);
+		$window.self.port.emit.apply(this, args);
+		return deferred.promise;
+	}
+
+	on("emitWithPromiseResponse", function (uniqueId) {
+		//accepts n number of arguments, uniqueId must be first
+		var deferred = emitWithPromisePromises[uniqueId];
+		if (deferred) {
+			delete emitWithPromisePromises[uniqueId];
+			args = arguments.substr(1,arguments.length);
+			deferred.resolve(args);
+		}
+		else console.log("no deferred for the response");
+	});
 
 	on("CallServiceResponse", function (uniqueId, data) {
 		var deferred = serviceResponsePromises[uniqueId];
@@ -41,8 +65,8 @@ omniscience.factory('eventService', function($rootScope, $window, $q){
 	}
 
 	return {
-        on: on,
-        emit: emit,
+		on: on,
+		emit: emit,
 		callService: callService
-    }
+	};
 });

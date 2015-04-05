@@ -94,6 +94,6 @@ omniscience.factory('avTransportService', function ($rootScope, eventService) {
 		},
 		x_ExecuteOperation: function x_ExecuteOperation(service, avtInstanceID, actionDirective) {
 			return eventService.callService(service, "X_ExecuteOperation", { AVTInstanceID: avtInstanceID, ActionDirective: actionDirective });
-		},
+		}
 	};
 });

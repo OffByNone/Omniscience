@@ -14,14 +14,14 @@
 				</div>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-content">
-				<playback></playback>
+				<playback ng-if="hasService('AV Transport')"></playback>
 				<ul class="nav navbar-nav navbar-right">
 					<li> <a href="/about" class="nav navbar-nav navbar-right">About</a> </li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<playlist></playlist>
+	<playlist ng-if="hasService('AV Transport')"></playlist>
 	<div class="container pull-left">
 		<div class="media">
 			<div class="media-left media-top">
