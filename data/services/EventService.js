@@ -1,6 +1,6 @@
 omniscience.factory('eventService', function($rootScope, $window, $q){
 	var serviceResponsePromises = {};
-	var emitWithPromisePromises = {};
+	var emitPromises = {};
 
 	function generateQuickGuidish() { //e7 from http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 		var lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
@@ -20,31 +20,28 @@ omniscience.factory('eventService', function($rootScope, $window, $q){
 	}
 	function emit(messageName) {
 		//accepts n number of arguments, messageName must be first
-		$window.self.port.emit.apply(this, arguments); 
-	}
-
-	function emitWithPromise(messageName) {
-		//accepts n number of arguments, messageName must be first
 		var uniqueId = generateQuickGuidish();
 		var deferred = $q.defer();
 
-		emitWithPromisePromises[uniqueId] = deferred;
-		var args = ["emitWithPromise", uniqueId].concat(arguments);
+		emitPromises[uniqueId] = deferred;
+		var args = Array.prototype.slice.call(arguments);
+		args = args.slice(1, args.length);
+		var args = [messageName, uniqueId].concat(args);
 		$window.self.port.emit.apply(this, args);
 		return deferred.promise;
 	}
 
-	on("emitWithPromiseResponse", function (uniqueId) {
+	on("emitResponse", function (uniqueId) {
 		//accepts n number of arguments, uniqueId must be first
-		var deferred = emitWithPromisePromises[uniqueId];
+		var deferred = emitPromises[uniqueId];
 		if (deferred) {
-			delete emitWithPromisePromises[uniqueId];
-			args = arguments.substr(1,arguments.length);
-			deferred.resolve(args);
+			delete emitPromises[uniqueId];
+			var args = Array.prototype.slice.call(arguments);
+			args = args.slice(1, args.length);
+			deferred.resolve.apply(deferred, args);
 		}
 		else console.log("no deferred for the response");
 	});
-
 	on("CallServiceResponse", function (uniqueId, data) {
 		var deferred = serviceResponsePromises[uniqueId];
 		if (deferred) {

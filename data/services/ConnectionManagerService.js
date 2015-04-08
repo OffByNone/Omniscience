@@ -1,35 +1,37 @@
-omniscience.factory('connectionManagerService', function ($rootScope, eventService){
+omniscience.factory('connectionManagerService', function (eventService, informationService){
 	"use strict";
 
-	var constants = {};
-	constants.DLNA = {
-		'DLNA.ORG_PN': 'mediaType', //"MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
-		'DLNA.ORG_OP': 'operations',
-		'DLNA.ORG_PS': 'playSpeed',
-		'DLNA.ORG_CI': 'conversionIndicator',
-		'DLNA.ORG_FLAGS': 'flags',
-		'DLNA.ORG_MAXSP': 'maxSP',
+	var constants = {
+		serviceTypeUrn: 'urn:schemas-upnp-org:service:ConnectionManager:1',
+		DLNA: {
+			'DLNA.ORG_PN': 'mediaType', //"MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
+			'DLNA.ORG_OP': 'operations',
+			'DLNA.ORG_PS': 'playSpeed',
+			'DLNA.ORG_CI': 'conversionIndicator',
+			'DLNA.ORG_FLAGS': 'flags',
+			'DLNA.ORG_MAXSP': 'maxSP',
 
-		mediaType: 'DLNA.ORG_PN',
-		operations: 'DLNA.ORG_OP',
-		playSpeed: 'DLNA.ORG_PS',
-		conversionIndicator: 'DLNA.ORG_CI',
-		flags: 'DLNA.ORG_FLAGS',
-		maxSP: 'DLNA.ORG_MAXSP',
+			mediaType: 'DLNA.ORG_PN',
+			operations: 'DLNA.ORG_OP',
+			playSpeed: 'DLNA.ORG_PS',
+			conversionIndicator: 'DLNA.ORG_CI',
+			flags: 'DLNA.ORG_FLAGS',
+			maxSP: 'DLNA.ORG_MAXSP',
 
-		flagValueMap: {
-			senderPaced: 31, //0x80000000
-			lsopTimeBasedSeekSupported: 30, //0x40000000
-			lsopByteBasedSeekSupported: 29, //0x20000000
-			playcontainerSupported: 28, //0x10000000
-			s0IncreasingSupported: 27, //0x08000000
-			sNIncreasingSupported: 26, //0x04000000
-			rtspPauseSupported: 25, //0x02000000
-			streamingTransferModeSupported: 24, //0x01000000
-			interactiveTransferModeSupported: 23, //0x00800000
-			backgroundTransferModeSupported: 22, //0x00400000
-			connectionStallingSupported: 21, //0x00200000
-			dlnaVersion15Supported: 20 //0x00100000
+			flagValueMap: {
+				senderPaced: 31, //0x80000000
+				lsopTimeBasedSeekSupported: 30, //0x40000000
+				lsopByteBasedSeekSupported: 29, //0x20000000
+				playcontainerSupported: 28, //0x10000000
+				s0IncreasingSupported: 27, //0x08000000
+				sNIncreasingSupported: 26, //0x04000000
+				rtspPauseSupported: 25, //0x02000000
+				streamingTransferModeSupported: 24, //0x01000000
+				interactiveTransferModeSupported: 23, //0x00800000
+				backgroundTransferModeSupported: 22, //0x00400000
+				connectionStallingSupported: 21, //0x00200000
+				dlnaVersion15Supported: 20 //0x00100000
+			}
 		}
 	};
 
@@ -129,16 +131,16 @@ omniscience.factory('connectionManagerService', function ($rootScope, eventServi
 	}
 
 	return {
-		getAdditionalInformation: function getAddtionalInformation(service){
-			this.getCurrentConnectionInfo(service),
-			this.getCurrentConnectionIds(service),
-			this.getProtocolInfo(service)
+		getAdditionalInformation: function getAddtionalInformation(){
+			this.getCurrentConnectionInfo(),
+			this.getCurrentConnectionIds(),
+			this.getProtocolInfo()
 		},
-		getCurrentConnectionInfo: function getCurrentConnectionInfo(service, connectionId){
-			return eventService.callService(service, "GetCurrentConnectionInfo", { ConnectionID: connectionId });
+		getCurrentConnectionInfo: function getCurrentConnectionInfo(connectionId){
+			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetCurrentConnectionInfo", { ConnectionID: connectionId });
 		},
-		getProtocolInfo: function getProtocolInfo(service){
-			return eventService.callService(service, "GetProtocolInfo").
+		getProtocolInfo: function getProtocolInfo(){
+			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetProtocolInfo").
 				then(response => {
 					return {
 						sink: _parseProtocolResponse(response.Sink),
@@ -147,8 +149,8 @@ omniscience.factory('connectionManagerService', function ($rootScope, eventServi
 					};
 				});
 		},
-		getCurrentConnectionIds: function getCurrentConnectionIds(service){
-			return eventService.callService(service, "GetCurrentConnectionIDs");
+		getCurrentConnectionIds: function getCurrentConnectionIds(){
+			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetCurrentConnectionIDs");
 		}
 	}
 });

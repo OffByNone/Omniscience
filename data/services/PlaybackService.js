@@ -1,111 +1,16 @@
 ﻿omniscience.factory('playbackService', function ($timeout, eventService, avTransportService, fileService) {
 	"use strict";
 
-	var slideshow = { duration: 10000, timeout: null };
-	var playbackState = "stopped";
-	var playlist = [];
-	var isMuted = false;
-	var volume = 100;
-	var repeat = false;
 	var currentTrack = {};
+	var playlist = [];
+	var availableActions = ["play","stop"];
+	var slideshow = { duration: 10000, timeout: null };
 
-	var media = {};
-	var nextMedia = {};
-	var record = {};
-
-	function togglePlayState(deviceServiceService) {
-		if (playbackState === "playing") pause(deviceServiceService);
-		else play(deviceService);
+	function load(file){
+		return fileService.shareFile(file).then(fileUri => {
+			return avTransportService.setAvTransportUri(fileUri, "");
+		});
 	}
-	function play(deviceService, file) {
-		pauseSlideshow();
-		playbackState = "playing";
-		avTransportService.play(deviceService);
-		if (file) currentTrack.file = file;
-
-		//set timeout for image slideshow
-		if (currentTrack.file.type && currentTrack.file.type.indexOf("image/") == 0) startSlideshow(deviceService);
-	}
-	function pause(deviceService) {
-		playbackState = "paused";
-		avTransportService.pause(deviceService);
-		pauseSlideshow();
-	}
-	function stop(deviceService) {
-		playbackState = "stopped";
-		avTransportService.stop(deviceService);
-		pauseSlideshow();
-	}
-	function previous(deviceService) {
-		var previousTrack = playlist[playlist.length - 1];
-		for (var i = 0; i < playlist.length; i++){
-			if (playlist[i] === currentTrack.file) return play(deviceService, previousTrack);
-			previousTrack = playlist[i];
-		}
-	}
-	function next(deviceService, abideByRepeat) {
-		for (var i = 0; i < playlist.length; i++) {
-			if (playlist[i] === currentTrack.file)
-				if (i == playlist.length - 1)
-					if (!abideByRepeat || $scope.repeat) return play(deviceService, playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
-					else {//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
-						stop(deviceService);
-						load(deviceService, playlist[0]);
-					}
-				else return play(deviceService, playlist[Number(i) + 1]); //we are not the last file so play the next
-		}
-	}
-	function startSlideshow(deviceService) {
-		slideshow.timeout = $timeout(() => {
-			if (playbackState.toLowerCase() === 'playing')
-				next(deviceService, true);
-		}, slideshow.duration);
-	}
-	function pauseSlideshow() {
-		if (slideshow.timeout) $timeout.cancel(slideshow.timeout);
-	}
-
-
-	function setMute(deviceService, mute) {
-		avTransportService.setMute(deviceService, mute);
-	};
-	function toggleMute(deviceService) {
-		isMuted = !isMuted;
-		setMute(isMuted);
-	}
-	function setVolume(deviceService, newVolume) {
-		deviceService.volume = newVolume;
-		avTransportService.setVolume(deviceService, newVolume);
-	}
-	function incrementVolume(deviceService) {
-		setVolume(deviceService, Number(volume) + 1);
-	}
-	function decrementVolume(deviceService) {
-		setVolume(deviceService, Number(volume) - 1);
-	}
-
-	function randomizePlaylist() {
-		shuffle(playlist);
-	};
-	function removeFromPlaylist(deviceService, file) {
-		for (var i = 0; i < playlist.length; i++)
-			if (playlist[i] === file) {
-				if (file === currentTrack.file) {
-					if (playlist.length > 1) next(deviceService, true); //more files in playlist, play next
-					else stop(deviceService); //only file in playlist, stop playback
-				}
-				playlist.splice(i, 1);
-				return;
-			}
-	};
-	function clearPlaylist(deviceService) {
-		playlist = [];
-		stop(deviceService);
-	};
-
-
-
-
 	function shuffle(array) {
 		///Fisher–Yates Shuffle
 		var currentIndex = array.length, temporaryValue, randomIndex;
@@ -124,82 +29,6 @@
 
 		return array;
 	}
-
-
-	function addToPlaylist(deviceService, playImmediately) {
-		//Adds files to playlist from file picker box and returns the added files
-		files.forEach(file => playlist.push(file));
-
-		if (playImmediately) play(deviceService, files[0]);
-
-		return files;
-	};
-
-
-
-
-
-
-
-	function getFile(fileUri) {
-		var file = playlist.filter(item => item.path === fileUri)[0];
-		return file == null ? null : file;
-	}
-
-
-	function getNameFromUrl(url) {
-		if (!(url instanceof URL)) url = new URL(url);
-		return url.pathname.replace(/^.*(\\|\/|\:)/, '');
-	}
-
-	function load(deviceService, file) {
-		eventService.emit('load', deviceService, file);
-		currentTrack.file = file;
-	};
-
-	function setfile(fileUri) {
-		if (fileUri != null) {
-			var file = getFile(fileUri);
-
-			if (file == null) {
-				file = { name: decodeURI(getNameFromUrl(fileUri)), path: fileUri };
-				playlist.push(file);
-			}
-		}
-		currentTrack.file = file;
-
-		return currentTrack.file;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	var $scope = {};
-
-
-
-	function percentComplete() {
-		return (currentTrack.currentSeconds / currentTrack.totalSeconds) * 100;
-	};
-	$scope.canExecuteAction = function (action) {
-		return $scope.availableActions.some(availableAction => availableAction == action);
-	};
-
-
-
-
 	function secondsToMinutes(duration){
 		var minutesPart = parseInt(duration/60);
 		var secondsPart = duration%60;
@@ -223,6 +52,54 @@
 
 		return parseInt(seconds) + (parseInt(minutes) * 60) + (parseInt(hours) * 3600);
 	}
+	function getTime(duration){
+		var timeInSeconds = durationToSeconds(duration);
+		return [ timeInSeconds, secondsToMinutes(timeInSeconds) ];
+	}
+	function fractionToFloat(fraction) {
+		var y = fraction.split(' ');
+		if (y.length > 1) {
+			var z = y[1].split('/');
+			return (+y[0] + (z[0] / z[1]));
+		}
+		else {
+			var z = y[0].split('/');
+			if (z.length > 1) return (z[0] / z[1]);
+			else return z[0];
+		}
+	}
+
+
+
+
+	var media = {};
+	var nextMedia = {};
+	var record = {};
+	var $scope = {};
+
+	function getFile(fileUri) {
+		var file = playlist.filter(item => item.path === fileUri)[0];
+		return file == null ? null : file;
+	}
+	function getNameFromUrl(url) {
+		if (!(url instanceof URL)) url = new URL(url);
+		return url.pathname.replace(/^.*(\\|\/|\:)/, '');
+	}
+	function setfile(fileUri) {
+		if (fileUri != null) {
+			var file = getFile(fileUri);
+
+			if (file == null) {
+				file = { name: decodeURI(getNameFromUrl(fileUri)), path: fileUri };
+				playlist.push(file);
+			}
+		}
+		currentTrack.file = file;
+
+		return currentTrack.file;
+	}
+
+
 	function setPositionInfo(deviceId, response) {
 		if (deviceId !== $scope.$parent.deviceId) return; //todo: it would be better if this function took in a device to apply it to instead of matching against the parent device
 
@@ -233,10 +110,6 @@
 		$scope.track.totalTime = totalMinutes;
 		$scope.track.currentSeconds = currentSeconds;
 		$scope.track.totalSeconds = totalSeconds;
-	}
-	function getTime(duration){
-		var timeInSeconds = durationToSeconds(duration);
-		return [ timeInSeconds, secondsToMinutes(timeInSeconds) ];
 	}
 	function setPlaybackInformation(device, event) {
 		if (event.hasOwnProperty('CurrentTrackURI')) {
@@ -361,38 +234,120 @@
 		if (event.hasOwnProperty('CurrentTransportActions'))
 			$scope.availableActions = event.CurrentTransportActions.split(",");
 	}
-	function fractionToFloat(fraction) {
-		var y = fraction.split(' ');
-		if (y.length > 1) {
-			var z = y[1].split('/');
-			return (+y[0] + (z[0] / z[1]));
-		}
-		else {
-			var z = y[0].split('/');
-			if (z.length > 1) return (z[0] / z[1]);
-			else return z[0];
-		}
-	}
-
 
 	eventService.on('positionInfo', setPositionInfo);
 
 
-
-
-	/*		loadMedia: function loadMedia(service, instanceId, file) {
-			var deferred = this._defer();
-			var fileUri = this._httpd.loadMedia(service, file);
-
-			this._soapService.post(service.controlUrl,
-								   this.serviceType,
-								   "SetAVTransportURI",
-								   { InstanceID: instanceId, CurrentURI: fileUri, CurrentURIMetaData: "" }
-								  ).then(response => deferred.resolve(response));
-			return deferred.promise;
-		},*/
-
 	return {
-		
+		playlist: playlist,
+		currentTrack: currentTrack,
+		playbackState: "stopped",
+		availableActions: availableActions,
+		volume: 100,
+		isMuted: false,
+		repeat: false,
+
+		play: function (file) {
+			this.pauseSlideshow();
+			this.playbackState = "playing";
+			if (file){
+				currentTrack.file = file;
+				load(file).then(() => avTransportService.play());
+			} else
+				avTransportService.play();
+
+			//set timeout for image slideshow
+			if (currentTrack.file.type && currentTrack.file.type.indexOf("image/") == 0) this.startSlideshow();
+		},
+		pause: function() {
+			this.playbackState = "paused";
+			avTransportService.pause();
+			this.pauseSlideshow();
+		},
+		stop: function() {
+			this.playbackState = "stopped";
+			this.pauseSlideshow();
+			return avTransportService.stop();
+		},
+		previous: function() {
+			var previousTrack = playlist[playlist.length - 1];
+			for (var i = 0; i < playlist.length; i++){
+				if (playlist[i] === currentTrack.file) return this.play(previousTrack);
+				previousTrack = playlist[i];
+			}
+		},
+		next: function(abideByRepeat) {
+			for (var i = 0; i < playlist.length; i++) {
+				if (playlist[i] === currentTrack.file)
+					if (i == playlist.length - 1)
+						if (!abideByRepeat || this.repeat) return this.play(playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
+						else {//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
+							this.stop().then(() => load(playlist[0]));
+						}
+					else return this.play(playlist[Number(i) + 1]); //we are not the last file so play the next
+			}
+		},
+		toggleMute: function () {
+			this.isMuted = !this.isMuted;
+			this.setMute(this.isMuted);
+		},
+		incrementVolume: function() {
+			this.setVolume( Number(volume) + 1);
+		},
+		decrementVolume: function() {
+			this.setVolume( Number(volume) - 1);
+		},
+		randomizePlaylist: function () {
+			shuffle(playlist);
+		},
+		removeFromPlaylist: function(file) {
+			for (var i = 0; i < playlist.length; i++)
+				if (playlist[i] === file) {
+					if (file === currentTrack.file) {
+						if (playlist.length > 1) this.next(true); //more files in playlist, play next
+						else this.stop(); //only file in playlist, stop playback
+					}
+					playlist.splice(i, 1);
+					return;
+				}
+		},
+		clearPlaylist: function() {
+			playlist.length = 0; //setting to [] will not clear out other references to this array.
+			this.stop();
+		},
+		percentComplete: function () {
+			return (currentTrack.currentSeconds / currentTrack.totalSeconds) * 100;
+		},
+		addToPlaylist: function (files, playImmediately) {
+			//Adds files to playlist from file picker box and returns the added files
+			files.forEach(file => playlist.push(file));
+
+			if (playImmediately) this.play(files[0]);
+
+			return files;
+		},
+		togglePlayState: function () {
+			if (this.playbackState === "playing") this.pause();
+			else this.play();
+		},
+		startSlideshow: function () {
+			slideshow.timeout = $timeout(() => {
+				if (this.playbackState.toLowerCase() === 'playing')
+					this.next(true);
+			}, slideshow.duration);
+		},
+		pauseSlideshow: function () {
+			if (slideshow.timeout) $timeout.cancel(slideshow.timeout);
+		},
+		canExecuteAction: function (action) {
+			return availableActions.some(availableAction => availableAction == action);
+		},
+		setVolume: function (newVolume) {
+			this.volume = newVolume;
+			avTransportService.setVolume(newVolume);
+		},
+		setMute: function (mute) {
+			avTransportService.setMute(mute);
+		}
 	};
 });

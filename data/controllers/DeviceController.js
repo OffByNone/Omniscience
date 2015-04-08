@@ -1,4 +1,4 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, pubSub) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, pubSub, informationService) {
 	"use strict";
 
 	$scope.deviceId = $routeParams.deviceId;
@@ -16,6 +16,8 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 		}
 		return false;
 	};	
+
+	$scope.device.services.forEach(informationService.put);
 
 	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;

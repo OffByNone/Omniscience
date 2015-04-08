@@ -1,9 +1,9 @@
 ﻿omniscience.controller('ConnectionManager', function ConnectionManager($scope, connectionManagerService) {
 	"use strict";
 
-	$scope.service = $scope.device.services.filter(service => service.type.urn === 'urn:schemas-upnp-org:service:ConnectionManager:1')[0];
+	var _connectionId = 0; //todo: remove this and use the getCurrentConnectionIds to determine this value
 
-	//connectionManagerService.getCurrentConnectionIds($scope.service).then(response => console.log(response));
-	//connectionManagerService.getCurrentConnectionInfo($scope.service).then(response => console.log(response));
-	//connectionManagerService.getProtocolInfo($scope.service).then(response => console.log(response));
+	//connectionManagerService.getCurrentConnectionIds().then(response => console.log(response));
+	//connectionManagerService.getCurrentConnectionInfo(_connectionId).then(response => console.log(response));
+	//connectionManagerService.getProtocolInfo().then(response => console.log(response));
 });

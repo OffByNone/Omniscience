@@ -1,5 +1,9 @@
-omniscience.factory('avTransportService', function ($rootScope, eventService) {
+omniscience.factory('avTransportService', function ($rootScope, eventService, informationService) {
 	"use strict";
+
+	var serviceTypeUrn = 'urn:schemas-upnp-org:service:AVTransport:1';
+	var instanceId = 0;
+	var speed = 1;
 
 	function _parseEventRequest(request) {
 		var requestXml = this._DOMParser.parseFromString(request.body, 'text/xml');
@@ -23,77 +27,65 @@ omniscience.factory('avTransportService', function ($rootScope, eventService) {
 		return instances;
 	}
 
-	/*		loadMedia: function loadMedia(service, instanceId, file) {
-			var deferred = this._defer();
-			var fileUri = this._httpd.loadMedia(service, file);
-
-			this._soapService.post(service.controlUrl,
-								   this.serviceType,
-								   "SetAVTransportURI",
-								   { InstanceID: instanceId, CurrentURI: fileUri, CurrentURIMetaData: "" }
-								  ).then(response => deferred.resolve(response));
-			return deferred.promise;
-		},*/
-
 	return {
-		getAdditionalInformation: function getAdditionalInformation(service) {
-			getMediaInfo(service, instanceId);
-			getTransportInfo(service, instanceId);
-			getPositionInfo(service, instanceId);
-			getDeviceCapabilities(service, instanceId);
-			getTransportSettings(service, instanceId);
-			getCurrentTransportActions(service, instanceId);
+		getAdditionalInformation: function getAdditionalInformation() {
+			getMediaInfo(instanceId);
+			getTransportInfo(instanceId);
+			getPositionInfo(instanceId);
+			getDeviceCapabilities(instanceId);
+			getTransportSettings(instanceId);
+			getCurrentTransportActions(instanceId);
 		},
-		setAvTransportUri: function setAvTransportUri(service, instanceId, currentUri, currentUriMetadata) {
-			return eventService.callService(service, "SetAVTransportURI", { InstanceID: instanceId, CurrentURI: currentUri, CurrentURIMetaData: currentUriMetadata });
+		setAvTransportUri: function setAvTransportUri(currentUri, currentUriMetadata) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "SetAVTransportURI", { InstanceID: instanceId, CurrentURI: currentUri, CurrentURIMetaData: currentUriMetadata });
 		},
-		setNextAvTransportUri: function setNextAvTransportUri(service, instanceId, nextUri, nextUriMetadata) {
-			return eventService.callService(service, "SetNextAVTransportURI", { InstanceID: instanceId, NextURI: nextUri, NextURIMetaData: nextUriMetadata });
+		setNextAvTransportUri: function setNextAvTransportUri(nextUri, nextUriMetadata) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "SetNextAVTransportURI", { InstanceID: instanceId, NextURI: nextUri, NextURIMetaData: nextUriMetadata });
 		},
-		getMediaInfo: function getMediaInfo(service, instanceId) {
-			return eventService.callService(service, "GetMediaInfo", { InstanceID: instanceId });
+		getMediaInfo: function getMediaInfo() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetMediaInfo", { InstanceID: instanceId });
 		},
-		getTransportInfo: function getTransportInfo(service, instanceId) {
-			return eventService.callService(service, "GetTransportInfo", { InstanceID: instanceId });
+		getTransportInfo: function getTransportInfo() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetTransportInfo", { InstanceID: instanceId });
 		},
-		getPositionInfo: function getPositionInfo(service, instanceId) {
-			return eventService.callService(service, "GetPositionInfo", { InstanceID: instanceId });
+		getPositionInfo: function getPositionInfo() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetPositionInfo", { InstanceID: instanceId });
 		},
-		getDeviceCapabilities: function getDeviceCapabilities(service, instanceId) {
-			return eventService.callService(service, "GetDeviceCapabilities", { InstanceID: instanceId });
+		getDeviceCapabilities: function getDeviceCapabilities() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetDeviceCapabilities", { InstanceID: instanceId });
 		},
-		getTransportSettings: function getTransportSettings(service, instanceId) {
-			return eventService.callService(service, "GetTransportSettings", { InstanceID: instanceId });
+		getTransportSettings: function getTransportSettings() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetTransportSettings", { InstanceID: instanceId });
 		},
-		stop: function stop(service, instanceId) {
-			return eventService.callService(service, "Stop", { InstanceID: instanceId });
+		stop: function stop() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Stop", { InstanceID: instanceId });
 		},
-		play: function play(service, instanceId, speed) {
-			return eventService.callService(service, "Play", { InstanceID: instanceId, Speed: speed });
+		play: function play() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Play", { InstanceID: instanceId, Speed: speed });
 		},
-		pause: function pause(service, instanceId) {
-			return eventService.callService(service, "Pause", { InstanceID: instanceId });
+		pause: function pause() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Pause", { InstanceID: instanceId });
 		},
-		seek: function seek(service, instanceId, unit, target) {
-			return eventService.callService(service, "Seek", { InstanceID: instanceId, Unit: unit, Target: target });
+		seek: function seek(unit, target) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Seek", { InstanceID: instanceId, Unit: unit, Target: target });
 		},
-		next: function next(service, instanceId) {
-			return eventService.callService(service, "Next", { InstanceID: instanceId });
+		next: function next() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Next", { InstanceID: instanceId });
 		},
-		previous: function previous(service, instanceId) {
-			return eventService.callService(service, "Previous", { InstanceID: instanceId });
+		previous: function previous() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "Previous", { InstanceID: instanceId });
 		},
-		setPlayMode: function setPlayMode(service, instanceId, newPlayMode) {
-			return eventService.callService(service, "SetPlayMode", { InstanceID: instanceId, NewPlayMode: newPlayMode });
+		setPlayMode: function setPlayMode(newPlayMode) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "SetPlayMode", { InstanceID: instanceId, NewPlayMode: newPlayMode });
 		},
-		getCurrentTransportActions: function getCurrentTransportActions(service, instanceId) {
-			return eventService.callService(service, "GetCurrentTransportActions", { InstanceID: instanceId });
+		getCurrentTransportActions: function getCurrentTransportActions() {
+			return eventService.callService(informationService.get(serviceTypeUrn), "GetCurrentTransportActions", { InstanceID: instanceId });
 		},
-		x_GetOperationList: function x_GetOperationList(service, avtInstanceID) {
-			return eventService.callService(service, "X_GetOperationList", { AVTInstanceID: avtInstanceID });
+		x_GetOperationList: function x_GetOperationList(avtInstanceID) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "X_GetOperationList", { AVTInstanceID: avtInstanceID });
 		},
-		x_ExecuteOperation: function x_ExecuteOperation(service, avtInstanceID, actionDirective) {
-			return eventService.callService(service, "X_ExecuteOperation", { AVTInstanceID: avtInstanceID, ActionDirective: actionDirective });
+		x_ExecuteOperation: function x_ExecuteOperation(avtInstanceID, actionDirective) {
+			return eventService.callService(informationService.get(serviceTypeUrn), "X_ExecuteOperation", { AVTInstanceID: avtInstanceID, ActionDirective: actionDirective });
 		}
 	};
 });

@@ -1,28 +1,28 @@
 ﻿<div>
 	<div class="volume-speaker">
-		<span class="glyphicon" ng-class="{'glyphicon-volume-off': device.isMuted, 'glyphicon-volume-up': !device.isMuted}" ng-click="toggleMute(device)"></span>
+		<span class="glyphicon" ng-class="{'glyphicon-volume-off': isMuted, 'glyphicon-volume-up': !isMuted}" ng-click="toggleMute()"></span>
 		<div class="volume-detail">
-			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume(device)"></span>
-			<span>{{device.volume}}</span>
-			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume(device)"></span>
+			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
+			<span>{{volume}}</span>
+			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
 		</div>
 	</div>
 	<div class="btn-group" role="group">
-		<button type="button" ng-click="previous(device)" class="btn btn-default glyphicon glyphicon-backward"></button>
-		<button type="button" ng-click="play(device)" class="btn btn-default glyphicon glyphicon-play"></button>
-		<button type="button" ng-click="pause(device)" class="btn btn-default glyphicon glyphicon-pause"></button>
-		<button type="button" ng-click="next(device)" class="btn btn-default glyphicon glyphicon-forward"></button>
-		<button type="button" ng-click="stop(device)" class="btn btn-default glyphicon glyphicon-stop"></button>
+		<button type="button" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
+		<button type="button" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
+		<button type="button" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
+		<button type="button" ng-click="next()" class="btn btn-default glyphicon glyphicon-forward"></button>
+		<button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
 	</div>
 	<div class="progress">
-		<div class="progress-bar" role="progressbar" aria-valuenow="{{track.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{track.totalSeconds}}" style="width: {{percentComplete()}}%;">
-			<span class="sr-only">{{track.currentSeconds}} seconds in</span>
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{currentTrack.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{currentTrack.totalSeconds}}" style="width: {{percentComplete()}}%;">
+			<span class="sr-only">{{currentTrack.currentSeconds}} seconds in</span>
 		</div>
 	</div>
 	<div class="file-time">
-		<span>{{track.currentTime}}</span>
+		<span>{{currentTrack.currentTime}}</span>
 		<span>/</span>
-		<span>{{track.totalTime}}</span>
-		<span>{{track.file.name}}</span>
+		<span>{{currentTrack.totalTime}}</span>
+		<span>{{currentTrack.file.name}}</span>
 	</div>
 </div>
