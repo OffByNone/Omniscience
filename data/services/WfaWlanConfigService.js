@@ -1,50 +1,57 @@
 omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService) {
 	"use strict";
+
+	var serviceTypeUrn = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';
+
+	function getService() {
+		return informationService.get(serviceTypeUrn);
+	}
+
 	return {
-		getAdditionalInformation: function getAdditionalInformation(service) {
-			this.getDeviceInfo(service);
+		getInfo: function getInfo() {
+			this.getDeviceInfo();
 		},
-		delAPSettings: function delAPSettings(service, newAPSettings) {
-			return eventService.callService(service, "DelAPSettings", { NewAPSettings: newAPSettings });
+		delAPSettings: function delAPSettings(newAPSettings) {
+			return eventService.callService(getService(), "DelAPSettings", { NewAPSettings: newAPSettings });
 		},
-		delSTASettings: function delSTASettings(service, newSTASettings) {
-			return eventService.callService(service, "DelSTASettings", { NewAPSettings: newAPSettings });
+		delSTASettings: function delSTASettings(newSTASettings) {
+			return eventService.callService(getService(), "DelSTASettings", { NewAPSettings: newAPSettings });
 		},
-		getAPSettings: function getAPSettings(service, newMessage) {
-			return eventService.callService(service, "GetAPSettings", { NewAPSettings: newAPSettings });
+		getAPSettings: function getAPSettings(newMessage) {
+			return eventService.callService(getService(), "GetAPSettings", { NewAPSettings: newAPSettings });
 		},
-		getDeviceInfo: function getDeviceInfo(service) {
-			return eventService.callService(service, "GetserviceInfo", { NewAPSettings: newAPSettings });
+		getDeviceInfo: function getDeviceInfo() {
+			return eventService.callService(getService(), "GetserviceInfo", { NewAPSettings: newAPSettings });
 		},
-		getSTASettings: function (service, newMessage) {
-			return eventService.callService(service, "GetSTASettings", { NewMessage: newMessage });
+		getSTASettings: function (newMessage) {
+			return eventService.callService(getService(), "GetSTASettings", { NewMessage: newMessage });
 		},
-		putMessage: function (service, newInMessage) {
-			return eventService.callService(service, "PutMessage", { NewInMessage: newInMessage });
+		putMessage: function (newInMessage) {
+			return eventService.callService(getService(), "PutMessage", { NewInMessage: newInMessage });
 		},
-		putWLANResponse: function putWLANResponse(service, newMessage, newWLANEventType, newWLANEventMAC) {
-			return eventService.callService(service, "PutWLANResponse", { NewMessage: newMessage, NewWLANEventType: newWLANEventType, NewWLANEventMAC: newWLANEventMAC });
+		putWLANResponse: function putWLANResponse(newMessage, newWLANEventType, newWLANEventMAC) {
+			return eventService.callService(getService(), "PutWLANResponse", { NewMessage: newMessage, NewWLANEventType: newWLANEventType, NewWLANEventMAC: newWLANEventMAC });
 		},
-		rebootAP: function rebootAP(service, newAPSettings) {
-			return eventService.callService(service, "RebootAP", { NewAPSettings: newAPSettings });
+		rebootAP: function rebootAP(newAPSettings) {
+			return eventService.callService(getService(), "RebootAP", { NewAPSettings: newAPSettings });
 		},
-		rebootSTA: function rebootSTA(service, newSTASettings) {
-			return eventService.callService(service, "RebootSTA", { NewSTASettings: newSTASettings });
+		rebootSTA: function rebootSTA(newSTASettings) {
+			return eventService.callService(getService(), "RebootSTA", { NewSTASettings: newSTASettings });
 		},
-		resetAP: function resetAP(service, newMessage) {
-			return eventService.callService(service, "ResetAP", { NewMessage: newMessage });
+		resetAP: function resetAP(newMessage) {
+			return eventService.callService(getService(), "ResetAP", { NewMessage: newMessage });
 		},
-		resetSTA: function resetSTA(service, newMessage) {
-			return eventService.callService(service, "ResetSTA", { NewMessage: newMessage });
+		resetSTA: function resetSTA(newMessage) {
+			return eventService.callService(getService(), "ResetSTA", { NewMessage: newMessage });
 		},
-		setAPSettings: function setAPSettings(service, newAPSettings) {
-			return eventService.callService(service, "SetAPSettings", { NewAPSettings: newAPSettings });
+		setAPSettings: function setAPSettings(newAPSettings) {
+			return eventService.callService(getService(), "SetAPSettings", { NewAPSettings: newAPSettings });
 		},
-		setSelectedRegistrar: function setSelecctedRegistrar(service, newMessage) {
-			return eventService.callService(service, "SetSelectedRegistrar", { NewMessage: newMessage });
+		setSelectedRegistrar: function setSelecctedRegistrar(newMessage) {
+			return eventService.callService(getService(), "SetSelectedRegistrar", { NewMessage: newMessage });
 		},
-		setSTASettings: function setSTASettings(service) {
-			return eventService.callService(service, "SetSTASettings");
+		setSTASettings: function setSTASettings() {
+			return eventService.callService(getService(), "SetSTASettings");
 		}
 	};
 });

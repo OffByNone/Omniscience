@@ -1,46 +1,22 @@
-﻿omniscience.controller('PlaylistController', function PlaylistController($scope, playbackService, fileService) {
+﻿omniscience.controller('PlaylistController', function PlaylistController($rootScope, $scope, playbackService, fileService) {
 	"use strict";
 
-	$scope.filePickerOpen = true;
+	$scope.filePickerisOpen = true;
 	$scope.filePicker = {};
 	$scope.playlist = playbackService.playlist;
 	$scope.currentTrack = playbackService.currentTrack;
+	$scope.settings = playbackService.settings;
+
+	playbackService.getInfo();
 
 	$scope.play = function play(file) {
 		playbackService.play(file);
-	};
-	$scope.pause = function pause() {
-		playbackService.pause();
-	};
-	$scope.stop = function stop() {
-		playbackService.stop();
-	};
-	$scope.previous = function previous() {
-		playbackService.previous();
-	}
-	$scope.next = function next(abideByRepeat) {
-		playbackService.next(abideByRepeat);
-	};
-	$scope.toggleMute = function toggleMute() {
-		playbackService.toggleMute();
-	};
-	$scope.incrementVolume = function incrementVolume() {
-		playbackService.incrementVolume();
-	};
-	$scope.decrementVolume = function decrementVolume() {
-		playbackService.decrementVolume();
-	};
-	$scope.percentComplete = function percentComplete() {
-		return playbackService.percentComplete();
 	};
 	$scope.addToPlaylist = function addToPlaylist(playImmediately) {
 		//Adds files to playlist from file picker box and returns the added files
 		var files = getChosenFiles();
 		playbackService.addToPlaylist(files, playImmediately);
 		return files;
-	};
-	$scope.canExecuteAction = function (action) {
-		return playbackService.canExecuteAction(action);
 	};
 	$scope.clearPlaylist = function clearPlaylist() {
 		playbackService.clearPlaylist();
@@ -51,11 +27,6 @@
 	$scope.removeFromPlaylist = function removeFromPlaylist(file) {
 		playbackService.removeFromPlaylist(file);
 	};
-	$scope.togglePlayState = function togglePlayState() {
-		playbackService.togglePlayState();
-	};
-
-
 
 	$scope.browseLocalFiles = function () {
 		fileService.chooseFiles().then(files => setNewFiles(files));
@@ -105,4 +76,16 @@
 			$scope.filePicker.paths = files.map(file => file.path).join("\n");
 		}
 	}
+
+
+	$rootScope.presets = playbackService.presets;
+	$rootScope.mediaInfo = playbackService.mediaInfo;
+	$rootScope.transportInfo = playbackService.transportInfo;
+	$rootScope.positionInfo = playbackService.positionInfo;
+	$rootScope.deviceCapabilities = playbackService.deviceCapabilities;
+	$rootScope.transportSettings = playbackService.transportSettings;
+	$rootScope.currentTransportActions = playbackService.currentTransportActions;
+	$rootScope.currentConnectionInfo = playbackService.currentConnectionInfo;
+	$rootScope.currentConnectionIds = playbackService.currentConnectionIds;
+	$rootScope.protocolInfo = playbackService.protocolInfo;
 });

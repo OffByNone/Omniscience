@@ -1,28 +1,32 @@
-omniscience.factory('renderingControlService', function ($rootScope, eventService) {
+omniscience.factory('renderingControlService', function (eventService, informationService) {
 	"use strict";
+
+	var serviceTypeUrn = 'urn:schemas-upnp-org:service:RenderingControl:1';
+	var instanceId = 0;
+	var channel = "Master";
+
+	function getService() {
+		return informationService.get(serviceTypeUrn);
+	}
+
 	return {
-		getAdditionalInformation: function getAdditionalInformation(service) {
-			this.getMute(service);
-			this.getVolume(service);
-			this.listPresets(service);
+		getMute: function getMute() {
+			return eventService.callService(getService(), "GetMute", { InstanceID: instanceId, Channel: channel });
 		},
-		getMute: function getMute(service, instanceId, channel) {
-			return eventService.callService(service, "GetMute", { InstanceID: instanceId, Channel: channel });
+		getVolume: function getVolume() {
+			return eventService.callService(getService(), "GetVolume", { InstanceID: instanceId, Channel: channel });
 		},
-		getVolume: function getVolume(service, instanceId, channel) {
-			return eventService.callService(service, "GetVolume", { InstanceID: instanceId, Channel: channel });
+		listPresets: function listPresets() {
+			return eventService.callService(getService(), "ListPresets", { InstanceID: instanceId });
 		},
-		listPresets: function listPresets(service, instanceId) {
-			return eventService.callService(service, "ListPresets", { InstanceID: instanceId });
+		selectPresets: function selectPresets(presetName) {
+			return eventService.callService(getService(), "ListPresets", { InstanceID: instanceId, PresetName: presetName });
 		},
-		selectPresets: function selectPresets(service, instanceId, presetName) {
-			return eventService.callService(service, "ListPresets", { InstanceID: instanceId, PresetName: presetName });
+		setMute: function setMute(desiredMute) {
+			return eventService.callService(getService(), "SetMute", { InstanceID: instanceId, Channel: channel, DesiredMute: desiredMute });
 		},
-		setMute: function setMute(service, instanceId, channel, desiredMute) {
-			return eventService.callService(service, "SetMute", { InstanceID: instanceId, Channel: channel, DesiredMute: desiredMute });
-		},
-		setVolume: function setVolume(service, instanceId, channel, desiredVolume) {
-			return eventService.callService(service, "SetVolume", { InstanceID: instanceId, Channel: channel, DesiredVolume: desiredVolume });
+		setVolume: function setVolume(desiredVolume) {
+			return eventService.callService(getService(), "SetVolume", { InstanceID: instanceId, Channel: channel, DesiredVolume: desiredVolume });
 		}
 	};
 });

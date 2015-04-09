@@ -43,7 +43,7 @@ angular.module("omniscience").directive("deviceSettings", function () {
 });
 angular.module("omniscience").directive("playback", function () {
 	return ({
-		controller: "PlaylistController",
+		controller: "PlaybackController",
 		link: link,
 		restrict: "E",
 		templateUrl: "templates/Playback.html"

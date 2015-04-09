@@ -22,10 +22,10 @@
 				//many of the below properties are found on the getAdditionalInformation search and therefore not
 				//defined when the device first appears.  This means that on a subsequent search if not for the null
 				//checks the devices would for a short time have incorrect information shown
-				if (device.hasOwnProperty(device.videoCapable)) scopeDevice.videoCapable = device.videoCapable;
-				if (device.hasOwnProperty(device.imageCapable)) scopeDevice.imageCapable = device.imageCapable;
-				if (device.hasOwnProperty(device.audioCapable)) scopeDevice.audioCapable = device.audioCapable;
-				if (device.hasOwnProperty(device.mirrorCapable)) scopeDevice.mirrorCapable = device.mirrorCapable;
+				if (device.hasOwnProperty(device.capabilities.video)) scopedevice.capabilities.video = device.capabilities.video;
+				if (device.hasOwnProperty(device.capabilities.image)) scopedevice.capabilities.image = device.capabilities.image;
+				if (device.hasOwnProperty(device.capabilities.audio)) scopedevice.capabilities.audio = device.capabilities.audio;
+				if (device.hasOwnProperty(device.capabilities.mirror)) scopedevice.capabilities.mirror = device.capabilities.mirror;
 
 				if (device.hasOwnProperty(device.isMuted)) scopeDevice.isMuted = device.isMuted;
 				if (device.hasOwnProperty(device.volume)) scopeDevice.volume = device.volume;

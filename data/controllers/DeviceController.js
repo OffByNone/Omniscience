@@ -1,42 +1,15 @@
 omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, pubSub, informationService) {
 	"use strict";
 
-	$scope.deviceId = $routeParams.deviceId;
-	$scope.device = $rootScope.devices.filter(device => device.id === $scope.deviceId)[0] || {};
+	eventService.emit("loadDevices");
+	$scope.device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0] || {};
 	$scope.hasService = function hasService(serviceName) {
 		if ($scope.device && Array.isArray($scope.device.services))
 			return $scope.device.services.some(service => service.type.name === serviceName);
 
 		return false;
 	};
-	$scope.hasInterface = function (interfaceName) {
-		if ($scope.device && Array.isArray($scope.device.services)) {
-			$injector.get(service)
-			return $scope.device.services.some(service => service.type.name === serviceName);
-		}
-		return false;
-	};	
-
 	$scope.device.services.forEach(informationService.put);
-
-	$scope.$on('keydown', function (notSureWhatThisIs, event) {
-		if (event.target.tagName.toLowerCase() === "input") return;
-
-		switch (event.key.toLowerCase()) {
-			case " ":
-				$scope.togglePlayState($scope.device);
-				break;
-			case "arrowright":
-				$scope.next();
-				break;
-			case "arrowleft":
-				$scope.previous();
-				break;
-			case "delete":
-				if ($scope.track.file) pubSub.pub("remove", $scope.device);
-				break;
-		}
-	});
 
 	if (!$scope.protocolInfoFilter) { //todo: I don't like this.  Find a better way to show the first available capability
 		if ($scope.device.capabilities.video)

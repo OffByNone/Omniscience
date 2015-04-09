@@ -1,12 +1,30 @@
-﻿omniscience.factory('playbackService', function ($timeout, eventService, avTransportService, fileService) {
+﻿omniscience.service('playbackService', function ($timeout, eventService, fileService, avTransportService, renderingControlService, connectionManagerService) {
 	"use strict";
 
 	var currentTrack = {};
 	var playlist = [];
 	var availableActions = ["play","stop"];
 	var slideshow = { duration: 10000, timeout: null };
+	var settings = { //this exists for the primitive values, which if not for this will not get updated when their values change
+		playbackState: "stopped",
+		volume: 100,
+		isMuted: false,
+		repeat: false
+	};
+	var presets = [];
+	var mediaInfo = {};
+	var transportInfo = {};
+	var positionInfo = {};
+	var deviceCapabilities = {};
+	var transportSettings = {};
+	var currentTransportActions = {};
+	var currentConnectionInfo = {};
+	var currentConnectionIds = {};
+	var protocolInfo = {};
+
 
 	function load(file){
+		currentTrack.file = file
 		return fileService.shareFile(file).then(fileUri => {
 			return avTransportService.setAvTransportUri(fileUri, "");
 		});
@@ -68,8 +86,6 @@
 			else return z[0];
 		}
 	}
-
-
 
 
 	var media = {};
@@ -239,17 +255,24 @@
 
 
 	return {
+		settings: settings,
 		playlist: playlist,
 		currentTrack: currentTrack,
-		playbackState: "stopped",
 		availableActions: availableActions,
-		volume: 100,
-		isMuted: false,
-		repeat: false,
+		presets: presets,
+		mediaInfo: mediaInfo,
+		transportInfo: transportInfo,
+		positionInfo: positionInfo,
+		deviceCapabilities: deviceCapabilities,
+		transportSettings: transportSettings,
+		currentTransportActions: currentTransportActions,
+		currentConnectionInfo: currentConnectionInfo,
+		currentConnectionIds: currentConnectionIds,
+		protocolInfo: protocolInfo,
 
 		play: function (file) {
 			this.pauseSlideshow();
-			this.playbackState = "playing";
+			this.settings.playbackState = "playing";
 			if (file){
 				currentTrack.file = file;
 				load(file).then(() => avTransportService.play());
@@ -260,12 +283,12 @@
 			if (currentTrack.file.type && currentTrack.file.type.indexOf("image/") == 0) this.startSlideshow();
 		},
 		pause: function() {
-			this.playbackState = "paused";
+			this.settings.playbackState = "paused";
 			avTransportService.pause();
 			this.pauseSlideshow();
 		},
 		stop: function() {
-			this.playbackState = "stopped";
+			this.settings.playbackState = "stopped";
 			this.pauseSlideshow();
 			return avTransportService.stop();
 		},
@@ -280,7 +303,7 @@
 			for (var i = 0; i < playlist.length; i++) {
 				if (playlist[i] === currentTrack.file)
 					if (i == playlist.length - 1)
-						if (!abideByRepeat || this.repeat) return this.play(playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
+						if (!abideByRepeat || this.settings.repeat) return this.play(playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
 						else {//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
 							this.stop().then(() => load(playlist[0]));
 						}
@@ -288,14 +311,14 @@
 			}
 		},
 		toggleMute: function () {
-			this.isMuted = !this.isMuted;
-			this.setMute(this.isMuted);
+			this.settings.isMuted = !this.settings.isMuted;
+			this.setMute(this.settings.isMuted);
 		},
 		incrementVolume: function() {
-			this.setVolume( Number(volume) + 1);
+			this.setVolume( Number(this.settings.volume) + 1);
 		},
 		decrementVolume: function() {
-			this.setVolume( Number(volume) - 1);
+			this.setVolume( Number(this.settings.volume) - 1);
 		},
 		randomizePlaylist: function () {
 			shuffle(playlist);
@@ -327,12 +350,12 @@
 			return files;
 		},
 		togglePlayState: function () {
-			if (this.playbackState === "playing") this.pause();
+			if (this.settings.playbackState === "playing") this.pause();
 			else this.play();
 		},
 		startSlideshow: function () {
 			slideshow.timeout = $timeout(() => {
-				if (this.playbackState.toLowerCase() === 'playing')
+				if (this.settings.playbackState.toLowerCase() === 'playing')
 					this.next(true);
 			}, slideshow.duration);
 		},
@@ -343,11 +366,27 @@
 			return availableActions.some(availableAction => availableAction == action);
 		},
 		setVolume: function (newVolume) {
-			this.volume = newVolume;
-			avTransportService.setVolume(newVolume);
+			this.settings.volume = newVolume;
+			renderingControlService.setVolume(newVolume);
 		},
 		setMute: function (mute) {
-			avTransportService.setMute(mute);
+			renderingControlService.setMute(mute);
+		},
+		getInfo: function(){
+			avTransportService.getMediaInfo().then(mi => mediaInfo = mi);
+			avTransportService.getTransportInfo().then(ti => transportInfo = ti);
+			avTransportService.getPositionInfo().then(pi => positionInfo = pi);
+			avTransportService.getDeviceCapabilities().then(dc => deviceCapabilities = dc);
+			avTransportService.getTransportSettings().then(ts => transportSettings = ts);
+			avTransportService.getCurrentTransportActions().then(ta => currentTransportActions = ta);
+				
+			renderingControlService.getMute().then(isMuted => settings.isMuted = isMuted);
+			renderingControlService.getVolume().then(volume => settings.volume = volume);
+			renderingControlService.listPresets().then(newPresets => presets = newPresets);
+			
+			connectionManagerService.getCurrentConnectionInfo().then(cci => currentConnectionInfo = cci);
+			connectionManagerService.getCurrentConnectionIds().then(cci => currentConnectionIds = cci);
+			connectionManagerService.getProtocolInfo().then(pi => protocolInfo = pi);
 		}
 	};
 });

@@ -1,21 +1,21 @@
 ﻿<div>
-	<div ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
+	<div ng-show="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null">
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" ng-show="device.videoCapable != null" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.videoCapable != null}">
+			<li role="presentation" ng-show="device.capabilities.video != null" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.capabilities.video != null}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="video">Video</a>
 			</li>
-			<li role="presentation" ng-show="device.audioCapable != null" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: device.videoCapable == null && device.audioCapable != null}">
+			<li role="presentation" ng-show="device.capabilities.audio != null" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio != null}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="audio">Audio</a>
 			</li>
-			<li role="presentation" ng-show="device.imageCapable != null" ng-click="protocolInfoFilter = 'image'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable != null}">
+			<li role="presentation" ng-show="device.capabilities.image != null" ng-click="protocolInfoFilter = 'image'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio == null && device.capabilities.image != null}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="image">Image</a>
 			</li>
-			<li role="presentation" ng-show="device.mirrorCapable != null" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: device.videoCapable == null && device.audioCapable == null && device.imageCapable == null && device.mirrorCapable != null}">
+			<li role="presentation" ng-show="device.capabilities.mirror != null" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio == null && device.capabilities.image == null && device.capabilities.mirror != null}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="mirror">Mirror</a>
 			</li>
 		</ul>
 		<div class="tab-content tab-padding">
-			<div role="tabpanel" ng-show="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null" class="tab-pane active" id="capabilities-tab">
+			<div role="tabpanel" ng-show="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null" class="tab-pane active" id="capabilities-tab">
 				<table class="table">
 					<thead>
 						<tr>
@@ -28,7 +28,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="info in device.protocolInfo.sink | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+						<tr ng-repeat="info in protocolInfo.sink | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
 							<td>{{info.protocol}}</td>
 							<td>{{info.network}}</td>
 							<td>{{info.contentFormat.medium}}</td>
@@ -36,7 +36,7 @@
 							<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
 							<td>{{info.additionalInfo}}</td>
 						</tr>
-						<tr ng-repeat="info in device.protocolInfo.source | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+						<tr ng-repeat="info in protocolInfo.source | filter:protocolInfoFilter | orderBy: 'contentFormat.containerType'">
 							<td>{{info.protocol}}</td>
 							<td>{{info.network}}</td>
 							<td>{{info.contentFormat.medium}}</td>
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 	</div>
-	<h4 ng-hide="device.imageCapable != null || device.videoCapable != null || device.audioCapable != null || device.mirrorCapable != null">
+	<h4 ng-hide="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null">
 		Unknown
 	</h4>
 </div>

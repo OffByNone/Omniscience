@@ -1,9 +1,9 @@
 ﻿<div>
 	<div class="volume-speaker">
-		<span class="glyphicon" ng-class="{'glyphicon-volume-off': isMuted, 'glyphicon-volume-up': !isMuted}" ng-click="toggleMute()"></span>
+		<span class="glyphicon" ng-class="{'glyphicon-volume-off': settings.isMuted, 'glyphicon-volume-up': !settings.isMuted}" ng-click="toggleMute()"></span>
 		<div class="volume-detail">
 			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
-			<span>{{volume}}</span>
+			<span>{{settings.volume}}</span>
 			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
 		</div>
 	</div>

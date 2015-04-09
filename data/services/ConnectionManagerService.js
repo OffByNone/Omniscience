@@ -1,6 +1,8 @@
 omniscience.factory('connectionManagerService', function (eventService, informationService){
 	"use strict";
 
+	var connectionId = 0;
+
 	var constants = {
 		serviceTypeUrn: 'urn:schemas-upnp-org:service:ConnectionManager:1',
 		DLNA: {
@@ -131,12 +133,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 	}
 
 	return {
-		getAdditionalInformation: function getAddtionalInformation(){
-			this.getCurrentConnectionInfo(),
-			this.getCurrentConnectionIds(),
-			this.getProtocolInfo()
-		},
-		getCurrentConnectionInfo: function getCurrentConnectionInfo(connectionId){
+		getCurrentConnectionInfo: function getCurrentConnectionInfo(){
 			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetCurrentConnectionInfo", { ConnectionID: connectionId });
 		},
 		getProtocolInfo: function getProtocolInfo(){

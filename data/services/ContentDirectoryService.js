@@ -1,28 +1,33 @@
 omniscience.factory('contentDirectoryService', function ($rootScope, eventService) {
 
+	var serviceTypeUrn = 'urn:schemas-upnp-org:service:ContentDirectory:1';
+	function getService() {
+		return informationService.get(serviceTypeUrn);
+	}
+
 	return {
-		getAdditionalInformation: function getAdditionalInformation(service) {
-			this.getSearchCapabilities(service);
-			this.getSortCapabilities(service);
-			this.x_GetRemoteSharingStatus(service);
+		getInfo: function getInfo() {
+			this.getSearchCapabilities();
+			this.getSortCapabilities();
+			this.x_GetRemoteSharingStatus();
 		},
-		getSearchCapabilities: function getSearchCapabilities(service) {
-			return eventService.callService(service, "GetSearchCapabilities");
+		getSearchCapabilities: function getSearchCapabilities() {
+			return eventService.callService(getService(), "GetSearchCapabilities");
 		},
-		getSortCapabilities: function getSortCapabilities(service) {
-			return eventService.callService(service, "GetSortCapabilities");
+		getSortCapabilities: function getSortCapabilities() {
+			return eventService.callService(getService(), "GetSortCapabilities");
 		},
-		getSystemUpdateID: function getSystemUpdateID(service) {
-			return eventService.callService(service, "GetSystemUpdateID");
+		getSystemUpdateID: function getSystemUpdateID() {
+			return eventService.callService(getService(), "GetSystemUpdateID");
 		},
-		browse: function browse(service, objectId, browseFlag, filter, startingIndex, requestedCount, sortCriteria) {
-			return eventService.callService(service, "Browse", { ObjectId: objectId, BrowseFlag: browseFlag, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
+		browse: function browse(objectId, browseFlag, filter, startingIndex, requestedCount, sortCriteria) {
+			return eventService.callService(getService(), "Browse", { ObjectId: objectId, BrowseFlag: browseFlag, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
 		},
-		search: function search(service, containerId, searchCriteria, filter, startingIndex, requestedCount, sortCriteria) {
-			return eventService.callService(service, "Search", { ContainerId: containerId, SearchCriteria: searchCriteria, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
+		search: function search(containerId, searchCriteria, filter, startingIndex, requestedCount, sortCriteria) {
+			return eventService.callService(getService(), "Search", { ContainerId: containerId, SearchCriteria: searchCriteria, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
 		},
-		x_GetRemoteSharingStatus: function x_GetRemoteSharingStatus(service) {
-			return eventService.callService(service, "X_GetRemoteSharingStatus");
+		x_GetRemoteSharingStatus: function x_GetRemoteSharingStatus() {
+			return eventService.callService(getService(), "X_GetRemoteSharingStatus");
 		}
 	};
 });
