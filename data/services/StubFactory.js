@@ -15,11 +15,11 @@
 			serviceStub += `};
 			}); `;
 		},
-		createControllerStub: function (serviceName, methods, serviceTypeUrn) {
+		createControllerStub: function (serviceName, methods, rawServiceType) {
 			var controllerStub = `omniscience.controller("${serviceName}", function ConnectionManager($scope, ${serviceName}Service) {
 				"use strict";
 
-				$scope.service = $scope.device.services.filter(service => service.type.urn === "${serviceTypeUrn}")[0];
+				$scope.service = $scope.device.services.filter(service => service.type.raw === "${rawServiceType}")[0];
 
 				//sample calls
 				`;

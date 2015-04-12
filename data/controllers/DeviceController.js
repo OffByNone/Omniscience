@@ -3,9 +3,9 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 
 	eventService.emit("loadDevices");
 	$scope.device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0] || {};
-	$scope.hasService = function hasService(serviceName) {
+	$scope.hasService = function hasService(rawServiceType) {
 		if ($scope.device && Array.isArray($scope.device.services))
-			return $scope.device.services.some(service => service.type.name === serviceName);
+			return $scope.device.services.some(service => service.type.raw === rawServiceType);
 
 		return false;
 	};

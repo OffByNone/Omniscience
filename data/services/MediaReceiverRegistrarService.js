@@ -1,9 +1,9 @@
 omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService) {
 	"use strict";
 
-	var serviceTypeUrn = 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1';
+	var rawServiceType = 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1';
 	function getService() {
-		return informationService.get(serviceTypeUrn);
+		return informationService.get(rawServiceType);
 	}
 
 	return {

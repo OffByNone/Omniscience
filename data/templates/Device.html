@@ -14,14 +14,14 @@
 				</div>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-content">
-				<playback ng-if="hasService('AV Transport')"></playback>
+				<playback ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playback>
 				<ul class="nav navbar-nav navbar-right">
 					<li> <a href="/about" class="nav navbar-nav navbar-right">About</a> </li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<playlist ng-if="hasService('AV Transport')"></playlist>
+	<playlist ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
 	<div class="container pull-left">
 		<div class="media">
 			<div class="media-left media-top">
@@ -65,5 +65,5 @@
 			</div><!-- Tab panes -->
 		</div>
 	</div>
-	<connection-manager ng-if="hasService('Connection Manager')"></connection-manager>
+	<connection-manager ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></connection-manager>
 </div>

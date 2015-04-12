@@ -150,7 +150,6 @@ To-Do
 
 		Constants
 			[ ] Move more strings into this file.
-			[ ] Fix serviceTypes and deviceTypes.
 
 		[ ] Make a logger that can take different levels (info, warn, error) and allow user to pick verbosity.
 		[ ] Get metadata for files

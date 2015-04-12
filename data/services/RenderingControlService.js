@@ -1,12 +1,12 @@
 omniscience.factory('renderingControlService', function (eventService, informationService) {
 	"use strict";
 
-	var serviceTypeUrn = 'urn:schemas-upnp-org:service:RenderingControl:1';
+	var rawServiceType = 'urn:schemas-upnp-org:service:RenderingControl:1';
 	var instanceId = 0;
 	var channel = "Master";
 
 	function getService() {
-		return informationService.get(serviceTypeUrn);
+		return informationService.get(rawServiceType);
 	}
 
 	return {

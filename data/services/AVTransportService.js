@@ -1,7 +1,7 @@
 omniscience.factory('avTransportService', function (eventService, informationService) {
 	"use strict";
 
-	var serviceTypeUrn = 'urn:schemas-upnp-org:service:AVTransport:1'; //todo: share the constants with the front end so I can pull this from that file instead of hard coding
+	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1'; //todo: move this to a constants file
 	var instanceId = 0; //todo: determine this dynamically
 	var speed = 1; //todo: make this a setable default
 
@@ -28,7 +28,7 @@ omniscience.factory('avTransportService', function (eventService, informationSer
 	}
 
 	function getService() {
-		return informationService.get(serviceTypeUrn);
+		return informationService.get(rawServiceType);
 	}
 
 	return {

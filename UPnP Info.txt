@@ -1,0 +1,32 @@
+Type of Extension	Standard											Non-Standard
+device type			urn:schemas-upnp-org:device:deviceType:version		urn:domain-name:device:deviceType:version
+service type 		urn:schemas-upnp-org:service:serviceType:version	urn:domain-name:service:serviceType:version
+service ID 			urn:upnp-org:serviceId:serviceID					urn:domain-name:serviceId:serviceID
+
+
+
+Data Type		Description
+ui1				Unsigned 1 Byte int. Same format as int without leading sign. 
+ui2 			Unsigned 2 Byte int. Same format as int without leading sign. 
+ui4				Unsigned 4 Byte int. Same format as int without leading sign. 
+i1 				1 Byte int. Same format as int. 
+i2 				2 Byte int. Same format as int. 
+i4 				4 Byte int. Same format as int. MUST be between -2147483648 and 2147483647. 
+int 			Fixed point, integer number. MAY have leading sign. MAY have leading zeros, which SHOULD be ignored by the recipient. (No currency symbol.) (No grouping of digits to the left of the decimal, e.g., no commas.) 
+r4 				4 Byte float. Same format as float. MUST be between 3.40282347E+38 to 1.17549435E-38.
+r8 				8 Byte float. Same format as float. MUST be between -1.79769313486232E308 and 4.94065645841247E-324 for negative values, and between 4.94065645841247E-324 and 1.79769313486232E308 for positive values, i.e., IEEE 64-bit (8-Byte) double. 
+number 			Same as r8. 
+fixed.14.4 		Same as r8 but no more than 14 digits to the left of the decimal point and no more than 4 to the right. 
+float 			Floating point number. Mantissa (left of the decimal) and/or exponent MAY have a leading sign. Mantissa and/or exponent MAY have leading zeros, which SHOULD be ignored by the recipient. Decimal character in mantissa is a period, i.e., whole digits in mantissa separated from fractional digits by period (“.”). Mantissa separated from exponent by “E”. (No currency symbol.) (No grouping of digits in the mantissa, e.g., no commas.) 
+char 			Unicode string. One character long. 
+string 			Unicode string. No limit on length.
+date 			Date in a subset of ISO 8601 format without time data. 
+dateTime 		Date in ISO 8601 format with OPTIONAL time but no time zone. 
+dateTime.tz 	Date in ISO 8601 format with OPTIONAL time and OPTIONAL time zone. 
+time			Time in a subset of ISO 8601 format with no date and no time zone. 
+time.tz 		Time in a subset of ISO 8601 format with OPTIONAL time zone but no date. 
+boolean 		“0” for false or “1” for true. The values “true”, “yes”, “false”, or “no” are deprecated and MUST NOT be sent but MUST be accepted when received. When received, the values “true” and “yes” MUST be interpreted as true and the values  “false” and “no” MUST be interpreted as false. 
+bin.base64		MIME-style Base64 encoded binary BLOB. Takes 3 Bytes, splits them into 4 parts, and maps each 6 bit piece to an octet. (3 octets are encoded as 4.) No limit on size.
+bin.hex 		Hexadecimal digits representing octets. Treats each nibble as a hex digit and encodes as a separate Byte. (1 octet is encoded as 2.) No limit on size.
+uri 			Universal Resource Identifier. 
+uuid 			Universally Unique ID. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.

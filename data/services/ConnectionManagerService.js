@@ -4,7 +4,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 	var connectionId = 0;
 
 	var constants = {
-		serviceTypeUrn: 'urn:schemas-upnp-org:service:ConnectionManager:1',
+		rawServiceType: 'urn:schemas-upnp-org:service:ConnectionManager:1',
 		DLNA: {
 			'DLNA.ORG_PN': 'mediaType', //"MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
 			'DLNA.ORG_OP': 'operations',
@@ -132,12 +132,16 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		return aFromMask;
 	}
 
+	function getService() {
+		return informationService.get(constants.rawServiceType);
+	}
+
 	return {
 		getCurrentConnectionInfo: function getCurrentConnectionInfo(){
-			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetCurrentConnectionInfo", { ConnectionID: connectionId });
+			return eventService.callService(getService(), "GetCurrentConnectionInfo", { ConnectionID: connectionId });
 		},
 		getProtocolInfo: function getProtocolInfo(){
-			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetProtocolInfo").
+			return eventService.callService(getService(), "GetProtocolInfo").
 				then(response => {
 					return {
 						sink: _parseProtocolResponse(response.Sink),
@@ -147,7 +151,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 				});
 		},
 		getCurrentConnectionIds: function getCurrentConnectionIds(){
-			return eventService.callService(informationService.get(constants.serviceTypeUrn), "GetCurrentConnectionIDs");
+			return eventService.callService(getService(), "GetCurrentConnectionIDs");
 		}
 	}
 });

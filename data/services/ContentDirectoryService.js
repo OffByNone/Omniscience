@@ -1,8 +1,8 @@
 omniscience.factory('contentDirectoryService', function ($rootScope, eventService) {
 
-	var serviceTypeUrn = 'urn:schemas-upnp-org:service:ContentDirectory:1';
+	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {
-		return informationService.get(serviceTypeUrn);
+		return informationService.get(rawServiceType);
 	}
 
 	return {

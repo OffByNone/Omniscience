@@ -1,10 +1,10 @@
 omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService) {
 	"use strict";
 
-	var serviceTypeUrn = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';
+	var rawServiceType = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';
 
 	function getService() {
-		return informationService.get(serviceTypeUrn);
+		return informationService.get(rawServiceType);
 	}
 
 	return {

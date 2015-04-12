@@ -261,11 +261,3 @@ ul.event-log li {
 .return-values {
 	display: inline-block;
 }
-
-
-#services .dl-horizontal dd {
-	margin-left:55px;
-}
-#services .dl-horizontal dt {
-	width:35px;
-}
