@@ -1,4 +1,4 @@
-﻿omniscience.service('informationService', function informationService() {
+﻿omniscience.factory('informationService', function informationService() {
 	"use strict";
 
 	var _services = {}; //key is service.type.urn
