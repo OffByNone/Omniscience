@@ -11,10 +11,18 @@ omniscience.factory('renderingControlService', function (eventService, informati
 
 	return {
 		getMute: function getMute() {
-			return eventService.callService(getService(), "GetMute", { InstanceID: instanceId, Channel: channel });
+			return eventService
+				.callService(getService(), "GetMute", { InstanceID: instanceId, Channel: channel })
+				.then((response) => {
+					return response && response.hasOwnProperty("CurrentMute") ? response.CurrentMute == 1 : response;
+				});
 		},
 		getVolume: function getVolume() {
-			return eventService.callService(getService(), "GetVolume", { InstanceID: instanceId, Channel: channel });
+			return eventService
+				.callService(getService(), "GetVolume", { InstanceID: instanceId, Channel: channel })
+				.then((response) => {
+					return response && response.hasOwnProperty("CurrentVolume") ? response.CurrentVolume : response;
+				});
 		},
 		listPresets: function listPresets() {
 			return eventService.callService(getService(), "ListPresets", { InstanceID: instanceId });

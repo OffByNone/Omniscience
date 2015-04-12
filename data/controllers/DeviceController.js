@@ -1,4 +1,4 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, pubSub, informationService) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, pubSub, informationService, persistenceService) {
 	"use strict";
 
 	eventService.emit("loadDevices");
@@ -10,6 +10,7 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 		return false;
 	};
 	$scope.device.services.forEach(informationService.put);
+	persistenceService.initialize($scope.device);
 
 	if (!$scope.protocolInfoFilter) { //todo: I don't like this.  Find a better way to show the first available capability
 		if ($scope.device.capabilities.video)

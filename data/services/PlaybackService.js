@@ -1,30 +1,31 @@
-﻿omniscience.service('playbackService', function ($timeout, eventService, fileService, avTransportService, renderingControlService, connectionManagerService) {
+﻿omniscience.service('playbackService', function ($timeout, eventService, persistenceService, fileService, avTransportService, renderingControlService, connectionManagerService) {
 	"use strict";
 
-	var currentTrack = {};
-	var playlist = [];
-	var availableActions = ["play","stop"];
-	var slideshow = { duration: 10000, timeout: null };
-	var settings = { //this exists for the primitive values, which if not for this will not get updated when their values change
-		playbackState: "stopped",
-		volume: 100,
-		isMuted: false,
-		repeat: false
-	};
-	var presets = [];
-	var mediaInfo = {};
-	var transportInfo = {};
-	var positionInfo = {};
-	var deviceCapabilities = {};
-	var transportSettings = {};
-	var currentTransportActions = {};
-	var currentConnectionInfo = {};
-	var currentConnectionIds = {};
-	var protocolInfo = {};
+	var state = persistenceService.load('playbackService');
 
+	if(!Object.keys(state).some(x => x)){ //empty object
+		state.currentTrack = {};
+		state.playlist = [];
+		state.availableActions = ["play","stop"];
+		state.slideshow = { duration: 10000, timeout: null };
+		state.playbackState = "stopped";
+		state.volume = 100;
+		state.isMuted = false;
+		state.repeat = false;
+		state.presets = [];
+		state.mediaInfo = {};
+		state.transportInfo = {};
+		state.positionInfo = {};
+		state.deviceCapabilities = {};
+		state.transportSettings = {};
+		state.currentTransportActions = {};
+		state.currentConnectionInfo = {};
+		state.currentConnectionIds = {};
+		state.protocolInfo = {};
+	}
 
 	function load(file){
-		currentTrack.file = file
+		state.currentTrack.file = file
 		return fileService.shareFile(file).then(fileUri => {
 			return avTransportService.setAvTransportUri(fileUri, "");
 		});
@@ -33,13 +34,13 @@
 		///Fisher–Yates Shuffle
 		var currentIndex = array.length, temporaryValue, randomIndex;
 
-		// While there remain elements to shuffle...
+		// While there remain elements to shuffle
 		while (0 !== currentIndex) {
-			// Pick a remaining element...
+			// Pick a remaining element
 			randomIndex = Math.floor(Math.random() * currentIndex);
 			currentIndex -= 1;
 
-			// And swap it with the current element.
+			// And swap it with the current element
 			temporaryValue = array[currentIndex];
 			array[currentIndex] = array[randomIndex];
 			array[randomIndex] = temporaryValue;
@@ -64,7 +65,7 @@
 		//[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
 
 		duration = duration.replace(/[\+\-]/g,""); //remove any + or -
-		duration = duration.replace(/\..*/,""); //remove any fractional seconds
+		duration = duration.replace(/\.*/,""); //remove any fractional seconds
 
 		var [ hours, minutes, seconds ] = duration.split(':');
 
@@ -88,13 +89,14 @@
 	}
 
 
+
 	var media = {};
 	var nextMedia = {};
 	var record = {};
 	var $scope = {};
 
 	function getFile(fileUri) {
-		var file = playlist.filter(item => item.path === fileUri)[0];
+		var file = state.playlist.filter(item => item.path === fileUri)[0];
 		return file == null ? null : file;
 	}
 	function getNameFromUrl(url) {
@@ -107,12 +109,12 @@
 
 			if (file == null) {
 				file = { name: decodeURI(getNameFromUrl(fileUri)), path: fileUri };
-				playlist.push(file);
+				state.playlist.push(file);
 			}
 		}
-		currentTrack.file = file;
+		state.currentTrack.file = file;
 
-		return currentTrack.file;
+		return state.currentTrack.file;
 	}
 
 
@@ -128,17 +130,17 @@
 		$scope.track.totalSeconds = totalSeconds;
 	}
 	function setPlaybackInformation(device, event) {
-		if (event.hasOwnProperty('CurrentTrackURI')) {
-			$scope.track.uri = event.CurrentTrackURI;
+		if (event.hasOwnProperty('state.currentTrackURI')) {
+			$scope.track.uri = event.state.currentTrackURI;
 			//setfile($scope.track.uri); TODO: don't have the uri of local files yet so I can't properly do this comparison.
 		}
 
 		if (event.hasOwnProperty('AVTransportURI')) $scope.media.uri = event.AVTransportURI;
-		if (event.hasOwnProperty('CurrentTrackMetaData')) $scope.track.metadata = event.CurrentTrackMetaData;
+		if (event.hasOwnProperty('state.currentTrackMetaData')) $scope.track.metadata = event.state.currentTrackMetaData;
 		if (event.hasOwnProperty('AVTransportURIMetaData')) $scope.media.metadata = event.AVTransportURIMetaData;
 
-		if (event.hasOwnProperty('CurrentTrackDuration')){
-			var [ totalSeconds, totalMinutes ] = getTime(event.CurrentTrackDuration);
+		if (event.hasOwnProperty('state.currentTrackDuration')){
+			var [ totalSeconds, totalMinutes ] = getTime(event.state.currentTrackDuration);
 			$scope.track.totalTime = totalMinutes;
 			$scope.track.totalSeconds = totalSeconds;
 		}
@@ -158,7 +160,7 @@
 			$scope.media.currentTime = CurrentMinutes;
 		}
 
-		if (event.hasOwnProperty('CurrentTrack')) $scope.track.trackNumber = event.CurrentTrack;
+		if (event.hasOwnProperty('state.currentTrack')) $scope.track.trackNumber = event.state.currentTrack;
 
 		var TransportState = {
 			0: 'STOPPED',
@@ -248,145 +250,133 @@
 		};
 
 		if (event.hasOwnProperty('CurrentTransportActions'))
-			$scope.availableActions = event.CurrentTransportActions.split(",");
+			$scope.state.availableActions = event.CurrentTransportActions.split(",");
 	}
 
 	eventService.on('positionInfo', setPositionInfo);
 
 
 	return {
-		settings: settings,
-		playlist: playlist,
-		currentTrack: currentTrack,
-		availableActions: availableActions,
-		presets: presets,
-		mediaInfo: mediaInfo,
-		transportInfo: transportInfo,
-		positionInfo: positionInfo,
-		deviceCapabilities: deviceCapabilities,
-		transportSettings: transportSettings,
-		currentTransportActions: currentTransportActions,
-		currentConnectionInfo: currentConnectionInfo,
-		currentConnectionIds: currentConnectionIds,
-		protocolInfo: protocolInfo,
-
+		state: state,
+		
 		play: function (file) {
 			this.pauseSlideshow();
-			this.settings.playbackState = "playing";
+			state.playbackState = "playing";
 			if (file){
-				currentTrack.file = file;
+				state.currentTrack.file = file;
 				load(file).then(() => avTransportService.play());
 			} else
 				avTransportService.play();
 
-			//set timeout for image slideshow
-			if (currentTrack.file.type && currentTrack.file.type.indexOf("image/") == 0) this.startSlideshow();
+			//set timeout for image state.slideshow
+			if (state.currentTrack.file.type && state.currentTrack.file.type.indexOf("image/") == 0) this.startSlideshow();
 		},
 		pause: function() {
-			this.settings.playbackState = "paused";
+			state.playbackState = "paused";
 			avTransportService.pause();
 			this.pauseSlideshow();
 		},
 		stop: function() {
-			this.settings.playbackState = "stopped";
+			state.playbackState = "stopped";
 			this.pauseSlideshow();
 			return avTransportService.stop();
 		},
 		previous: function() {
-			var previousTrack = playlist[playlist.length - 1];
-			for (var i = 0; i < playlist.length; i++){
-				if (playlist[i] === currentTrack.file) return this.play(previousTrack);
-				previousTrack = playlist[i];
+			var previousTrack = state.playlist[state.playlist.length - 1];
+			for (var i = 0; i < state.playlist.length; i++){
+				if (state.playlist[i] === state.currentTrack.file) return this.play(previousTrack);
+				previousTrack = state.playlist[i];
 			}
 		},
 		next: function(abideByRepeat) {
-			for (var i = 0; i < playlist.length; i++) {
-				if (playlist[i] === currentTrack.file)
-					if (i == playlist.length - 1)
-						if (!abideByRepeat || this.settings.repeat) return this.play(playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
+			for (var i = 0; i < state.playlist.length; i++) {
+				if (state.playlist[i] === state.currentTrack.file)
+					if (i == state.playlist.length - 1)
+						if (!abideByRepeat || state.repeat) return this.play(state.playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
 						else {//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
-							this.stop().then(() => load(playlist[0]));
+							this.stop().then(() => load(state.playlist[0]));
 						}
-					else return this.play(playlist[Number(i) + 1]); //we are not the last file so play the next
+					else return this.play(state.playlist[Number(i) + 1]); //we are not the last file so play the next
 			}
 		},
 		toggleMute: function () {
-			this.settings.isMuted = !this.settings.isMuted;
-			this.setMute(this.settings.isMuted);
+			this.setMute(!state.isMuted);
 		},
 		incrementVolume: function() {
-			this.setVolume( Number(this.settings.volume) + 1);
+			this.setVolume( Number(state.volume) + 1);
 		},
 		decrementVolume: function() {
-			this.setVolume( Number(this.settings.volume) - 1);
+			this.setVolume( Number(state.volume) - 1);
 		},
 		randomizePlaylist: function () {
-			shuffle(playlist);
+			shuffle(state.playlist);
 		},
 		removeFromPlaylist: function(file) {
-			for (var i = 0; i < playlist.length; i++)
-				if (playlist[i] === file) {
-					if (file === currentTrack.file) {
-						if (playlist.length > 1) this.next(true); //more files in playlist, play next
-						else this.stop(); //only file in playlist, stop playback
+			for (var i = 0; i < state.playlist.length; i++)
+				if (state.playlist[i] === file) {
+					if (file === state.currentTrack.file) {
+						if (state.playlist.length > 1) this.next(true); //more files in state.playlist, play next
+						else this.stop(); //only file in state.playlist, stop playback
 					}
-					playlist.splice(i, 1);
+					state.playlist.splice(i, 1);
 					return;
 				}
 		},
 		clearPlaylist: function() {
-			playlist.length = 0; //setting to [] will not clear out other references to this array.
+			state.playlist.length = 0; //setting to [] will not clear out other references to this array.
 			this.stop();
 		},
 		percentComplete: function () {
-			return (currentTrack.currentSeconds / currentTrack.totalSeconds) * 100;
+			return (state.currentTrack.currentSeconds / state.currentTrack.totalSeconds) * 100;
 		},
 		addToPlaylist: function (files, playImmediately) {
-			//Adds files to playlist from file picker box and returns the added files
-			files.forEach(file => playlist.push(file));
+			//Adds files to state.playlist from file picker box and returns the added files
+			files.forEach(file => state.playlist.push(file));
 
 			if (playImmediately) this.play(files[0]);
 
 			return files;
 		},
 		togglePlayState: function () {
-			if (this.settings.playbackState === "playing") this.pause();
+			if (state.playbackState === "playing") this.pause();
 			else this.play();
 		},
 		startSlideshow: function () {
-			slideshow.timeout = $timeout(() => {
-				if (this.settings.playbackState.toLowerCase() === 'playing')
+			state.slideshow.timeout = $timeout(() => {
+				if (state.playbackState.toLowerCase() === 'playing')
 					this.next(true);
-			}, slideshow.duration);
+			}, state.slideshow.duration);
 		},
 		pauseSlideshow: function () {
-			if (slideshow.timeout) $timeout.cancel(slideshow.timeout);
+			if (state.slideshow.timeout) $timeout.cancel(state.slideshow.timeout);
 		},
 		canExecuteAction: function (action) {
-			return availableActions.some(availableAction => availableAction == action);
+			return state.availableActions.some(availableAction => availableAction == action);
 		},
 		setVolume: function (newVolume) {
-			this.settings.volume = newVolume;
+			state.volume = newVolume;
 			renderingControlService.setVolume(newVolume);
 		},
 		setMute: function (mute) {
+			state.isMuted = mute
 			renderingControlService.setMute(mute);
 		},
 		getInfo: function(){
-			avTransportService.getMediaInfo().then(mi => mediaInfo = mi);
-			avTransportService.getTransportInfo().then(ti => transportInfo = ti);
-			avTransportService.getPositionInfo().then(pi => positionInfo = pi);
-			avTransportService.getDeviceCapabilities().then(dc => deviceCapabilities = dc);
-			avTransportService.getTransportSettings().then(ts => transportSettings = ts);
-			avTransportService.getCurrentTransportActions().then(ta => currentTransportActions = ta);
+			avTransportService.getMediaInfo().then(mediaInfo => state.mediaInfo = mediaInfo);
+			avTransportService.getTransportInfo().then(transportInfo => state.transportInfo = transportInfo);
+			avTransportService.getPositionInfo().then(positionInfo => state.positionInfo = positionInfo);
+			avTransportService.getDeviceCapabilities().then(deviceCapabilities => state.deviceCapabilities = deviceCapabilities);
+			avTransportService.getTransportSettings().then(transportSettings => state.transportSettings = transportSettings);
+			avTransportService.getCurrentTransportActions().then(currentTransportActions => state.currentTransportActions = currentTransportActions);
 				
-			renderingControlService.getMute().then(isMuted => settings.isMuted = isMuted);
-			renderingControlService.getVolume().then(volume => settings.volume = volume);
-			renderingControlService.listPresets().then(newPresets => presets = newPresets);
+			renderingControlService.getMute().then(isMuted => state.isMuted = isMuted);
+			renderingControlService.getVolume().then(volume => state.volume = volume);
+			renderingControlService.listPresets().then(newPresets => state.presets = newPresets);
 			
-			connectionManagerService.getCurrentConnectionInfo().then(cci => currentConnectionInfo = cci);
-			connectionManagerService.getCurrentConnectionIds().then(cci => currentConnectionIds = cci);
-			connectionManagerService.getProtocolInfo().then(pi => protocolInfo = pi);
+			connectionManagerService.getCurrentConnectionInfo().then(currentConnectionInfo => state.currentConnectionInfo = currentConnectionInfo);
+			connectionManagerService.getCurrentConnectionIds().then(currentConnectionIds => state.currentConnectionIds = currentConnectionIds);
+			connectionManagerService.getProtocolInfo().then(protocolInfo => state.protocolInfo = protocolInfo);
+			persistenceService.save("playbackService");
 		}
 	};
 });

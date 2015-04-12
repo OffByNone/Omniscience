@@ -1,8 +1,8 @@
 ﻿omniscience.controller('PlaybackController', function playbackController($scope, playbackService) {
 	"use strict";
 
-	$scope.currentTrack = playbackService.currentTrack;
-	$scope.settings = playbackService.settings;
+	$scope.state = playbackService.state;
+	playbackService.getInfo();
 
 	$scope.play = function play(file) {
 		playbackService.play(file);
@@ -49,8 +49,8 @@
 				$scope.previous();
 				break;
 			case "delete":
-				if ($scope.currentTrack.file)
-					$scope.removeFromPlaylist($scope.currentTrack.file);
+				if ($scope.state.currentTrack && $scope.state.currentTrack.file)
+					playbackService.removeFromPlaylist($scope.state.currentTrack.file);
 				break;
 		}
 	});

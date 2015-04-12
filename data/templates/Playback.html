@@ -1,9 +1,9 @@
 ﻿<div>
 	<div class="volume-speaker">
-		<span class="glyphicon" ng-class="{'glyphicon-volume-off': settings.isMuted, 'glyphicon-volume-up': !settings.isMuted}" ng-click="toggleMute()"></span>
+		<span class="glyphicon" ng-class="{'glyphicon-volume-off': state.isMuted, 'glyphicon-volume-up': !state.isMuted}" ng-click="toggleMute()"></span>
 		<div class="volume-detail">
 			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
-			<span>{{settings.volume}}</span>
+			<span>{{state.volume}}</span>
 			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
 		</div>
 	</div>
@@ -15,14 +15,14 @@
 		<button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
 	</div>
 	<div class="progress">
-		<div class="progress-bar" role="progressbar" aria-valuenow="{{currentTrack.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{currentTrack.totalSeconds}}" style="width: {{percentComplete()}}%;">
-			<span class="sr-only">{{currentTrack.currentSeconds}} seconds in</span>
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{state.currentTrack.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{state.currentTrack.totalSeconds}}" style="width: {{state.percentComplete()}}%;">
+			<span class="sr-only">{{state.currentTrack.currentSeconds}} seconds in</span>
 		</div>
 	</div>
 	<div class="file-time">
-		<span>{{currentTrack.currentTime}}</span>
+		<span>{{state.currentTrack.currentTime}}</span>
 		<span>/</span>
-		<span>{{currentTrack.totalTime}}</span>
-		<span>{{currentTrack.file.name}}</span>
+		<span>{{state.currentTrack.totalTime}}</span>
+		<span>{{state.currentTrack.file.name}}</span>
 	</div>
 </div>
