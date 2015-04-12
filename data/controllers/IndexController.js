@@ -19,28 +19,20 @@
 			if (scopeDevice.id === device.id) {
 				scopeDevice.name = device.name;
 
-				//many of the below properties are found on the getAdditionalInformation search and therefore not
-				//defined when the device first appears.  This means that on a subsequent search if not for the null
-				//checks the devices would for a short time have incorrect information shown
-				if (device.hasOwnProperty(device.capabilities.video)) scopedevice.capabilities.video = device.capabilities.video;
-				if (device.hasOwnProperty(device.capabilities.image)) scopedevice.capabilities.image = device.capabilities.image;
-				if (device.hasOwnProperty(device.capabilities.audio)) scopedevice.capabilities.audio = device.capabilities.audio;
-				if (device.hasOwnProperty(device.capabilities.mirror)) scopedevice.capabilities.mirror = device.capabilities.mirror;
+				device.services.forEach(deviceService => {
+					var service = scopeDevice.services.filter(scopeDeviceService => scopeDeviceService.id === deviceService.id && (!scopeDeviceService.scpdUrl || scopeDeviceService.scpdUrl === deviceService.scpdUrl))[0];
+					//Match up on Id, but a device could have two services with the same id (should probably make sure that is true), 
+					//so also match the scpdUrl which means it is effectively the same service
+					//but the dial devices MatchStick and Chromecast don't have scpdUrls so allow for those to be null
 
-				if (device.hasOwnProperty(device.isMuted)) scopeDevice.isMuted = device.isMuted;
-				if (device.hasOwnProperty(device.volume)) scopeDevice.volume = device.volume;
-				if (device.hasOwnProperty(device.presets)) scopeDevice.presets = device.presets;
-				if (device.hasOwnProperty(device.currentConnectionIds)) scopeDevice.currentConnectionIds = device.currentConnectionIds;
-
-				if (device.hasOwnProperty(device.protocolInfo)) scopeDevice.protocolInfo = device.protocolInfo;
-				if (device.hasOwnProperty(device.rawDiscoveryInfo)) scopeDevice.rawDiscoveryInfo = device.rawDiscoveryInfo;
-				if (device.hasOwnProperty(device.currentConnectionInfo)) scopeDevice.currentConnectionInfo = device.currentConnectionInfo;
-				if (device.hasOwnProperty(device.mediaInfo)) scopeDevice.mediaInfo = device.mediaInfo;
-				if (device.hasOwnProperty(device.transportInfo)) scopeDevice.transportInfo = device.transportInfo;
-				if (device.hasOwnProperty(device.positionInfo)) scopeDevice.positionInfo = device.positionInfo;
-				if (device.hasOwnProperty(device.deviceCapabilities)) scopeDevice.deviceCapabilities = device.deviceCapabilities;
-				if (device.hasOwnProperty(device.transportSettings)) scopeDevice.transportSettings = device.transportSettings;
-				if (device.hasOwnProperty(device.currentTransportActions)) scopeDevice.currentTransportActions = device.currentTransportActions;
+					if (!service) {
+						scopeDevice.services.push(deviceService);
+						return;
+					}
+					for (var i in deviceService)
+						if(deviceService.hasOwnProperty(i) && service[i] !== deviceService[i])
+							service[i] = deviceService[i];
+				});
 
 				found = true;
 			}
@@ -85,3 +77,6 @@
 	eventService.on('deviceFound', addUpdateDevice);
 	eventService.on('EventOccured', eventOccured);
 });
+
+
+//device.type.urn === "urn:schemas-upnp-org:device:BinaryLight:1"
