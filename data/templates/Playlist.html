@@ -20,20 +20,20 @@
 					</div>
 				</div>
 				<div class="form-group pull-right">
-					<button type="button" data-toggle="collapse" data-target="#add-file" class="btn btn-default" ng-click="addToPlaylist(true); filePickerisOpen = false;">Play</button>
-					<button type="button" class="btn btn-default" ng-click="addToPlaylist(false)">Add To Playlist</button>
+					<button type="button" data-toggle="collapse" data-target="#add-file" class="btn btn-default" ng-click="add(true); filePickerisOpen = false;">Play</button>
+					<button type="button" class="btn btn-default" ng-click="add(false)">Add To Playlist</button>
 				</div>
 			</div>
 		</div>
 	</li>
-	<li ng-class="{active : file === state.currentTrack.file}" ng-dblclick="play(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in state.playlist">
+	<li ng-class="{active : file === currentTrack.file}" ng-dblclick="play(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
 		<!--todo: add handle to drag and drop reorder -->
 		<h4 class="list-group-item-heading pull-left">{{ file.name }}</h4>
-		<button type="button" ng-click="removeFromPlaylist(file)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<button type="button" ng-click="remove(file)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	</li>
 	<li class="playlist-footer list-group-item clearfix">
-		<button class="btn btn-default pull-left" ng-click="clearPlaylist()">Clear Playlist</button>
-		<span class="pull-right glyphicon glyphicon-repeat" ng-click="state.repeat = !state.repeat" ng-class="{enabled: state.repeat}"></span>
-		<span class="pull-right glyphicon glyphicon-random" ng-click="randomizePlaylist()"></span>
+		<button class="btn btn-default pull-left" ng-click="clear()">Clear Playlist</button>
+		<span class="pull-right glyphicon glyphicon-repeat" ng-click="repeat = !repeat" ng-class="{enabled: repeat}"></span>
+		<span class="pull-right glyphicon glyphicon-random" ng-click="randomize()"></span>
 	</li>
 </ul>

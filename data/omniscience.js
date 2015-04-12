@@ -1,5 +1,5 @@
 'use strict';
-var omniscience = angular.module('omniscience', ['ngRoute']);
+var omniscience = angular.module('omniscience', ['ngRoute','ui.unique']);
 
 omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
 	//$locationProvider.html5Mode({enabled:true});

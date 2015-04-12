@@ -1,4 +1,4 @@
-﻿omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService, pubSub) {
+﻿omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
 	"use strict";
 
 	$rootScope.devices = [];
@@ -66,7 +66,6 @@
 		if (!events) { console.log("event is undefined"); return; }
 		if (Array.isArray(events))
 			events.forEach(event => {
-				pubSub.pub("event", device, event, request);
 				$rootScope.eventLog.push({ device: device, event: event, request: request });
 			});
 	}

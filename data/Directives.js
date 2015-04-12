@@ -61,15 +61,13 @@ angular.module("omniscience").directive("playlist", function () {
 
 	function link(scope, element, attributes) {}
 });
-
-
-angular.module("omniscience").directive("connectionManager", function () {
+angular.module("omniscience").directive("capabilities", function () {
 	return ({
-		controller: "ConnectionManager",
+		controller: "CapabilitiesController",
 		link: link,
 		restrict: "E",
-		templateUrl: "templates/ConnectionManager.html"
+		templateUrl: "templates/Capabilities.html"
 	});
 
-	function link(scope, element, attributes) {}
+	function link(scope, element, attributes) { }
 });

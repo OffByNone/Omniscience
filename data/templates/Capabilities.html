@@ -1,0 +1,37 @@
+﻿<div>
+	<div ng-show="state.protocolInfo.length > 0">
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" ng-repeat="format in state.protocolInfo | unique:'contentFormat.medium' | orderBy: 'contentFormat.medium'" ng-click="setProtocolInfoFilter(format.contentFormat.medium)" ng-class="{active: $first }">
+				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="format.contentFormat.medium">{{format.contentFormat.medium}}</a>
+			</li>
+		</ul>
+		<div class="tab-content tab-padding">
+			<div role="tabpanel" ng-show="state.protocolInfo.length > 0" class="tab-pane active" id="capabilities-tab">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Protocol</th>
+							<th>Network</th>
+							<th>Medium</th>
+							<th>Container Type</th>
+							<th>Container Type Info</th>
+							<th>Additional Info</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="info in state.protocolInfo | filter: protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+							<td>{{info.type}}</td>
+							<td>{{info.protocol}}</td>
+							<td>{{info.network}}</td>
+							<td>{{info.contentFormat.medium}}</td>
+							<td>{{info.contentFormat.containerType}}</td>
+							<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
+							<td>{{info.additionalInfo}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -50,7 +50,7 @@ Obscure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remot
     devtools.debugger.remote-enabled = true. This adds a "Browser Debugger" entry to the "Web Developer" submenu of the "Tools" menu.  The Browser Debugger can be used to debug the JavaScript code of extensions. The devtools.chrome.enabled preference must also be set to true for the Browser Debugger to be enabled.
     extensions.logging.enabled = true. This will send more detailed information about installation and update problems to the Error Console. (Note that the extension manager automatically restarts the application at startup sometimes, which may mean you won't have time to see the messages logged before the automatic restart happens. To see them, prevent the automatic restart by setting the environment NO_EM_RESTART to 1 before starting the application.)
     nglayout.debug.disable_xul_fastload = true. For Gecko 2.0+ (Firefox 4.0+). See this bug for more information. Although the bug has been closed, it is believed that this pref is still relevant.
-    You might also want to set dom.report_all_js_exceptions = true. See Exception logging in JavaScript for details.
+    dom.report_all_js_exceptions = true. See Exception logging in JavaScript for details.
     devtools.errorconsole.deprecation_warnings = true. Detect deprecated code use.
 https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
 

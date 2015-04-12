@@ -2,7 +2,6 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 	"use strict";
 
 	var connectionId = 0;
-
 	var constants = {
 		rawServiceType: 'urn:schemas-upnp-org:service:ConnectionManager:1',
 		DLNA: {
@@ -37,7 +36,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		}
 	};
 
-	function _parseProtocolResponse(protocolResponse){
+	function _parseProtocolResponse(protocolResponse, type){
 		var protocolInfo = [];
 
 		if(!protocolResponse) return null;
@@ -53,6 +52,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 			[newRow.protocol, newRow.network, contentFormat, additionalInfo] = row.split(':');
 			newRow.contentFormat = _parseContentFormat(contentFormat);
 			newRow.additionalInfo = _parseAdditionalinfo(additionalInfo);
+			newRow.type = type;
 			protocolInfo.push(newRow);
 		});
 		return protocolInfo;
@@ -143,11 +143,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		getProtocolInfo: function getProtocolInfo(){
 			return eventService.callService(getService(), "GetProtocolInfo").
 				then(response => {
-					return {
-						sink: _parseProtocolResponse(response.Sink),
-						source: _parseProtocolResponse(response.Source),
-						_raw: response._raw
-					};
+					return [].concat(_parseProtocolResponse(response.Sink, "render"), _parseProtocolResponse(response.Source, "serve"));
 				});
 		},
 		getCurrentConnectionIds: function getCurrentConnectionIds(){
