@@ -1,14 +1,15 @@
 ﻿omniscience.controller('PlaybackController', function playbackController($scope, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
-	$scope.volume = 100;
-	$scope.isMuted = false;
-	$scope.presets = [];
+	$scope.availableActions = ["play"];
 	$scope.currentTrack = {};
+	$scope.currentTransportActions = {};
+	$scope.isMuted = false;
 	$scope.mediaInfo = {};
-	$scope.transportInfo = {};
 	$scope.positionInfo = {};
-	$scope.availableActions = ["play", "stop"];
+	$scope.presets = [];
+	$scope.transportInfo = {};
+	$scope.volume = 100;
 
 	$scope.toggleMute = function toggleMute() {
 		setMute(!$scope.isMuted);
@@ -98,7 +99,7 @@
 		if (!(url instanceof URL)) url = new URL(url);
 		return url.pathname.replace(/^.*(\\|\/|\:)/, '');
 	}
-	function setFile(fileUri) {
+	/*function setFile(fileUri) {
 		if (fileUri != null) {
 			var file = getFile(fileUri);
 
@@ -110,7 +111,7 @@
 		state.currentTrack.file = file;
 
 		return state.currentTrack.file;
-	}
+	}*/
 
 	function setPositionInfo(deviceId, response) {
 		if (deviceId !== $scope.$parent.deviceId) return; //todo: it would be better if this function took in a device to apply it to instead of matching against the parent device
@@ -276,5 +277,4 @@
 	avTransportService.getTransportInfo().then(transportInfo => $scope.transportInfo = transportInfo);
 	avTransportService.getPositionInfo().then(positionInfo => $scope.positionInfo = positionInfo);
 	avTransportService.getCurrentTransportActions().then(currentTransportActions => $scope.currentTransportActions = currentTransportActions);
-
 });

@@ -9,20 +9,19 @@
 	$scope.playbackState = "stopped";
 	$scope.deviceCapabilities = {};
 	$scope.transportSettings = {};
-	$scope.currentTransportActions = {};
-	$scope.currentTrack = {};
+	$scope.currentFile = {};
 
 	$scope.play = function play(file) {
 		pauseSlideshow();
 		$scope.state = "playing";
 		if (file) {
-			$scope.currentTrack.file = file;
+			$scope.currentFile = file;
 			load(file).then(() => avTransportService.play());
 		} else
 			avTransportService.play();
 
 		//set timeout for image $scope.slideshow
-		if ($scope.currentTrack.file.type && $scope.currentTrack.file.type.indexOf("image/") == 0) startSlideshow();
+		if ($scope.currentFile.type && $scope.currentFile.type.indexOf("image/") == 0) startSlideshow();
 	};
 	$scope.pause = function pause() {
 		$scope.state = "paused";
@@ -37,13 +36,13 @@
 	$scope.previous = function previous() {
 		var previousTrack = $scope.playlist[$scope.playlist.length - 1];
 		for (var i = 0; i < $scope.playlist.length; i++) {
-			if ($scope.playlist[i] === $scope.currentTrack.file) return $scope.play(previousTrack);
+			if ($scope.playlist[i] === $scope.currentFile) return $scope.play(previousTrack);
 			previousTrack = $scope.playlist[i];
 		}
 	}
 	$scope.next = function next(abideByRepeat) {
 		for (var i = 0; i < $scope.playlist.length; i++) {
-			if ($scope.playlist[i] === $scope.currentTrack.file)
+			if ($scope.playlist[i] === $scope.currentFile)
 				if (i == $scope.playlist.length - 1)
 					if (!abideByRepeat || $scope.repeat) return $scope.play($scope.playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
 					else {//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
@@ -71,7 +70,7 @@
 	$scope.remove = function remove(file) {
 		for (var i = 0; i < $scope.playlist.length; i++)
 			if ($scope.playlist[i] === file) {
-				if (file === $scope.currentTrack.file) {
+				if (file === $scope.currentFile) {
 					if ($scope.playlist.length > 1) this.next(true); //more files in $scope.playlist, play next
 					else this.stop(); //only file in $scope.playlist, stop playback
 				}
@@ -165,7 +164,7 @@
 		}
 	}
 	function load(file) {
-		$scope.currentTrack.file = file
+		$scope.currentFile = file
 		return fileService.shareFile(file).then(fileUri => {
 			return avTransportService.setAvTransportUri(fileUri, "");
 		});

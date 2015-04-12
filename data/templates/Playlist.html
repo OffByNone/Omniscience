@@ -26,7 +26,7 @@
 			</div>
 		</div>
 	</li>
-	<li ng-class="{active : file === currentTrack.file}" ng-dblclick="play(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
+	<li ng-class="{active : file === currentFile}" ng-dblclick="play(file)" class="list-group-item playlist-item clearfix" ng-repeat="file in playlist">
 		<!--todo: add handle to drag and drop reorder -->
 		<h4 class="list-group-item-heading pull-left">{{ file.name }}</h4>
 		<button type="button" ng-click="remove(file)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
