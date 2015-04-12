@@ -1,21 +1,21 @@
 ﻿<div>
-	<div ng-show="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null">
+	<div ng-show="device.capabilities.image || device.capabilities.video || device.capabilities.audio || device.capabilities.mirror">
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation" ng-show="device.capabilities.video != null" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.capabilities.video != null}">
+			<li role="presentation" ng-show="device.capabilities.video" ng-click="protocolInfoFilter = 'video'" ng-class="{active: device.capabilities.video }">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="video">Video</a>
 			</li>
-			<li role="presentation" ng-show="device.capabilities.audio != null" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio != null}">
+			<li role="presentation" ng-show="device.capabilities.audio" ng-click="protocolInfoFilter = 'audio'" ng-class="{active: !device.capabilities.video && device.capabilities.audio}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="audio">Audio</a>
 			</li>
-			<li role="presentation" ng-show="device.capabilities.image != null" ng-click="protocolInfoFilter = 'image'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio == null && device.capabilities.image != null}">
+			<li role="presentation" ng-show="device.capabilities.image" ng-click="protocolInfoFilter = 'image'" ng-class="{active: !device.capabilities.video&& !device.capabilities.audio && device.capabilities.image}">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="image">Image</a>
 			</li>
-			<li role="presentation" ng-show="device.capabilities.mirror != null" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: device.capabilities.video == null && device.capabilities.audio == null && device.capabilities.image == null && device.capabilities.mirror != null}">
+			<li role="presentation" ng-show="device.capabilities.mirror" ng-click="protocolInfoFilter = 'mirror'" ng-class="{active: !device.capabilities.video && !device.capabilities.audio && !device.capabilities.image && device.capabilities.mirror }">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="mirror">Mirror</a>
 			</li>
 		</ul>
 		<div class="tab-content tab-padding">
-			<div role="tabpanel" ng-show="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null" class="tab-pane active" id="capabilities-tab">
+			<div role="tabpanel" ng-show="device.capabilities.image || device.capabilities.video || device.capabilities.audio || device.capabilities.mirror " class="tab-pane active" id="capabilities-tab">
 				<table class="table">
 					<thead>
 						<tr>
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 	</div>
-	<h4 ng-hide="device.capabilities.image != null || device.capabilities.video != null || device.capabilities.audio != null || device.capabilities.mirror != null">
+	<h4 ng-hide="device.capabilities.image || device.capabilities.video || device.capabilities.audio || device.capabilities.mirror">
 		Unknown
 	</h4>
 </div>
