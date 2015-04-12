@@ -38,10 +38,8 @@
 			}
 		});
 
-		if (!found) {
-			device.services.forEach(service => service.htmlId = service.id.name);
+		if (!found)
 			$rootScope.devices.push(device);
-		}
 
 		addTypes(device);
 	}
