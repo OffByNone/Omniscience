@@ -1,4 +1,4 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, informationService, persistenceService) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, informationService, persistenceService, subscriptionService) {
 	"use strict";
 
 	eventService.emit("loadDevices");
@@ -11,5 +11,17 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 		return false;
 	};
 	$scope.device.services.forEach(informationService.put);
+
+
+	$scope.device.services.forEach((service) => {
+		subscriptionService.subscribe(service, function GenericEventCallback(eventXmlAsString) {
+			console.log("Generic Event Received");
+			console.log(eventXmlAsString);
+		}, function lastChangeEventCallback(lastChangeEventObj) {
+			console.log("Last Change Event Received");
+			console.log(lastChangeEventObj);
+		});
+	});
+
 	//persistenceService.initialize($scope.device);
 });

@@ -1,31 +1,9 @@
-omniscience.factory('avTransportService', function (eventService, informationService) {
+omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1'; //todo: move this to a constants file
 	var instanceId = 0; //todo: determine this dynamically
 	var speed = 1; //todo: make this a setable default
-
-	function _parseEventRequest(request) {
-		var requestXml = this._DOMParser.parseFromString(request.body, 'text/xml');
-		var lastChanges = this._xmlParser.getElements(requestXml, "propertyset property LastChange");
-		var instances = [];
-
-		lastChanges.map(lastChange => {
-			var eventString = lastChange.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
-			var eventXml = this._DOMParser.parseFromString(eventString, 'text/xml');
-
-			var instancesXml = this._xmlParser.getElements(eventXml, "InstanceID");
-			instancesXml.map(instanceXml => {
-				instance = {};
-				Array.prototype.slice.call(instanceXml.children).forEach(child => {
-					instance[child.tagName] = child.attributes.getNamedItem('val').value;
-				});
-				instances.push(instance);
-			});
-		});
-
-		return instances;
-	}
 
 	function getService() {
 		return informationService.get(rawServiceType);

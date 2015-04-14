@@ -106,7 +106,7 @@
 	}
 	function startSlideshow() {
 		$scope.slideshow.timeout = $timeout(() => {
-			if ($scope.playback$scope.toLowerCase() === 'playing')
+			if ($scope.playbackState.toLowerCase() === 'playing')
 				$scope.next(true);
 		}, $scope.slideshow.duration);
 	}
