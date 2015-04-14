@@ -13,14 +13,35 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 	$scope.device.services.forEach(informationService.put);
 
 
-	$scope.device.services.forEach((service) => {
-		subscriptionService.subscribe(service, function GenericEventCallback(eventXmlAsString) {
-			console.log("Generic Event Received");
-			console.log(eventXmlAsString);
-		}, function lastChangeEventCallback(lastChangeEventObj) {
-			console.log("Last Change Event Received");
-			console.log(lastChangeEventObj);
+	$scope.device.services
+		.filter((service) => {
+			try {
+				var url = new URL(service.eventSubUrl);
+				return url.hostname && url.protocol;
+			} catch (error) {
+				return false;
+			}
+		})
+		.forEach((service) => {
+			subscriptionService.subscribe(service, function GenericEventCallback(eventXmlAsString) {
+				console.log("Generic Event Received");
+				console.log(eventXmlAsString);
+			}, function lastChangeEventCallback(lastChangeEventObj) {
+				console.log("Last Change Event Received");
+				console.log(lastChangeEventObj);
+			});
 		});
+	$scope.$on('$destroy', function () {
+		$scope.device.services
+			.filter((service) => {
+				try {
+					var url = new URL(service.eventSubUrl);
+					return url.hostname && url.protocol;
+				} catch (error) {
+					return false;
+				}
+			})
+			.forEach((service) => subscriptionService.unsubscribe(service));
 	});
 
 	//persistenceService.initialize($scope.device);
