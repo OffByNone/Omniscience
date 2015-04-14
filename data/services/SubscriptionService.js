@@ -45,9 +45,8 @@
 
 			addSubscription(service.hash, genericEventCallback, lastChangeCallback);
 			timeoutInSeconds = timeoutInSeconds || 600;
-			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((eventSubscriptionId, response) => {
-				service.subscriptionId = eventSubscriptionId;
-				return response;
+			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((subscriptionId) => {
+				return subscriptionId;
 			});
 		},
 		unsubscribe: function unsubscribe(service) {

@@ -29,7 +29,7 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 			}, function lastChangeEventCallback(lastChangeEventObj) {
 				console.log("Last Change Event Received");
 				console.log(lastChangeEventObj);
-			});
+			}).then((subscriptionId) => service.subscriptionId = subscriptionId);
 		});
 	$scope.$on('$destroy', function () {
 		$scope.device.services
