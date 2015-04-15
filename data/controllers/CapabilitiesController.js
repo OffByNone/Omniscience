@@ -16,7 +16,7 @@
 	connectionManagerService.getProtocolInfo().then(protocolInfo => {
 		$scope.mediums = protocolInfo.map(x => x.contentFormat.medium).filter((value, index, self) => self.indexOf(value) === index);
 		$scope.protocolInfo = protocolInfo;
-		$scope.protocolInfoFilter = $scope.medium[0];
+		$scope.protocolInfoFilter = $scope.mediums[0];
 	});
 	//todo: there is probably a better/faster/easier to read way to get the unique values out
 

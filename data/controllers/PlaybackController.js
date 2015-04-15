@@ -295,7 +295,8 @@
 		console.log("Last Change Event Received for rendering Control");
 		console.log(lastChangeEventObj);
 	}
-);
+	);
+
 	$scope.$on('$destroy', () => renderingControlService.unsubscribe());
 	$scope.$on('$destroy', () => avTransportService.unsubscribe());
 });
