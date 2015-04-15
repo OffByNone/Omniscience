@@ -143,7 +143,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		getProtocolInfo: function getProtocolInfo(){
 			return eventService.callService(getService(), "GetProtocolInfo").
 				then(response => {
-					return [].concat(_parseProtocolResponse(response.Sink, "render"), _parseProtocolResponse(response.Source, "serve"));
+					return [].concat(_parseProtocolResponse(response.Sink, "render") || [], _parseProtocolResponse(response.Source, "serve") || []);
 				});
 		},
 		getCurrentConnectionIds: function getCurrentConnectionIds(){
