@@ -99,7 +99,7 @@
 		if (!(url instanceof URL)) url = new URL(url);
 		return url.pathname.replace(/^.*(\\|\/|\:)/, '');
 	}
-	/*function setFile(fileUri) {
+	function setFile(fileUri) {
 		if (fileUri != null) {
 			var file = getFile(fileUri);
 
@@ -111,7 +111,7 @@
 		state.currentTrack.file = file;
 
 		return state.currentTrack.file;
-	}*/
+	}
 
 	function setPositionInfo(deviceId, response) {
 		if (deviceId !== $scope.$parent.deviceId) return; //todo: it would be better if this function took in a device to apply it to instead of matching against the parent device
@@ -245,7 +245,7 @@
 		};
 
 		if (event.hasOwnProperty('CurrentTransportActions'))
-			$scope.state.availableActions = event.CurrentTransportActions.split(",");
+			$scope.playbackState.availableActions = event.CurrentTransportActions.split(",");
 	}
 
 	eventService.on('positionInfo', setPositionInfo);
@@ -277,4 +277,25 @@
 	avTransportService.getTransportInfo().then(transportInfo => $scope.transportInfo = transportInfo);
 	avTransportService.getPositionInfo().then(positionInfo => $scope.positionInfo = positionInfo);
 	avTransportService.getCurrentTransportActions().then(currentTransportActions => $scope.currentTransportActions = currentTransportActions);
+
+	avTransportService.subscribe(
+		function GenericEventCallback(eventXmlAsString) {
+			console.log("Generic Event Received for av transport");
+			console.log(eventXmlAsString);
+		}, function lastChangeEventCallback(lastChangeEventObj) {
+			console.log("Last Change Event Received for av transport");
+			console.log(lastChangeEventObj);
+		}
+	);
+	renderingControlService.subscribe(
+	function GenericEventCallback(eventXmlAsString) {
+		console.log("Generic Event Received for rendering Control");
+		console.log(eventXmlAsString);
+	}, function lastChangeEventCallback(lastChangeEventObj) {
+		console.log("Last Change Event Received for rendering Control");
+		console.log(lastChangeEventObj);
+	}
+);
+	$scope.$on('$destroy', () => renderingControlService.unsubscribe());
+	$scope.$on('$destroy', () => avTransportService.unsubscribe());
 });

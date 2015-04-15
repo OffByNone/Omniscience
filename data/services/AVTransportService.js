@@ -60,6 +60,12 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 		},
 		x_ExecuteOperation: function x_ExecuteOperation(avtInstanceID, actionDirective) {
 			return eventService.callService(getService(), "X_ExecuteOperation", { AVTInstanceID: avtInstanceID, ActionDirective: actionDirective });
+		},
+		subscribe: function (genericEventCallback, lastChangeEventCallback) {
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function () {
+			return subscriptionService.unsubscribe(getService());
 		}
 	};
 });

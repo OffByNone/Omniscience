@@ -46,6 +46,7 @@
 			addSubscription(service.hash, genericEventCallback, lastChangeCallback);
 			timeoutInSeconds = timeoutInSeconds || 600;
 			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((subscriptionId) => {
+				service.subscriptionId = subscriptionId;
 				return subscriptionId;
 			});
 		},
@@ -53,6 +54,7 @@
 			if (!service || typeof service !== "object") throw new Error("Invalid argument exception.  Parameter 'service' is either null or not an object.");
 			if (!service.hash) throw new Error("Argument null exception service.hash cannot be null.");
 			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
+			if (!service.subscriptionId) return; //means we never subscribed in the first place
 
 			removeSubscription(service.hash);
 			return eventService.emit("Unsubscribe", service.eventSubUrl, service.subscriptionId, service.hash);

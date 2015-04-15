@@ -1,4 +1,4 @@
-omniscience.factory('connectionManagerService', function (eventService, informationService){
+omniscience.factory('connectionManagerService', function (eventService, informationService, subscriptionService){
 	"use strict";
 
 	var connectionId = 0;
@@ -148,6 +148,12 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		},
 		getCurrentConnectionIds: function getCurrentConnectionIds(){
 			return eventService.callService(getService(), "GetCurrentConnectionIDs");
+		},
+		subscribe: function(genericEventCallback, lastChangeEventCallback){
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function(){
+			return subscriptionService.unsubscribe(getService());
 		}
 	}
 });

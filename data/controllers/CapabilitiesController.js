@@ -11,13 +11,25 @@
 
 	$scope.mediums = [];
 
-
 	connectionManagerService.getCurrentConnectionInfo().then(currentConnectionInfo => $scope.currentConnectionInfo = currentConnectionInfo);
 	connectionManagerService.getCurrentConnectionIds().then(currentConnectionIds => $scope.currentConnectionIds = currentConnectionIds);
 	connectionManagerService.getProtocolInfo().then(protocolInfo => {
+		$scope.mediums = protocolInfo.map(x => x.contentFormat.medium).filter((value, index, self) => self.indexOf(value) === index);
 		$scope.protocolInfo = protocolInfo;
-		console.log(protocolInfo);
-		$scope.mediums = protocolInfo.map(x => x.contentFormat.medium).filter((value, index, self) => self.indexOf(value) === index); //todo: there is probably a better/faster/easier to read way to get the unique values out
+		$scope.protocolInfoFilter = $scope.medium[0];
 	});
+	//todo: there is probably a better/faster/easier to read way to get the unique values out
+
+	connectionManagerService.subscribe(
+		function GenericEventCallback(eventXmlAsString) {
+			console.log("Generic Event Received for connection manager");
+			console.log(eventXmlAsString);
+		}, function lastChangeEventCallback(lastChangeEventObj) {
+			console.log("Last Change Event Received for connection manager");
+			console.log(lastChangeEventObj);
+		}
+	);
+
+	$scope.$on('$destroy', () => connectionManagerService.unsubscribe());
 });
 

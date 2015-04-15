@@ -1,12 +1,12 @@
 ﻿<div>
-	<div ng-show="state.protocolInfo.length > 0">
+	<div ng-show="protocolInfo.length > 0">
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" ng-repeat="medium in mediums" ng-click="setProtocolInfoFilter(medium)" ng-class="{active: $first }">
 				<a role="tab" data-toggle="tab" data-target="#capabilities-tab" aria-controls="medium">{{medium}}</a>
 			</li>
 		</ul>
 		<div class="tab-content tab-padding">
-			<div role="tabpanel" ng-show="state.protocolInfo.length > 0" class="tab-pane active" id="capabilities-tab">
+			<div role="tabpanel" ng-show="protocolInfo.length > 0" class="tab-pane active" id="capabilities-tab">
 				<table class="table">
 					<thead>
 						<tr>
@@ -20,7 +20,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="info in state.protocolInfo | filter: protocolInfoFilter | orderBy: 'contentFormat.containerType'">
+						<tr ng-repeat="info in protocolInfo | filter: protocolInfoFilter | orderBy: 'contentFormat.containerType'">
 							<td>{{info.type}}</td>
 							<td>{{info.protocol}}</td>
 							<td>{{info.network}}</td>

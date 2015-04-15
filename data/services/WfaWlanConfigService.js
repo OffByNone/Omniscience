@@ -1,4 +1,4 @@
-omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService) {
+omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';
@@ -52,6 +52,12 @@ omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService) 
 		},
 		setSTASettings: function setSTASettings() {
 			return eventService.callService(getService(), "SetSTASettings");
+		},
+		subscribe: function (genericEventCallback, lastChangeEventCallback) {
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function () {
+			return subscriptionService.unsubscribe(getService());
 		}
 	};
 });

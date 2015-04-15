@@ -170,7 +170,6 @@
 		});
 	}
 
-
 	pubSub.sub("togglePlayState", $scope.togglePlayState, $scope);
 	pubSub.sub("removeCurrent", $scope.removeCurrent, $scope);
 	pubSub.sub("play", $scope.play, $scope);

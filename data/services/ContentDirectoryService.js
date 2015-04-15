@@ -1,4 +1,4 @@
-omniscience.factory('contentDirectoryService', function ($rootScope, eventService) {
+omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {
@@ -28,6 +28,12 @@ omniscience.factory('contentDirectoryService', function ($rootScope, eventServic
 		},
 		x_GetRemoteSharingStatus: function x_GetRemoteSharingStatus() {
 			return eventService.callService(getService(), "X_GetRemoteSharingStatus");
+		},
+		subscribe: function (genericEventCallback, lastChangeEventCallback) {
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function () {
+			return subscriptionService.unsubscribe(getService());
 		}
 	};
 });

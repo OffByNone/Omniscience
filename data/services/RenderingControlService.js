@@ -1,4 +1,4 @@
-omniscience.factory('renderingControlService', function (eventService, informationService) {
+omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:RenderingControl:1';
@@ -35,6 +35,12 @@ omniscience.factory('renderingControlService', function (eventService, informati
 		},
 		setVolume: function setVolume(desiredVolume) {
 			return eventService.callService(getService(), "SetVolume", { InstanceID: instanceId, Channel: channel, DesiredVolume: desiredVolume });
+		},
+		subscribe: function (genericEventCallback, lastChangeEventCallback) {
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function () {
+			return subscriptionService.unsubscribe(getService());
 		}
 	};
 });

@@ -1,4 +1,4 @@
-omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService) {
+omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService) {
 	"use strict";
 
 	var rawServiceType = 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1';
@@ -15,6 +15,12 @@ omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, event
 		},
 		isValidated: function getSystemUpdateID(registrationReqMsg) {
 			return eventService.callService(getService(), "GetSystemUpdateID", { RegistrationReqMsg: registrationReqMsg });
+		},
+		subscribe: function (genericEventCallback, lastChangeEventCallback) {
+			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
+		},
+		unsubscribe: function () {
+			return subscriptionService.unsubscribe(getService());
 		}
 	};
 });
