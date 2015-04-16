@@ -6,18 +6,14 @@
 	$scope.repeat = false;
 	$scope.playlist = [];
 	$scope.slideshow = { duration: 10000, timeout: null };
-	$scope.playbackState = "stopped";
-	$scope.deviceCapabilities = {};
-	$scope.transportSettings = {};
 	$scope.currentFile = {};
 
 	$scope.play = function play(file) {
 		pauseSlideshow();
 		$scope.state = "playing";
-		if (file) {
-			$scope.currentFile = file;
+		if (file)
 			load(file).then(() => avTransportService.play());
-		} else
+		else
 			avTransportService.play();
 
 		//set timeout for image $scope.slideshow
@@ -105,10 +101,7 @@
 		return array;
 	}
 	function startSlideshow() {
-		$scope.slideshow.timeout = $timeout(() => {
-			if ($scope.playbackState.toLowerCase() === 'playing')
-				$scope.next(true);
-		}, $scope.slideshow.duration);
+		$scope.slideshow.timeout = $timeout(() => $scope.next(true), $scope.slideshow.duration);
 	}
 	function pauseSlideshow() {
 		if ($scope.slideshow.timeout) $timeout.cancel($scope.slideshow.timeout);
@@ -177,7 +170,4 @@
 	pubSub.sub("pause", $scope.pause, $scope);
 	pubSub.sub("previous", $scope.previous, $scope);
 	pubSub.sub("next", $scope.next, $scope);
-
-	avTransportService.getDeviceCapabilities().then(deviceCapabilities => $scope.deviceCapabilities = deviceCapabilities);
-	avTransportService.getTransportSettings().then(transportSettings => $scope.transportSettings = transportSettings);
 });

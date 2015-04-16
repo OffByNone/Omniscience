@@ -164,3 +164,5 @@ Need to find a way to add manufacturer specific methods to services
 There is a more fool-proof way to compare if the devices are the same, not sure what it is -maybe the uu
 id of the device, but the intel upnp tools device spy can tell when it is the same device just on a different network interface
 intel upnp tools, network light doesn't show methods or properties but it definitely has them.
+
+When I reload the page, it will resubscribe to the device causing me to get multiple responses

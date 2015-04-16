@@ -1,15 +1,19 @@
-﻿omniscience.controller('PlaybackController', function playbackController($scope, eventService, avTransportService, renderingControlService, pubSub) {
+﻿omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
 	$scope.availableActions = ["play"];
-	$scope.currentTrack = {};
 	$scope.currentTransportActions = {};
-	$scope.isMuted = false;
-	$scope.mediaInfo = {};
-	$scope.positionInfo = {};
-	$scope.presets = [];
+	$scope.deviceCapabilities = {};
+	$scope.transportSettings = {};
 	$scope.transportInfo = {};
+	$scope.record = {};
+	$scope.presets = [];
+	$scope.currentTrack = {};
+	$scope.currentMedia = {};
+	$scope.nextMedia = {};
 	$scope.volume = 100;
+	$scope.isMuted = false;
+	$scope.playback = {state: "stopped"};
 
 	$scope.toggleMute = function toggleMute() {
 		setMute(!$scope.isMuted);
@@ -39,9 +43,6 @@
 		pubSub.pub("previous");
 	};
 
-	function canExecuteAction(action) {
-		return $scope.availableActions.some(availableAction => availableAction == action);
-	}
 	function setVolume (newVolume) {
 		$scope.volume = newVolume;
 		renderingControlService.setVolume(newVolume);
@@ -50,6 +51,30 @@
 		$scope.isMuted = mute
 		renderingControlService.setMute(mute);
 	}
+	function fractionToFloat(fraction) {
+		var y = fraction.split(' ');
+		if (y.length > 1) {
+			var z = y[1].split('/');
+			return (+y[0] + (z[0] / z[1]));
+		}
+		else {
+			var z = y[0].split('/');
+			if (z.length > 1) return (z[0] / z[1]);
+			else return z[0];
+		}
+	}
+
+	function getNameFromUrl(url) {
+		try{
+			if (!(url instanceof URL)) url = new URL(url);
+		} catch(e)
+		{
+			return '';
+		}
+
+		return decodeURI(url.pathname.replace(/^.*(\\|\/|\:)/, ''));
+	}
+
 	function secondsToMinutes(duration){
 		var minutesPart = parseInt(duration/60);
 		var secondsPart = duration%60;
@@ -66,6 +91,8 @@
 		//[.F+] means optionally a dot followed by one or more digits to indicate fractions of seconds
 		//[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
 
+		if(duration.toLowerCase() === "not_implemented") return 0;
+
 		duration = duration.replace(/[\+\-]/g,""); //remove any + or -
 		duration = duration.replace(/\.*/,""); //remove any fractional seconds
 
@@ -73,183 +100,79 @@
 
 		return parseInt(seconds) + (parseInt(minutes) * 60) + (parseInt(hours) * 3600);
 	}
-	function getTime(duration){
+	function parseDLNATime(duration){
 		var timeInSeconds = durationToSeconds(duration);
-		return [ timeInSeconds, secondsToMinutes(timeInSeconds) ];
-	}
-	function fractionToFloat(fraction) {
-		var y = fraction.split(' ');
-		if (y.length > 1) {
-			var z = y[1].split('/');
-			return (+y[0] + (z[0] / z[1]));
-		}
-		else {
-			var z = y[0].split('/');
-			if (z.length > 1) return (z[0] / z[1]);
-			else return z[0];
-		}
+		return { seconds: timeInSeconds, minutes: secondsToMinutes(timeInSeconds) };
 	}
 
+	function parsePositionInfo(response) {
+		var current = parseDLNATime(response.RelTime);
+		var total = parseDLNATime(response.TrackDuration);
 
-	function getFile(fileUri) {
-		var file = state.playlist.filter(item => item.path === fileUri)[0];
-		return file == null ? null : file;
+		$scope.currentTrack.currentSeconds = current.seconds;
+		$scope.currentTrack.currentMinutes = current.minutes;
+		$scope.currentTrack.totalSeconds = total.seconds;
+		$scope.currentTrack.totalMinutes = total.minutes;
+		$scope.currentTrack.uri = response.TrackURI;
+		$scope.currentTrack.name = getNameFromUrl(response.TrackURI);
+		$scope.currentTrack.metadata = response.TrackMetaData;
 	}
-	function getNameFromUrl(url) {
-		if (!(url instanceof URL)) url = new URL(url);
-		return url.pathname.replace(/^.*(\\|\/|\:)/, '');
+	function parseRenderControlLastChangeEvent(lastChangeEvent){
+		if(lastChangeEvent.hasOwnProperty("Mute")) $scope.isMuted = lastChangeEvent.Mute.toLowerCase() === "true";
+		if(lastChangeEvent.hasOwnProperty('Volume')) $scope.volume = parseInt(lastChangeEvent.Volume);
+		if(lastChangeEvent.hasOwnProperty('PresetNameList')) $scope.presets = lastChangeEvent.PresetNameList.split(",");
 	}
-	function setFile(fileUri) {
-		if (fileUri != null) {
-			var file = getFile(fileUri);
+	function parseAVTransportLastChangeEvent(lastChangeEvent){
+		//The first time a last change event returns it sends back all possible properties with their current values
+		//after that it sends whichever properties changed since the last time.  Thus we cannot predict which properties
+		//will exist and which will be null
 
-			if (file == null) {
-				file = { name: decodeURI(getNameFromUrl(fileUri)), path: fileUri };
-				state.playlist.push(file);
-			}
-		}
-		state.currentTrack.file = file;
-
-		return state.currentTrack.file;
-	}
-
-	function setPositionInfo(deviceId, response) {
-		if (deviceId !== $scope.$parent.deviceId) return; //todo: it would be better if this function took in a device to apply it to instead of matching against the parent device
-
-		var [ currentSeconds, CurrentMinutes ] = getTime(response.relTime);
-		var [ totalSeconds, totalMinutes ] = getTime(response.trackDuration);
-
-		$scope.track.currentTime = CurrentMinutes;
-		$scope.track.totalTime = totalMinutes;
-		$scope.track.currentSeconds = currentSeconds;
-		$scope.track.totalSeconds = totalSeconds;
-	}
-	function setPlaybackInformation(device, event) {
-		if (event.hasOwnProperty('state.currentTrackURI')) {
-			$scope.track.uri = event.state.currentTrackURI;
-			//setFile($scope.track.uri); TODO: don't have the uri of local files yet so I can't properly do this comparison.
-		}
-
-		if (event.hasOwnProperty('AVTransportURI')) $scope.media.uri = event.AVTransportURI;
-		if (event.hasOwnProperty('state.currentTrackMetaData')) $scope.track.metadata = event.state.currentTrackMetaData;
-		if (event.hasOwnProperty('AVTransportURIMetaData')) $scope.media.metadata = event.AVTransportURIMetaData;
-
-		if (event.hasOwnProperty('state.currentTrackDuration')){
-			var [ totalSeconds, totalMinutes ] = getTime(event.state.currentTrackDuration);
-			$scope.track.totalTime = totalMinutes;
-			$scope.track.totalSeconds = totalSeconds;
-		}
-		if (event.hasOwnProperty("RelTime")) {
-			var [ currentSeconds, CurrentMinutes  ] = getTime(event.RelTime);
-			$scope.track.currentSeconds = currentSeconds;
-			$scope.track.currentTime = CurrentMinutes;
-		}
-		if (event.hasOwnProperty('CurrentMediaDuration')){
-			var [ totalSeconds, totalMinutes ] = getTime(event.CurrentMediaDuration);
-			$scope.media.totalTime = totalMinutes;
-			$scope.media.totalSeconds = totalSeconds;
-		}
-		if (event.hasOwnProperty("AbsTime") && event.AbsTime != "NOT_IMPLEMENTED") {
-			var [ currentSeconds, CurrentMinutes  ] = getTime(event.AbsTime);
-			$scope.media.currentSeconds = currentSeconds;
-			$scope.media.currentTime = CurrentMinutes;
-		}
-
-		if (event.hasOwnProperty('state.currentTrack')) $scope.track.trackNumber = event.state.currentTrack;
-
-		var TransportState = {
-			0: 'STOPPED',
-			1: 'PLAYING',
-			2: 'TRANSITIONING', //optional
-			3: 'PAUSED_PLAYBACK', //optional
-			4: 'PAUSED_RECORDING', //optional
-			5: 'RECORDING', //optional
-			6: 'NO_MEDIA_PRESENT' //optional
-		};
-
-		if (event.hasOwnProperty('TransportState')) {
-			if (event.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
-				//we are at the end of the song, play next song
-				//todo: having two computers on the same network might be an issue here
-				$scope.next(device, true);
-			}
-			$scope.playback.state = event.TransportState;
-		}
-
-		var TransportStatus = {
-			0: 'OK',
-			1: 'STOPPED',
-			2: 'ERROR_OCCURRED'
-		};
-
-		if (event.hasOwnProperty('TransportStatus'))
-			$scope.playback.status = event.TransportStatus;
-
-		var CurrentPlayMode = {
-			0: 'NORMAL',
-			1: 'SHUFFLE', //optional
-			3: 'REPEAT_ONE', //optional
-			4: 'REPEAT_ALL', //optional
-			5: 'RANDOM', //optional
-			6: 'DIRECT_1', //optional
-			7: 'INTRO', //optional
-			8: 'Vendor-defined', //optional
-		};
-
-		if (event.hasOwnProperty('CurrentPlayMode'))
-			$scope.playback.mode = event.CurrentPlayMode;
-
+		if(lastChangeEvent.hasOwnProperty("AVTransportURI")) $scope.currentMedia.uri = lastChangeEvent.AVTransportURI;
+		if(lastChangeEvent.hasOwnProperty('AVTransportURIMetaData')) $scope.currentMedia.metadata = lastChangeEvent.AVTransportURIMetaData;
+		if(lastChangeEvent.hasOwnProperty('CurrentPlayMode')) $scope.playback.mode = lastChangeEvent.CurrentPlayMode;
+		if(lastChangeEvent.hasOwnProperty("CurrentRecordQualityMode")) $scope.record.currentQualityMode = lastChangeEvent.CurrentRecordQualityMode;
+		if(lastChangeEvent.hasOwnProperty('CurrentTrack')) $scope.currentTrack.trackNumber = lastChangeEvent.CurrentTrack;
+		if(lastChangeEvent.hasOwnProperty('CurrentTrackMetaData')) $scope.currentTrack.metadata = lastChangeEvent.CurrentTrackMetaData;
+		if(lastChangeEvent.hasOwnProperty('CurrentTransportActions')) $scope.availableActions = lastChangeEvent.CurrentTransportActions.split(",");
+		if(lastChangeEvent.hasOwnProperty("NumberOfTracks")) $scope.currentMedia.trackCount = lastChangeEvent.NumberOfTracks;
+		if(lastChangeEvent.hasOwnProperty("PlaybackStorageMedium")) $scope.playback.storageMedium = lastChangeEvent.PlaybackStorageMedium;
+		if(lastChangeEvent.hasOwnProperty("PossiblePlaybackStorageMedia")) $scope.playback.possibleStorageMedia = lastChangeEvent.PossiblePlaybackStorageMedia;
+		if(lastChangeEvent.hasOwnProperty("PossibleRecordStorageMedia")) $scope.record.possilbeStorageMedium = lastChangeEvent.PossibleRecordStorageMedia;
+		if(lastChangeEvent.hasOwnProperty("PossibleRecordQualityModes")) $scope.record.possibleQualityModes = lastChangeEvent.PossibleRecordQualityModes;
+		if(lastChangeEvent.hasOwnProperty("NextAVTransportURI")) $scope.nextMedia.uri = lastChangeEvent.NextAVTransportURI;
+		if(lastChangeEvent.hasOwnProperty("NextAVTransportURIMetaData")) $scope.nextMedia.metadata = lastChangeEvent.NextAVTransportURIMetaData;
+		if(lastChangeEvent.hasOwnProperty("RecordMediumWriteStatus")) $scope.record.mediumWriteStatus = lastChangeEvent.RecordMediumWriteStatus;
+		if(lastChangeEvent.hasOwnProperty("RecordStorageMedium")) $scope.record.storageMedium = lastChangeEvent.RecordStorageMedium;
+		if(lastChangeEvent.hasOwnProperty('TransportStatus')) $scope.playback.status = lastChangeEvent.TransportStatus;
 		// Supported speeds can be retrieved from the AllowedValueList of this state variable in the AVTransport service description.
 		// 1 is required, 0 is not allowed.
 		//Example values are '1', '1/2', '2', '-1', '1/10', etc
+		if(lastChangeEvent.hasOwnProperty('TransportPlaySpeed')) $scope.playback.speed = fractionToFloat(lastChangeEvent.TransportPlaySpeed);
 
-		if (event.hasOwnProperty('TransportPlaySpeed'))
-			$scope.playback.speed = fractionToFloat(event.TransportPlaySpeed);
+		if(lastChangeEvent.hasOwnProperty('CurrentTrackDuration')){
+			var trackTotal = parseDLNATime(lastChangeEvent.CurrentTrackDuration);
+			$scope.currentTrack.totalTime = trackTotal.minutes;
+			$scope.currentTrack.totalSeconds = trackTotal.seconds;
+		}
+		if(lastChangeEvent.hasOwnProperty('CurrentMediaDuration')){
+			var mediaTotal = parseDLNATime(lastChangeEvent.CurrentMediaDuration);
+			$scope.currentMedia.totalTime = mediaTotal.minutes;
+			$scope.currentMedia.totalSeconds = mediaTotal.seconds;
+		}
+		if(lastChangeEvent.hasOwnProperty('TransportState')) {
+			if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
+				//we are at the end of the song and currently playing. Play next song
+				//todo: having two computers on the same network on the same device will be an issue here
+				$scope.next(true);
+			}
+			$scope.playback.state = lastChangeEvent.TransportState;
+		}
+		if(lastChangeEvent.hasOwnProperty('CurrentTrackURI')) {
+			$scope.currentTrack.uri = lastChangeEvent.CurrentTrackURI;
+			$scope.currentTrack.name = getNameFromUrl(lastChangeEvent.CurrentTrackURI);
+		}
 
-		if(event.hasOwnProperty("NumberOfTracks"))
-			$scope.media.numberOfTracks = event.NumberOfTracks;
-		if(event.hasOwnProperty("NextAVTransportURI"))
-			$scope.nextMedia.uri = event.NextAVTransportURI;
-		if(event.hasOwnProperty("NextAVTransportURIMetaData"))
-			$scope.nextMedia.metadata = event.NextAVTransportURIMetaData;
-		if(event.hasOwnProperty("PossiblePlaybackStorageMedia"))
-			$scope.playback.possibleStorageMedia = event.PossiblePlaybackStorageMedia;
-		if(event.hasOwnProperty("PlaybackStorageMedium"))
-			$scope.playback.storageMedium = event.PlaybackStorageMedium;
-
-		if(event.hasOwnProperty("PossibleRecordStorageMedia"))
-			$scope.record.possilbeStorageMedium = event.PossibleRecordStorageMedia;
-		if(event.hasOwnProperty("PossibleRecordQualityModes"))
-			$scope.record.possibleQualityModes = event.PossibleRecordQualityModes;
-		if(event.hasOwnProperty("RecordStorageMedium"))
-			$scope.record.storageMedium = event.RecordStorageMedium;
-		if(event.hasOwnProperty("RecordMediumWriteStatus"))
-			$scope.record.mediumWriteStatus = evnet.RecordMediumWriteStatus;
-		if(event.hasOwnProperty("CurrentRecordQualityMode"))
-			$scope.record.currentQualityMode = event.CurrentRecordQualityMode;
-
-
-		if (event.hasOwnProperty('Mute'))
-			$scope.isMuted = event.Mute === "1";
-		if (event.hasOwnProperty('Volume'))
-			$scope.volume = Number(event.Volume);
-
-		var CurrentTransportActions = {
-			0: 'Play',
-			1: 'Stop',
-			2: 'Pause',
-			3: 'Seek',
-			4: 'Next',
-			5: 'Previous',
-			6: 'Record'
-		};
-
-		if (event.hasOwnProperty('CurrentTransportActions'))
-			$scope.playbackState.availableActions = event.CurrentTransportActions.split(",");
 	}
-
-	eventService.on('positionInfo', setPositionInfo);
-
 
 	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;
@@ -273,30 +196,22 @@
 	renderingControlService.getMute().then(isMuted => $scope.isMuted = isMuted);
 	renderingControlService.getVolume().then(volume => $scope.volume = volume);
 	renderingControlService.listPresets().then(newPresets => $scope.presets = newPresets);
-	avTransportService.getMediaInfo().then(mediaInfo => $scope.mediaInfo = mediaInfo);
+	avTransportService.getMediaInfo().then(mediaInfo => $scope.currentMediaInfo = mediaInfo);
 	avTransportService.getTransportInfo().then(transportInfo => $scope.transportInfo = transportInfo);
-	avTransportService.getPositionInfo().then(positionInfo => $scope.positionInfo = positionInfo);
+	avTransportService.getPositionInfo().then((response) => parsePositionInfo(response));
 	avTransportService.getCurrentTransportActions().then(currentTransportActions => $scope.currentTransportActions = currentTransportActions);
+	avTransportService.getDeviceCapabilities().then(deviceCapabilities => $scope.deviceCapabilities = deviceCapabilities);
+	avTransportService.getTransportSettings().then(transportSettings => $scope.transportSettings = transportSettings);
 
-	avTransportService.subscribe(
-		function GenericEventCallback(eventXmlAsString) {
-			console.log("Generic Event Received for av transport");
-			console.log(eventXmlAsString);
-		}, function lastChangeEventCallback(lastChangeEventObj) {
-			console.log("Last Change Event Received for av transport");
-			console.log(lastChangeEventObj);
-		}
-	);
-	renderingControlService.subscribe(
-	function GenericEventCallback(eventXmlAsString) {
-		console.log("Generic Event Received for rendering Control");
-		console.log(eventXmlAsString);
-	}, function lastChangeEventCallback(lastChangeEventObj) {
-		console.log("Last Change Event Received for rendering Control");
-		console.log(lastChangeEventObj);
-	}
-	);
+	avTransportService.subscribe(null, (response) => response.forEach(parseAVTransportLastChangeEvent));
+	renderingControlService.subscribe(null, (response) => response.forEach(parseRenderControlLastChangeEvent));
 
-	$scope.$on('$destroy', () => renderingControlService.unsubscribe());
-	$scope.$on('$destroy', () => avTransportService.unsubscribe());
+
+	var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
+
+	$scope.$on('$destroy', () => {
+		renderingControlService.unsubscribe();
+		avTransportService.unsubscribe();
+		$interval.cancel(interval);
+	});
 });

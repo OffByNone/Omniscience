@@ -5,9 +5,7 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 	var instanceId = 0; //todo: determine this dynamically
 	var speed = 1; //todo: make this a setable default
 
-	function getService() {
-		return informationService.get(rawServiceType);
-	}
+	function getService() { return informationService.get(rawServiceType); }
 
 	return {
 		setAvTransportUri: function setAvTransportUri(currentUri, currentUriMetadata) {
@@ -54,12 +52,6 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 		},
 		getCurrentTransportActions: function getCurrentTransportActions() {
 			return eventService.callService(getService(), "GetCurrentTransportActions", { InstanceID: instanceId });
-		},
-		x_GetOperationList: function x_GetOperationList(avtInstanceID) {
-			return eventService.callService(getService(), "X_GetOperationList", { AVTInstanceID: avtInstanceID });
-		},
-		x_ExecuteOperation: function x_ExecuteOperation(avtInstanceID, actionDirective) {
-			return eventService.callService(getService(), "X_ExecuteOperation", { AVTInstanceID: avtInstanceID, ActionDirective: actionDirective });
 		},
 		subscribe: function (genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
