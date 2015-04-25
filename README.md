@@ -23,7 +23,7 @@ JPM
 	--Needs to be run from the root of your addon
 
 	jpm run -b "C:\program files\nightly\firefox.exe" -p ExtensionDev --debug
-    jpm run -b "C:\program files\nightly\firefox.exe" -p dev-edition-default --debug
+    jpm run -b "C:\program files (x86)\firefox developer edition\firefox.exe" -p dev-edition-default --debug
 		-p ExtensionDev is telling it to use my existing profile with the name ExtensionDev.  This is significantly better than CFX which allows specifying profiles but you have to do it by path not name
 			Also note that it will copy that profile and you will use a copy of the profile which will be destroyed when you close the window.  Your original profile will not be touched
 		--debug tells it to start with the addon debugger open

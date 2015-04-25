@@ -1,4 +1,4 @@
-﻿omniscience.factory('subscriptionService', function (eventService, lastChangeEventParser) {
+﻿omniscience.factory('subscriptionService', function (eventService, lastChangeEventParser, pubSub) {
 	"use strict";
 
 	var subscriptions = {}; //key is serviceHash, value is {genericCallback, lastChangeCallback}
@@ -15,8 +15,8 @@
 
 	eventService.on("UPnPEvent", (serviceHash, eventXmlString) => {
 		var callbacks = subscriptions[serviceHash];
-
 		if(!callbacks){
+			//pubSub.pub("UPnPEvent", { serviceHash: serviceHash, events: [eventXmlString] });
 			console.log("UPnPEvent received but no service callbacks were found for service with hash " + serviceHash);
 			return;
 		}
@@ -24,11 +24,13 @@
 		var lastChangeObj = lastChangeEventParser.parseEvent(eventXmlString);
 
 		if (lastChangeObj) {
+			pubSub.pub("UPnPEvent", { serviceHash: serviceHash, events: lastChangeObj });
 			if (typeof callbacks.lastChangeCallback === 'function')
 				return callbacks.lastChangeCallback(lastChangeObj);
 			console.log("Last change event received for service with hash '" + serviceHash + "' but no lastChangeCallback was found.");
 		}
 		else {
+			//pubSub.pub("UPnPEvent", { serviceHash: serviceHash, events: [eventXmlString] });
 			if (typeof callbacks.genericEventCallback === 'function')
 				return callbacks.genericEventCallback(eventXmlString);
 			console.log("Generic UPnP event received for service with hash '" + serviceHash + "' but no genericEventCallback was found.");
@@ -44,7 +46,7 @@
 			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
 
 			addSubscription(service.hash, genericEventCallback, lastChangeCallback);
-			timeoutInSeconds = timeoutInSeconds || 600;
+			timeoutInSeconds = timeoutInSeconds || 1800;
 			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((subscriptionId) => {
 				service.subscriptionId = subscriptionId;
 				return subscriptionId;

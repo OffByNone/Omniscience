@@ -1,4 +1,4 @@
-﻿omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
+omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
 	$scope.availableActions = ["play"];
@@ -11,9 +11,9 @@
 	$scope.currentTrack = {};
 	$scope.currentMedia = {};
 	$scope.nextMedia = {};
+	$scope.playback = {state: "stopped"};
 	$scope.volume = 100;
 	$scope.isMuted = false;
-	$scope.playback = {state: "stopped"};
 
 	$scope.toggleMute = function toggleMute() {
 		setMute(!$scope.isMuted);
@@ -42,6 +42,10 @@
 	$scope.previous = function(){
 		pubSub.pub("previous");
 	};
+
+	function updatePlaybackState(newState) {
+		$scope.playback.state = newState;
+	}
 
 	function setVolume (newVolume) {
 		$scope.volume = newVolume;
@@ -118,7 +122,7 @@
 		$scope.currentTrack.metadata = response.TrackMetaData;
 	}
 	function parseRenderControlLastChangeEvent(lastChangeEvent){
-		if(lastChangeEvent.hasOwnProperty("Mute")) $scope.isMuted = lastChangeEvent.Mute.toLowerCase() === "true";
+		if(lastChangeEvent.hasOwnProperty("Mute")) $scope.isMuted = lastChangeEvent.Mute === "1" || lastChangeEvent.Mute === "true";
 		if(lastChangeEvent.hasOwnProperty('Volume')) $scope.volume = parseInt(lastChangeEvent.Volume);
 		if(lastChangeEvent.hasOwnProperty('PresetNameList')) $scope.presets = lastChangeEvent.PresetNameList.split(",");
 	}
@@ -159,13 +163,13 @@
 			$scope.currentMedia.totalTime = mediaTotal.minutes;
 			$scope.currentMedia.totalSeconds = mediaTotal.seconds;
 		}
-		if(lastChangeEvent.hasOwnProperty('TransportState')) {
-			if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
-				//we are at the end of the song and currently playing. Play next song
-				//todo: having two computers on the same network on the same device will be an issue here
-				$scope.next(true);
-			}
-			$scope.playback.state = lastChangeEvent.TransportState;
+        if(lastChangeEvent.hasOwnProperty('TransportState')) {
+            if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
+                //we are at the end of the song and currently playing. Play next song
+                //todo: having two computers on the same network on the same device will be an issue here
+                $scope.next(true);
+            }
+			updatePlaybackState(lastChangeEvent.TransportState);
 		}
 		if(lastChangeEvent.hasOwnProperty('CurrentTrackURI')) {
 			$scope.currentTrack.uri = lastChangeEvent.CurrentTrackURI;
@@ -179,13 +183,14 @@
 
 		switch (event.key.toLowerCase()) {
 			case " ":
-				pubSub.pub('togglePlayState');
+				if ($scope.playback.state === "playing") $scope.pause();
+				else $scope.play();;
 				break;
 			case "arrowright":
-				pubSub.pub('next');
+				$scope.next(false);
 				break;
 			case "arrowleft":
-				pubSub.pub('previous');
+				$scope.previous();
 				break;
 			case "delete":
 				pubSub.pub('removeCurrent');
@@ -214,4 +219,7 @@
 		avTransportService.unsubscribe();
 		$interval.cancel(interval);
 	});
+
+
+	pubSub.sub("updatePlaybackState", updatePlaybackState, $scope);
 });

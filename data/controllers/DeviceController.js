@@ -1,8 +1,9 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, informationService, subscriptionService) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, eventService, informationService, subscriptionService, pubSub) {
 	"use strict";
 
 	eventService.emit("loadDevices");
 	$scope.device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0] || {};
+	$scope.eventLog = [];
 	informationService.init();
 	$scope.hasService = function hasService(rawServiceType) {
 		if ($scope.device && Array.isArray($scope.device.services))
@@ -11,4 +12,8 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 		return false;
 	};
 	$scope.device.services.forEach(informationService.put);
+
+	pubSub.sub("UPnPEvent", (event) => {
+		$scope.eventLog.push(event);
+	}, $scope);
 });

@@ -30,10 +30,13 @@
 			Event Log
 			<ul class="list-inline event-log">
 				<li ng-repeat="event in eventLog">
-					<dl class="dl-horizontal" ng-repeat="(key, value) in event.event">
-						<dt>{{key}}</dt>
-						<dd>{{value}}</dd>
-					</dl>
+					<div>{{event.serviceHash}}</div>
+					<div ng-repeat="e in event.events">
+						<dl class="dl-horizontal" ng-repeat="(key, value) in e">
+							<dt>{{key}}</dt>
+							<dd>{{value}}</dd>
+						</dl>
+					</div>
 				</li>
 			</ul>
 		</div>

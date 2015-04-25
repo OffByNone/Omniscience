@@ -20,15 +20,7 @@
 	});
 
 
-	connectionManagerService.subscribe(
-		function GenericEventCallback(eventXmlAsString) {
-			console.log("Generic Event Received for connection manager");
-			console.log(eventXmlAsString);
-		}, function lastChangeEventCallback(lastChangeEventObj) {
-			console.log("Last Change Event Received for connection manager");
-			console.log(lastChangeEventObj);
-		}
-	);
+	connectionManagerService.subscribe((eventXmlAsString) => {/*todo: something here*/}, null);
 
 	$scope.$on('$destroy', () => connectionManagerService.unsubscribe());
 });

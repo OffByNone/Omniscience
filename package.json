@@ -11,9 +11,9 @@
         "type": "git"
     }, 
     "version": "0.3.0", 
-    "icon": "data/icons/rotary-32.png", 
+    "icon": "data/icons/logo_32.png", 
     "main": "lib/main.js", 
     "id": "jid1-A3BeMgzQQjOvNg@jetpack", 
-    "icon64": "data/icons/rotary-64.png", 
+    "icon64": "data/icons/logo_64.png", 
     "name": "omniscience"
 }

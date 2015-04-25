@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 angular.module("omniscience").directive("about", function () {
 	return ({
@@ -44,7 +44,7 @@ angular.module("omniscience").directive("deviceSettings", function () {
 angular.module("omniscience").directive("playback", function () {
 	return ({
 		controller: "PlaybackController",
-		link: link,
+		
 		restrict: "E",
 		templateUrl: "templates/Playback.html"
 	});

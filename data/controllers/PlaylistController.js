@@ -10,7 +10,7 @@
 
 	$scope.play = function play(file) {
 		pauseSlideshow();
-		$scope.state = "playing";
+		pubSub.pub("updatePlaybackState", "playing");
 		if (file)
 			load(file).then(() => avTransportService.play());
 		else
@@ -20,12 +20,12 @@
 		if ($scope.currentFile.type && $scope.currentFile.type.indexOf("image/") == 0) startSlideshow();
 	};
 	$scope.pause = function pause() {
-		$scope.state = "paused";
+		pubSub.pub("updatePlaybackState", "paused");
 		avTransportService.pause();
 		pauseSlideshow();
 	};
 	$scope.stop = function stop() {
-		$scope.state = "stopped";
+		pubSub.pub("updatePlaybackState", "stopped");
 		pauseSlideshow();
 		return avTransportService.stop();
 	};
@@ -52,13 +52,13 @@
 		var files = getChosenFiles();
 		files.forEach(file => $scope.playlist.push(file));
 
-		if (playImmediately) this.play(files[0]);
+		if (playImmediately) $scope.play(files[0]);
 
 		return files;
 	};
 	$scope.clear = function clear() {
 		$scope.playlist.length = 0; //setting to [] will not clear out other references to this array.
-		this.stop();
+		$scope.stop();
 	};
 	$scope.randomize = function randomize() {
 		shuffle($scope.playlist);
@@ -67,19 +67,14 @@
 		for (var i = 0; i < $scope.playlist.length; i++)
 			if ($scope.playlist[i] === file) {
 				if (file === $scope.currentFile) {
-					if ($scope.playlist.length > 1) this.next(true); //more files in $scope.playlist, play next
-					else this.stop(); //only file in $scope.playlist, stop playback
+					if ($scope.playlist.length > 1) $scope.next(true); //more files in $scope.playlist, play next
+					else $scope.stop(); //only file in $scope.playlist, stop playback
 				}
 				$scope.playlist.splice(i, 1);
 				return;
 			}
 	};
-
-	function togglePlayState() {
-		if ($scope.state === "playing") $scope.pause();
-		else $scope.play();
-	}
-	function removeCurrent() {
+	$scope.removeCurrent = function() {
 		if ($scope.currentFile) $scope.remove($scope.currentFile);
 	}
 	function shuffle(array) {
