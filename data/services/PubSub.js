@@ -2,7 +2,7 @@
 	return {
 		pub: function (message, data) {
 			//will take in n number of data params
-			$rootScope.$emit.apply($rootScope, arguments); //todo: no idea if this is correct. apply(this, arguments) didn't work so I changed to apply($rootScope,arguments) and it seems to work but idk if it is correct
+			$rootScope.$emit.apply($rootScope, arguments); //todo: no idea if this is correct. apply(this, arguments) didn't work so I changed to apply($rootScope,arguments) and it seems to work...
 		},
 		sub: function (message, func, scope) {
 			var unbind = $rootScope.$on(message, function () {
