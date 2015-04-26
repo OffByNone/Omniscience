@@ -26,8 +26,21 @@
 							<td>{{info.network}}</td>
 							<td>{{info.contentFormat.medium}}</td>
 							<td>{{info.contentFormat.containerType}}</td>
-							<td>{{JSON.stringify(info.contentFormat.containerTypeInfo)}}</td>
-							<td>{{info.additionalInfo}}</td>
+							<td>
+								<dl class="dl-horizontal">
+									<dt ng-repeat-start="(key, value) in info.contentFormat.containerTypeInfo">{{key}}</dt>
+									<dd ng-repeat-end>{{value}}</dd>
+								</dl>
+							</td>
+							<td>
+								<dl class="dl-horizontal">
+									<dt ng-repeat-start="(key, value) in info.additionalInfo">{{key}}</dt>
+									<dd ng-repeat-end>{{value}}</dd>
+								</dl>
+								<ul class="list-inline">
+									<li ng-repeat="item in info.additionalInfoFlags">{{item}}</li>
+								</ul>
+							</td>
 						</tr>
 					</tbody>
 				</table>

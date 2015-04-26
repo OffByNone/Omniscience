@@ -14,7 +14,6 @@
 				</div>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-content">
-				<playback ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playback>
 				<ul class="nav navbar-nav navbar-right">
 					<li> <a href="/about" class="nav navbar-nav navbar-right">About</a> </li>
 				</ul>
@@ -68,4 +67,5 @@
 		</div>
 	</div>
 	<connection-manager ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></connection-manager>
+	<playback ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playback>
 </div>

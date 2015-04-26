@@ -8,41 +8,19 @@
 		<div ng-repeat="service in device.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.hash}}">
 			<div class="row" ng-show="service.type.raw">
 				<div class="col-md-12">
+					<h4 class="service-name">
+						<span ng-show="service.type.name">{{service.type.name}}</span>
+						<span ng-show="service.type.version">v{{service.type.version}}</span>
+					</h4>
+					<span class="label label-primary" ng-show="service.type.isStandard">Standard</span>
+					<span class="label label-info" ng-show="service.type.isVendorSpecific">Vendor Specific</span>
 					<dl class="dl-horizontal">
-						<dt ng-show="service.subscriptionId">SID</dt>
-						<dd ng-show="service.subscriptionId">{{service.subscriptionId}}</dd>
-					</dl>
-					<h4>Type</h4>
-					<dl class="dl-horizontal">
-						<dt ng-show="service.type.raw">Raw</dt>
+						<dt ng-show="service.type.raw">Raw Name</dt>
 						<dd ng-show="service.type.raw">{{service.type.raw}}</dd>
-						<dt ng-show="service.type.domainName">Domain</dt>
-						<dd ng-show="service.type.domainName">{{service.type.domainName}}</dd>
-						<dt ng-show="service.type.name">Name</dt>
-						<dd ng-show="service.type.name">{{service.type.name}}</dd>
-						<dt ng-show="service.type.type">Type</dt>
-						<dd ng-show="service.type.type">{{service.type.type}}</dd>
-						<dt ng-show="service.type.isStandard != null">Is Standard</dt>
-						<dd ng-show="service.type.isStandard != null">{{service.type.isStandard}}</dd>
-						<dt ng-show="service.type.isVendorSpecific != null">Is Vendor Specific</dt>
-						<dd ng-show="service.type.isVendorSpecific != null">{{service.type.isVendorSpecific}}</dd>
-						<dt ng-show="service.type.version">Version</dt>
-						<dd ng-show="service.type.version">{{service.type.version}}</dd>
-					</dl>
-					<h4>Id</h4>
-					<dl class="dl-horizontal">
-						<dt ng-show="service.id.raw">Raw</dt>
+						<dt ng-show="service.id.raw">Raw Id</dt>
 						<dd ng-show="service.id.raw">{{service.id.raw}}</dd>
-						<dt ng-show="service.id.domainName">Domain</dt>
-						<dd ng-show="service.id.domainName">{{service.id.domainName}}</dd>
-						<dt ng-show="service.id.name">Name</dt>
-						<dd ng-show="service.id.name">{{service.id.name}}</dd>
-						<dt ng-show="service.id.type">type</dt>
-						<dd ng-show="service.id.type">{{service.id.type}}</dd>
-						<dt ng-show="service.id.isStandard != null">Is Standard</dt>
-						<dd ng-show="service.id.isStandard != null">{{service.id.isStandard}}</dd>
-						<dt ng-show="service.id.isVendorSpecific != null">Is Vendor Specific</dt>
-						<dd ng-show="service.id.isVendorSpecific != null">{{service.id.isVendorSpecific}}</dd>
+						<dt ng-show="service.subscriptionId">Subscription Id</dt>
+						<dd ng-show="service.subscriptionId">{{service.subscriptionId}}</dd>
 					</dl>
 				</div>
 			</div>

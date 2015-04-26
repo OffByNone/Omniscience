@@ -136,9 +136,9 @@ span.glyphicon:hover, small.glyphicon:hover {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
-	margin-left: 100px;
 	margin-top: 15px;
 	margin-right: 5px;
+	width: 20px;
 }
 
 	.volume-speaker .glyphicon-volume-up,
@@ -260,4 +260,25 @@ ul.event-log li {
 
 .return-values {
 	display: inline-block;
+}
+
+#capabilities .dl-horizontal {
+	margin-bottom: 0;
+}
+#capabilities .dl-horizontal dd {
+	margin-left: auto;
+}
+#capabilities .dl-horizontal dt {
+	width: auto;
+}
+
+playback > div {
+	position:fixed;
+	bottom:0;
+	width:100%;
+}
+
+.service-name, .device-name {
+	display: inline-block;
+	margin-top:0;
 }

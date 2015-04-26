@@ -1,26 +1,20 @@
 ﻿<div class="well clearfix">
 	<div class="container-fluid pull-left">
-		<div class="row"><h3 class="col-md-12">Basic Info</h3></div>
 		<div class="row">
 			<div class="col-md-12">
-				<h4>Type</h4>
+				<h3 class="device-name">
+					<span ng-show="device.type.name">{{device.type.name}}</span>
+					<span ng-show="device.type.version">v{{device.type.version}}</span>
+				</h3>
+				<span class="label label-primary" ng-show="device.type.isStandard">Standard</span>
+				<span class="label label-info" ng-show="device.type.isVendorSpecific">Vendor Specific</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
 				<dl class="dl-horizontal">
 					<dt ng-show="device.type.raw">Raw</dt>
 					<dd ng-show="device.type.raw">{{device.type.raw}}</dd>
-					<dt ng-show="device.type.domainName">Domain</dt>
-					<dd ng-show="device.type.domainName">{{device.type.domainName}}</dd>
-					<dt ng-show="device.type.name">Name</dt>
-					<dd ng-show="device.type.name">{{device.type.name}}</dd>
-					<dt ng-show="device.type.type">Type</dt>
-					<dd ng-show="device.type.type">{{device.type.type}}</dd>
-					<dt ng-show="device.type.isStandard != null">Is Standard</dt>
-					<dd ng-show="device.type.isStandard != null">{{device.type.isStandard}}</dd>
-					<dt ng-show="device.type.isVendorSpecific != null">Is Vendor Specific</dt>
-					<dd ng-show="device.type.isVendorSpecific != null">{{device.type.isVendorSpecific}}</dd>
-					<dt ng-show="device.type.version">Version</dt>
-					<dd ng-show="device.type.version">{{device.type.version}}</dd>
-				</dl>
-				<dl class="dl-horizontal">
 					<dt ng-show="device.langauge">Language</dt>
 					<dd ng-show="device.langauge">{{device.langauge}}</dd>
 					<dt ng-show="device.model.number">Model Number</dt>
