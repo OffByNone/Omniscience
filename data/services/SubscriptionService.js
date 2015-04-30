@@ -1,12 +1,13 @@
-﻿omniscience.factory('subscriptionService', function (eventService, lastChangeEventParser, pubSub) {
+﻿omniscience.factory('subscriptionService', function (eventService, lastChangeEventParser, pubSub, $q, $timeout) {
 	"use strict";
 
 	var subscriptions = {}; //key is serviceHash, value is {genericCallback, lastChangeCallback}
 
-	function addSubscription(serviceHash, genericEventCallback, lastChangeCallback) {
+	function addSubscription(serviceHash, genericEventCallback, lastChangeCallback, timeout) {
 		subscriptions[serviceHash] = {
 			genericEventCallback: genericEventCallback,
-			lastChangeCallback: lastChangeCallback
+			lastChangeCallback: lastChangeCallback,
+			timeout: timeout
 		};
 	}
 	function removeSubscription(serviceHash) {
@@ -45,8 +46,22 @@
 			if (!service.hash) throw new Error("Argument null exception service.hash cannot be null.");
 			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
 
-			addSubscription(service.hash, genericEventCallback, lastChangeCallback);
-			timeoutInSeconds = timeoutInSeconds || 1800;
+			var previouslySubscribed = false;
+
+			if (subscriptions[service.hash]) previouslySubscribed = true;
+
+			timeoutInSeconds = Number(timeoutInSeconds || 600);
+
+			var timeout;
+
+			if (!previouslySubscribed) //set timer to resubscribe to the service before our subscription times out
+				 timeout = $timeout(() => subscribe(service, genericEventCallback, lastChangeCallback, timeoutInSeconds), timeoutInSeconds - 5);
+
+			addSubscription(service.hash, genericEventCallback, lastChangeCallback, timeout);
+
+			if (previouslySubscribed)
+				return $q.reject("already subscribed, don't want to subscribe twice.  Your callbacks will still get executed.");
+
 			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((subscriptionId) => {
 				service.subscriptionId = subscriptionId;
 				return subscriptionId;
@@ -59,6 +74,10 @@
 			if (!service.subscriptionId) return; //means we never subscribed in the first place
 
 			removeSubscription(service.hash);
+
+			if (subscriptions[service.hash].timeout) //if we have a resubscribe handler, remove it
+				timeout.cancel();
+
 			return eventService.emit("Unsubscribe", service.eventSubUrl, service.subscriptionId, service.hash);
 		}
 	}

@@ -1,9 +1,4 @@
 ﻿<div class="well">
-	<div class="row" ng-show="device.ssdpDescription">
-		<div class="col-md-12">
-			<a target="_blank" ng-href="{{device.ssdpDescription}}" ng-show="device.ssdpDescription">SSDP Description</a>
-		</div>
-	</div>
 	<div class="row" ng-show="device.icons">
 		<h4 class="col-md-1">Icons</h4>
 		<div class="col-md-11">
@@ -20,22 +15,6 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">&nbsp;</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			Event Log
-			<ul class="list-inline event-log">
-				<li ng-repeat="event in eventLog">
-					<div>{{event.serviceHash}}</div>
-					<div ng-repeat="e in event.events">
-						<dl class="dl-horizontal" ng-repeat="(key, value) in e">
-							<dt>{{key}}</dt>
-							<dd>{{value}}</dd>
-						</dl>
 					</div>
 				</li>
 			</ul>

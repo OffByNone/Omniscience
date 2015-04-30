@@ -166,3 +166,25 @@ id of the device, but the intel upnp tools device spy can tell when it is the sa
 intel upnp tools, network light doesn't show methods or properties but it definitely has them.
 
 When I reload the page, it will resubscribe to the device causing me to get multiple responses
+
+
+
+ssdp:alive, ssdp:byebye, ssdp:update
+
+going to need a second set of ssdp just for listening.  Need to bind to port 1900 for listening and the senders cant send on 1900
+
+
+When a device is added to the network, it MUST multicast discovery messages to advertise its root device,
+any embedded devices, and any services. Each discovery message MUST contain four major components:
+1. A notification type (e.g., device type), sent in an NT (Notification Type) header field.
+2. A composite identifier for the advertisement, sent in a USN (Unique Service Name) header field.
+3. A URL for more information about the device (or enclosing device in the case of a service), sent in a LOCATION header field.
+4. A duration for which the advertisement is valid, sent in a CACHE-CONTROL header field.
+To advertise its capabilities, a device multicasts a number of discovery messages. Specifically, a root device MUST multicast:
+    Three discovery messages for the root device.
+
+if a message hasnt come in by the notify expry time then the device is considered gone.  If any sub-device or service from the device checks in within the timeout all are considered still alive
+
+Object { NT: "uuid:134a75fa-d095-481f-a169-07b070…", CACHE-CONTROL: "max-age=900", HOST: "239.255.255.250:1900", NTS: "ssdp:alive", USN: "uuid:134a75fa-d095-481f-a169-07b070…", SERVER: "Windows NT/5.0, UPnP/1.0, Intel CLR…", LOCATION: "http://192.168.6.1:51300/", CONTENT-LENGTH: "0" }
+
+Object { NT: "upnp:rootdevice", HOST: "239.255.255.250:1900", NTS: "ssdp:byebye", USN: "uuid:134a75fa-d095-481f-a169-07b070…", CONTENT-LENGTH: "0" }

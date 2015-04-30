@@ -16,4 +16,28 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 	pubSub.sub("UPnPEvent", (event) => {
 		$scope.eventLog.push(event);
 	}, $scope);
+
+	$scope.device.services
+	.filter((service) => {
+		try {
+			var url = new URL(service.eventSubUrl);
+			return url.hostname && url.protocol;
+		} catch (error) {
+			return false;
+		}
+	})
+	.forEach((service) => subscriptionService.subscribe(service, () => { }, () => { }).then((subscriptionId) => service.subscriptionId = subscriptionId));
+
+	$scope.$on('$destroy', function () {
+		$scope.device.services
+			.filter((service) => {
+				try {
+					var url = new URL(service.eventSubUrl);
+					return url.hostname && url.protocol;
+				} catch (error) {
+					return false;
+				}
+			})
+			.forEach((service) => subscriptionService.unsubscribe(service));
+	});
 });

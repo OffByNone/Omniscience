@@ -92,20 +92,24 @@ span.glyphicon:hover, small.glyphicon:hover {
 	padding: 0;
 }
 
-.navbar .btn-group {
-	margin-top: 10px;
-}
-
-.navbar .progress {
-	width: 350px;
-}
-
-.navbar .progress, .navbar .file-time {
-	position: relative;
+playback .progress {
 	display: inline-block;
 	vertical-align: middle;
-	margin-top: 10px;
 	margin-bottom: 0;
+	width: 100%;
+}
+
+.file-time {
+	display: inline-block;
+}
+
+playback {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: #FFF;
+	width: 100%;
+	padding: 10px;
 }
 
 .no-padding {
@@ -113,16 +117,17 @@ span.glyphicon:hover, small.glyphicon:hover {
 }
 
 .volume-detail {
-	position: absolute;
-	width: 70px;
 	font-weight: bold;
 	background-color: #FFF;
-	margin-left: -25px;
 	text-align: center;
-	z-index: 1;
-	display: none;
 	font-size: 16px;
+	display: inline-block;
+	width: 70px;
 }
+
+	.volume-detail .volume-detail-text {
+		font-size: 20px;
+	}
 
 	.volume-detail .glyphicon-minus {
 		float: left;
@@ -136,18 +141,14 @@ span.glyphicon:hover, small.glyphicon:hover {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
-	margin-top: 15px;
 	margin-right: 5px;
-	width: 20px;
+	line-height: 20px;
+	vertical-align: middle;
 }
 
 	.volume-speaker .glyphicon-volume-up,
 	.volume-speaker .glyphicon-volume-off {
 		font-size: 20px;
-	}
-
-	.volume-speaker:hover .volume-detail {
-		display: block;
 	}
 
 .navbar-header .caret {
@@ -265,20 +266,20 @@ ul.event-log li {
 #capabilities .dl-horizontal {
 	margin-bottom: 0;
 }
-#capabilities .dl-horizontal dd {
-	margin-left: auto;
-}
-#capabilities .dl-horizontal dt {
-	width: auto;
-}
 
-playback > div {
-	position:fixed;
-	bottom:0;
-	width:100%;
-}
+	#capabilities .dl-horizontal dd {
+		margin-left: auto;
+	}
+
+	#capabilities .dl-horizontal dt {
+		width: auto;
+	}
 
 .service-name, .device-name {
 	display: inline-block;
-	margin-top:0;
+	margin-top: 0;
+}
+
+html body {
+	margin-bottom:75px;
 }

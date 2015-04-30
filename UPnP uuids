@@ -1,0 +1,19 @@
+REQUIRED. Field value contains Unique Service Name. Identifies a unique instance of a device or service. MUST be one of the following. (See Table  1-1, “Root device discovery messages”, Table  1-2, “Embedded device discovery messages”, and Table  1-3, “Service discovery messages” above.) The prefix (before the double colon) MUST match the value of the U element in the device description. (Section DN  2, “Description” explains the UDN element.) Single URI.
+
+uuid:device-UUID::upnp:rootdevice
+	Sent once for root device where  device-UUID is specified by UPnP vendor. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+uuid:device-UUID
+	Sent once for every device, root or embedded, where device-UUID is specified by the UPnP vendor. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms”for the MANDATORY UUID format.
+
+uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:ver
+	Sent once for every device, root or embedded, where device-UUID is specified by the UPnP vendor, deviceType and ver are defined by UPnP Forum working committee and ver specifies version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:ver
+	Sent once for every service where device-UUID is specified by the UPnP vendor, serviceType and ver are defined by UPnP Forum working committee and ver specifies version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+uuid:device-UUID::urn:domain-name:device:deviceType:ver
+	Sent once for every device, root or embedded, where device-UUID, domain-name (a Vendor Domain Name), deviceType and ver are defined by the UPnP vendor and ver specifies the version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format. Period characters in the Vendor Domain Name MUST be replaced by hyphens in accordance with RFC 2141.
+
+uuid:device-UUID::urn:domain-name:service:serviceType:ver
+	Sent once for every service where device-UUID, domain-name (a Vendor Domain Name), serviceType and ver are defined by the UPnP vendor and ver specifies the version of the service type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format. Period characters in the Vendor Domain Name MUST be replaced by hyphens in accordance with RFC 2141.
