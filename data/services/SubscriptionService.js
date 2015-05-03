@@ -72,11 +72,12 @@
 			if (!service.hash) throw new Error("Argument null exception service.hash cannot be null.");
 			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
 			if (!service.subscriptionId) return; //means we never subscribed in the first place
-
-			removeSubscription(service.hash);
+			if (!subscriptions[service.hash]) return; //we shouldn't have made it this far but sometimes we do
 
 			if (subscriptions[service.hash].timeout) //if we have a resubscribe handler, remove it
-				timeout.cancel();
+			    timeout.cancel();
+
+			removeSubscription(service.hash);
 
 			return eventService.emit("Unsubscribe", service.eventSubUrl, service.subscriptionId, service.hash);
 		}

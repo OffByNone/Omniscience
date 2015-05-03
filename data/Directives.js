@@ -44,7 +44,7 @@ angular.module("omniscience").directive("deviceSettings", function () {
 angular.module("omniscience").directive("playback", function () {
 	return ({
 		controller: "PlaybackController",
-		
+
 		restrict: "E",
 		templateUrl: "templates/Playback.html"
 	});
@@ -71,3 +71,17 @@ angular.module("omniscience").directive("capabilities", function () {
 
 	function link(scope, element, attributes) { }
 });
+
+
+
+
+//window.setTimeout(function () {
+//    /*
+//     * There might be a race condition where not all the javascript files get onto the page in time
+//     * I had an issue the other day where it claimed it couldn't find the event service, but the dev
+//     * tools showed it was on the page.  I cannot reproduce this anymore.
+//     */
+//    angular.element(document).ready(function () {
+//        angular.bootstrap(document, ["omniscience"]);
+//    });
+//}, 1000);

@@ -4,7 +4,7 @@ Omniscience
 Firefox extension to find and interact with UPnP (chromecast, matchstick, firetv stick, xbox 360, xbox one, etc..) devices on your local network
 
 How To Run
- CFX
+ CFX Firefox for Desktop
 
 	--CFX is the old/current way of building/testing addons it uses python and you need to run activate first to be able to run cfx commands
 	--cfx run opens a new browser with a brand new profile
@@ -15,6 +15,13 @@ How To Run
 	cfx run -b "C:\program files\nightly\firefox.exe"
 		--On my desktop something happened awhile back and I need to specify the binary, with the -b flag
 		--Needs to be run from the root of your addon
+
+CFX Firefox for Android
+    cfx run -b "c:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -a fennec-on-device --force-mobile
+        this requires an android device to be attached via usb and for adb to be installed, running, and able to see the device
+        -b path-to-adb
+        -a app-to-run
+
 JPM
 
 	--JPM is the new way of building/testing addons and uses node.
