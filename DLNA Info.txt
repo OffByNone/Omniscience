@@ -32,7 +32,7 @@ AVTransportURI(MetaData) can be either a playlist or a single item.  If it is a 
 CurrentMediaDuration is the duration of the item identified by the AVTransportURI
 CurrentTrackDuration:
 	[+-]H+:MM:SS[.F+] or H+:MM:SS[.F0/F1]
-	
+
 	H+ means one or more digits to indicate elapsed hours
 	MM means exactly 2 digits to indicate minutes (00 to 59)
 	SS means exactly 2 digits to indicate seconds (00 to 59)
