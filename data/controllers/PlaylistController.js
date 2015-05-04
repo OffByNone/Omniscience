@@ -153,7 +153,7 @@
 	}
 	function load(file) {
 		$scope.currentFile = file
-		return fileService.shareFile(file).then(fileUri => {
+		return fileService.shareFile(file, avTransportService.getServerIP()).then(fileUri => {
 			return avTransportService.setAvTransportUri(fileUri, "");
 		});
 	}

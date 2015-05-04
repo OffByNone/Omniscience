@@ -1,4 +1,4 @@
-﻿omniscience.factory('fileService', function (eventService, informationService) {
+﻿omniscience.factory('fileService', function (eventService) {
 	"use strict";
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1';
 
@@ -6,8 +6,8 @@
 		chooseFiles: function chooseFiles() {
 			return eventService.emit('chooseFiles');
 		},
-		shareFile: function shareFile(file) {
-			return eventService.emit("shareFile", informationService.get(rawServiceType), file);
+		shareFile: function shareFile(file, serverIP) {
+		    return eventService.emit("shareFile", file, serverIP);
 		}
 	};
 });

@@ -62,7 +62,7 @@
 			if (previouslySubscribed)
 				return $q.reject("already subscribed, don't want to subscribe twice.  Your callbacks will still get executed.");
 
-			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, timeoutInSeconds).then((subscriptionId) => {
+			return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, service.serverIP, timeoutInSeconds).then((subscriptionId) => {
 				service.subscriptionId = subscriptionId;
 				return subscriptionId;
 			});

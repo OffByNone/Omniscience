@@ -50,6 +50,9 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 		setPlayMode: function setPlayMode(newPlayMode) {
 			return eventService.callService(getService(), "SetPlayMode", { InstanceID: instanceId, NewPlayMode: newPlayMode });
 		},
+		getServerIP: function getServerIP() {
+		    return getService().serverIP;
+		},
 		getCurrentTransportActions: function getCurrentTransportActions() {
 			return eventService.callService(getService(), "GetCurrentTransportActions", { InstanceID: instanceId });
 		},
