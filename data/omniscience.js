@@ -2,7 +2,6 @@
 var omniscience = angular.module('omniscience', ['ngRoute','ui.unique']);
 
 omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
-	//$locationProvider.html5Mode({enabled:true});
 	$routeProvider
 		.when('/', {
 			templateUrl : 'templates/Home.html',

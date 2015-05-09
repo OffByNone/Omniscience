@@ -1,5 +1,5 @@
 ﻿<div class="well clearfix">
-	<div class="container-fluid pull-left">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
 				<h3 class="device-name">
@@ -38,15 +38,23 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				Event Log
-				<ul class="list-inline event-log">
+				<ul class="list-inline container-fluid event-log">
 					<li ng-repeat="event in eventLog">
-						<div>{{event.serviceHash}}</div>
-						<div ng-repeat="e in event.events">
-							<dl class="dl-horizontal" ng-repeat="(key, value) in e">
-								<dt>{{key}}</dt>
-								<dd>{{value}}</dd>
-							</dl>
+						<div>
+							<span class="event-log-service-name">
+								{{event.service.type.name}}
+							</span>
+							<span>
+								{{event.timestamp}}
+							</span>
+						</div>
+						<div class="row" ng-repeat="e in event.subEvents">
+							<div class="col-md-offset-1 col-md-11">
+								<div class="row" ng-hide="value == ''" ng-repeat="(key, value) in e">
+									<div class="col-md-4">{{key}}</div>
+									<div class="col-md-4">{{value}}</div>
+								</div>
+							</div>
 						</div>
 					</li>
 				</ul>

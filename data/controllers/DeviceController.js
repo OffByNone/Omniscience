@@ -1,4 +1,4 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService, pubSub) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
     "use strict";
 
     eventService.emit("loadDevices");
@@ -11,10 +11,6 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 
 		return false;
 	};
-
-	pubSub.sub("UPnPEvent", (event) => {
-	    $scope.eventLog.push(event);
-	}, $scope);
 
 	function getDevice() {
 	    var device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0];
@@ -31,7 +27,10 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
                 return false;
             }
         })
-        .forEach((service) => subscriptionService.subscribe(service, () => { }, () => { }).then((subscriptionId) => service.subscriptionId = subscriptionId));
+        .forEach((service) => subscriptionService.subscribe(service,
+				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }),
+				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }))
+			.then((subscriptionId) => service.subscriptionId = subscriptionId));
 	}
 
 	getDevice();

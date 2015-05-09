@@ -208,8 +208,12 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 	avTransportService.getDeviceCapabilities().then(deviceCapabilities => $scope.deviceCapabilities = deviceCapabilities);
 	avTransportService.getTransportSettings().then(transportSettings => $scope.transportSettings = transportSettings);
 
-	avTransportService.subscribe(null, (response) => response.forEach(parseAVTransportLastChangeEvent));
-	renderingControlService.subscribe(null, (response) => response.forEach(parseRenderControlLastChangeEvent));
+	avTransportService.subscribe(null, (response) => {
+		response.forEach(parseAVTransportLastChangeEvent)
+	});
+	renderingControlService.subscribe(null, (response) => {
+		response.forEach(parseRenderControlLastChangeEvent)
+	});
 
 
 	var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);

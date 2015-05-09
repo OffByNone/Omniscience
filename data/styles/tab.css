@@ -239,8 +239,7 @@ playback {
 }
 
 .event-log {
-	border: 1px solid black;
-	min-height: 20px;
+	min-height: 50px;
 	max-height: 750px;
 	overflow: auto;
 }
@@ -282,4 +281,9 @@ ul.event-log li {
 
 html body {
 	margin-bottom:75px;
+}
+
+.event-log-service-name {
+	font-weight: bold;
+	font-size: 16px;
 }

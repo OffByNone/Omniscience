@@ -4,7 +4,6 @@ service type 		urn:schemas-upnp-org:service:serviceType:version	urn:domain-name:
 service ID 			urn:upnp-org:serviceId:serviceID					urn:domain-name:serviceId:serviceID
 
 
-
 Data Type		Description
 ui1				Unsigned 1 Byte int. Same format as int without leading sign. 
 ui2 			Unsigned 2 Byte int. Same format as int without leading sign. 
@@ -30,3 +29,67 @@ bin.base64		MIME-style Base64 encoded binary BLOB. Takes 3 Bytes, splits them in
 bin.hex 		Hexadecimal digits representing octets. Treats each nibble as a hex digit and encodes as a separate Byte. (1 octet is encoded as 2.) No limit on size.
 uri 			Universal Resource Identifier. 
 uuid 			Universally Unique ID. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+
+DLNA Capabilities
+	DLNA.ORG_PN - "MediaType" Media file format profile, usually combination of container/video codec/audio codec/sometimes region
+	DLNA.ORG_OP - operations
+				 00 (or 0) neither supported
+				 01 range supported
+				 10 time seek range supported
+				 11 both supported
+	DLNA.ORG_PS - play speed
+				 0 invalid play speed
+				 1 normal play speed
+	DLNA.ORG_CI - conversion indicator
+				 0 not transcoded
+				 1 transcoded
+	DLNA.ORG_FLAGS - padded with 24 trailing 0s
+		 0x80000000  31  senderPaced
+		 0x40000000  30  lsopTimeBasedSeekSupported
+		 0x20000000  29  lsopByteBasedSeekSupported
+		 0x10000000  28  playcontainerSupported
+		 0x08000000  27  s0IncreasingSupported
+		 0x04000000  26  sNIncreasingSupported
+		 0x02000000  25  rtspPauseSupported
+		 0x01000000  24  streamingTransferModeSupported
+		 0x00800000  23  interactiveTransferModeSupported
+		 0x00400000  22  backgroundTransferModeSupported
+		 0x00200000  21  connectionStallingSupported
+		 0x00100000  20  dlnaVersion15Supported
+	DLNA.ORG_MAXSP - I've seen 5 here more than once but I don’t know what it represents
+
+
+
+AVTransportURI(MetaData) can be either a playlist or a single item.  If it is a single item then its values will be equal to CurrentTrackURI(MetaData)
+	If it is a playlist then it's Uri will stay the same for each track in the list, but the CurrentTrack will change.
+CurrentMediaDuration is the duration of the item identified by the AVTransportURI
+CurrentTrackDuration:
+	[+-]H+:MM:SS[.F+] or H+:MM:SS[.F0/F1]
+
+	H+ means one or more digits to indicate elapsed hours
+	MM means exactly 2 digits to indicate minutes (00 to 59)
+	SS means exactly 2 digits to indicate seconds (00 to 59)
+	[.F+] means optionally a dot followed by one or more digits to indicate fractions of seconds
+	[.F0/F1] means optionally a dot followed by a fraction, with F0 and F1 at least one digit long, and F0 < F1
+
+UUIDs
+	REQUIRED. Field value contains Unique Service Name. Identifies a unique instance of a device or service. MUST be one of the following. (See Table  1-1, “Root device discovery messages”, Table  1-2, “Embedded device discovery messages”, and Table  1-3, “Service discovery messages” above.) The prefix (before the double colon) MUST match the value of the U element in the device description. (Section DN  2, “Description” explains the UDN element.) Single URI.
+
+	uuid:device-UUID::upnp:rootdevice
+		Sent once for root device where  device-UUID is specified by UPnP vendor. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+	uuid:device-UUID
+		Sent once for every device, root or embedded, where device-UUID is specified by the UPnP vendor. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms”for the MANDATORY UUID format.
+
+	uuid:device-UUID::urn:schemas-upnp-org:device:deviceType:ver
+		Sent once for every device, root or embedded, where device-UUID is specified by the UPnP vendor, deviceType and ver are defined by UPnP Forum working committee and ver specifies version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+	uuid:device-UUID::urn:schemas-upnp-org:service:serviceType:ver
+		Sent once for every service where device-UUID is specified by the UPnP vendor, serviceType and ver are defined by UPnP Forum working committee and ver specifies version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format.
+
+	uuid:device-UUID::urn:domain-name:device:deviceType:ver
+		Sent once for every device, root or embedded, where device-UUID, domain-name (a Vendor Domain Name), deviceType and ver are defined by the UPnP vendor and ver specifies the version of the device type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format. Period characters in the Vendor Domain Name MUST be replaced by hyphens in accordance with RFC 2141.
+
+	uuid:device-UUID::urn:domain-name:service:serviceType:ver
+		Sent once for every service where device-UUID, domain-name (a Vendor Domain Name), serviceType and ver are defined by the UPnP vendor and ver specifies the version of the service type. See section  1.1.4, “UUID format and RECOMMENDED generation algorithms” for the MANDATORY UUID format. Period characters in the Vendor Domain Name MUST be replaced by hyphens in accordance with RFC 2141.
