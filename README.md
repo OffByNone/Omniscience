@@ -66,10 +66,6 @@ View contents of simplestorage
 	--From addon-debugger console run
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
-TroubleShooting Tips
-	If you are having problems with the fxoswebserver check for casing mismatch issues.  I had an issue
-	where the header was coming in as CONTENT-LENGTH but the code was looking for Content-Length.
-
 To-Do
 
 	[ ]	New Icon
@@ -84,9 +80,8 @@ To-Do
 
 		Device Template
 
-			Header Media Controls
+			Media Controls
 				[ ] Time slider allows to seek
-				[ ] Show only play or pause
 
 			Playlist
 				[ ] Navigating away from page and back shouldn't lose the list
@@ -105,16 +100,7 @@ To-Do
 					[ ] Clean up hover for parameters
 					[ ] Better display related properties
 					[ ] If property is known (ex. instanceid is almost always 0 and we can determine this) somehow display to user
-					[ ] Display return values
 
-			Info
-				[ ] Clean up
-				[ ] Better display for not implemented values
-				[ ] Add refresh button to each section?
-				[ ] Parse "Protocol Info" under "Current Connection Info"
-
-			[ ] Find a way to not duplicate name/icon of device from upper left to the center top of page
-				Currently does this because if there are links to the device, device model, or manufacturer they are only shown in the top center of page
 			[ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
 			[ ] Add ability to change device settings on settings tab
 			[ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
@@ -125,11 +111,6 @@ To-Do
 		Better error handling
 
 	Back-End
-
-		HTTP Server
-			[ ] Use fxos-web-server for serving the files
-			[ ] Remove httpd
-			[ ] Fix issue with xbox 360 restarting audio files from begining a few seconds in
 
 		DLNA
 			[ ] Add/Merge sub-devices from devicelist xml
@@ -149,14 +130,8 @@ To-Do
 				[ ] Support configuring unsetup devices
 
 		Notifications
-			[ ] Fix notifications appearing off screen problem
 			[ ] Group notifications together because a new notification will not be shown if one already is, and many notifications in a short period of time is annoying
 			[ ] Add setting to disable notifications
-			[ ] Re-enable
-			[ ] Show notifications for new files playing as well as new devices found
-
-		Constants
-			[ ] Move more strings into this file.
 
 		[ ] Make a logger that can take different levels (info, warn, error) and allow user to pick verbosity.
 		[ ] Get metadata for files
@@ -168,30 +143,3 @@ matchstick, chromecast, and firestick will need extra setup in the new service o
 
 
 Need to find a way to add manufacturer specific methods to services
-There is a more fool-proof way to compare if the devices are the same, not sure what it is -maybe the uu
-id of the device, but the intel upnp tools device spy can tell when it is the same device just on a different network interface
-intel upnp tools, network light doesn't show methods or properties but it definitely has them.
-
-When I reload the page, it will resubscribe to the device causing me to get multiple responses
-
-
-
-ssdp:alive, ssdp:byebye, ssdp:update
-
-going to need a second set of ssdp just for listening.  Need to bind to port 1900 for listening and the senders cant send on 1900
-
-
-When a device is added to the network, it MUST multicast discovery messages to advertise its root device,
-any embedded devices, and any services. Each discovery message MUST contain four major components:
-1. A notification type (e.g., device type), sent in an NT (Notification Type) header field.
-2. A composite identifier for the advertisement, sent in a USN (Unique Service Name) header field.
-3. A URL for more information about the device (or enclosing device in the case of a service), sent in a LOCATION header field.
-4. A duration for which the advertisement is valid, sent in a CACHE-CONTROL header field.
-To advertise its capabilities, a device multicasts a number of discovery messages. Specifically, a root device MUST multicast:
-    Three discovery messages for the root device.
-
-if a message hasnt come in by the notify expry time then the device is considered gone.  If any sub-device or service from the device checks in within the timeout all are considered still alive
-
-Object { NT: "uuid:134a75fa-d095-481f-a169-07b070…", CACHE-CONTROL: "max-age=900", HOST: "239.255.255.250:1900", NTS: "ssdp:alive", USN: "uuid:134a75fa-d095-481f-a169-07b070…", SERVER: "Windows NT/5.0, UPnP/1.0, Intel CLR…", LOCATION: "http://192.168.6.1:51300/", CONTENT-LENGTH: "0" }
-
-Object { NT: "upnp:rootdevice", HOST: "239.255.255.250:1900", NTS: "ssdp:byebye", USN: "uuid:134a75fa-d095-481f-a169-07b070…", CONTENT-LENGTH: "0" }
