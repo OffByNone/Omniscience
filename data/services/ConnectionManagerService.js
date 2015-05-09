@@ -153,7 +153,8 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
 		},
 		unsubscribe: function(){
-			return subscriptionService.unsubscribe(getService());
+			var service = getService();
+			return subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);		
 		}
 	}
 });

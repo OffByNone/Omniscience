@@ -4,7 +4,7 @@
 	var subscriptions = {};
 
 	function addSubscription(service, timeoutInSeconds) {
-		subscriptions[service.hash].timeout = $timeout(() => { console.log("attempting to resubscribe");addSubscription(service, timeoutInSeconds) }, timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
+		subscriptions[service.hash].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
 
 		return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, service.serverIP, timeoutInSeconds).then((subscriptionId) => {
 			service.subscriptionId = subscriptionId;
@@ -42,18 +42,17 @@
 			subscriptions[service.hash] = { callbacks: [{ genericEventCallback, lastChangeCallback }] };
 			return addSubscription(service, timeoutInSeconds || 20);
 		},
-		unsubscribe: function unsubscribe(service) {
-			if (!service || typeof service !== "object") throw new Error("Invalid argument exception.  Parameter 'service' is either null or not an object.");
-			if (!service.hash) throw new Error("Argument null exception service.hash cannot be null.");
-			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
-			if (!service.subscriptionId) return; //means we never subscribed in the first place
-			if (!subscriptions[service.hash]) return; //we shouldn't have made it this far but sometimes we do, todo: look into this
+		unsubscribe: function unsubscribe(serviceHash, subscriptionId, eventSubUrl) {
+			if (!serviceHash) throw new Error("Argument null exception service.hash cannot be null.");
+			if (!eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
+			if (!subscriptionId) return; //means we never subscribed in the first place
+			if (!subscriptions[serviceHash]) return; //if we have already unsubscribed
 
 			if (!!subscriptions[serviceHash].timeout) $timeout.cancel(subscriptions[serviceHash].timeout);
 			delete subscriptions[serviceHash];
 
-			return eventService.emit("Unsubscribe", service.eventSubUrl, service.subscriptionId, service.hash)
-							.then(() => service.subscriptionId = null);
+			return eventService.emit("Unsubscribe", eventSubUrl, subscriptionId, serviceHash)
+							.then(() => subscriptionId = null);
 		}
 	}
 });
