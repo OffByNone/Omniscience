@@ -137,9 +137,10 @@ To-Do
 		[ ] Get metadata for files
 		[ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
 		[ ] Better error handling
-		[ ] Better understand/remove TransportService
+		[ ] Remove TransportService
 
 matchstick, chromecast, and firestick will need extra setup in the new service oriented arch.  They will need to setup a service on the device in the device factory of themselves
 
-
 Need to find a way to add manufacturer specific methods to services
+
+Save found devices in case user is in a situation where only the passive searcher works.  If we didn't save devices closing and re-opening the browser would lose all devices and potentially take hours to find any given device again

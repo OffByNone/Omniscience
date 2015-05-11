@@ -5,7 +5,7 @@
 
 	function addSubscription(service, timeoutInSeconds) {
 		subscriptions[service.hash].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
-
+		//todo: do not set up the timeout if the subscribe failed, or more likely cancel the timeout if subscribe failed
 		return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.hash, service.serverIP, timeoutInSeconds).then((subscriptionId) => {
 			service.subscriptionId = subscriptionId;
 			return subscriptionId;
@@ -24,6 +24,7 @@
 		else
 			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function');
 					//.forEach((callback) => callback.genericEventCallback(eventXmlString))
+		//todo: turn the string into a json object
 	});
 
 	return {

@@ -1,6 +1,6 @@
 <div class="home-container container">
-	<h1>Devices on your network <small class="glyphicon glyphicon-refresh" ng-click="refreshDevices()"></small><small class="glyphicon glyphicon-save" ng-click="loadDevices()"></small></h1>
-	<div class="list-group home-list">
+	<h1>Devices on your network <small class="glyphicon glyphicon-refresh" ng-click="refreshDevices()"></small></h1>
+	<div class="list-group home-list pull-left" role="menu">
 		<device-list></device-list>
 		<h3 ng-show="devices.length == 0">
 			No devices Found.
