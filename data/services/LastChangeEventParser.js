@@ -18,7 +18,12 @@
 			var instances = [];
 
 			lastChanges.map(lastChange => {
-				var eventString = lastChange.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+				var eventString = lastChange.innerHTML
+												.replace(/&lt;/g, '<')
+												.replace(/&gt;/g, '>')
+												.replace(/&quot;/g, '"')
+												.replace(/'/g, '&#39;')
+												.replace(/&/g, '&amp;');
 				var eventXml = domParser.parseFromString(eventString, 'text/xml');
 
 				var instancesXml = getElements(eventXml, "InstanceID");
