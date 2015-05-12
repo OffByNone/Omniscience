@@ -43,23 +43,11 @@ JPM
 	jpm watchpost --post-url http://localhost:8888/
 		--watches for files to change when they do it auto builds and posts the xpi.  I could not get this to work in Cgywin
 
-Obscure Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
+useful Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
 	devtools.debugger.force-local = false (if you want to connect from a different machine over the network)
 	devtools.debugger.remote-host (to change the TCP hostname where Firefox will listen for connections)
 	devtools.debugger.remote-port (to change the TCP port number where Firefox will listen for connections)
 	devtools.debugger.prompt-connection = false (Allow connections without displaying a confirmation prompt.  This can be a security risk, especially if you also set the force-local preference to false.)
-
-    javascript.options.showInConsole = true. Logs errors in chrome files to the Error Console.
-    nglayout.debug.disable_xul_cache = true. Disables the XUL cache so that changes to windows and dialogs do not require a restart. This assumes you're using directories rather than JARs. Changes to XUL overlays will still require reloading of the document overlaid.
-    browser.dom.window.dump.enabled = true. Enables the use of the dump() statement to print to the standard console. See window.dump for more info. You can use nsIConsoleService instead of dump() from a privileged script.
-    javascript.options.strict = true. Enables strict JavaScript warnings in the Error Console. Note that since many people have this setting turned off when developing, you will see lots of warnings for problems with their code in addition to warnings for your own extension. You can filter those with Console2.
-    devtools.chrome.enabled = true. This enables to run JavaScript code snippets in the chrome context of the Scratchpad from the Tools menu. Don't forget to switch from content to browser as context.
-    devtools.debugger.remote-enabled = true. This adds a "Browser Debugger" entry to the "Web Developer" submenu of the "Tools" menu.  The Browser Debugger can be used to debug the JavaScript code of extensions. The devtools.chrome.enabled preference must also be set to true for the Browser Debugger to be enabled.
-    extensions.logging.enabled = true. This will send more detailed information about installation and update problems to the Error Console. (Note that the extension manager automatically restarts the application at startup sometimes, which may mean you won't have time to see the messages logged before the automatic restart happens. To see them, prevent the automatic restart by setting the environment NO_EM_RESTART to 1 before starting the application.)
-    nglayout.debug.disable_xul_fastload = true. For Gecko 2.0+ (Firefox 4.0+). See this bug for more information. Although the bug has been closed, it is believed that this pref is still relevant.
-    dom.report_all_js_exceptions = true. See Exception logging in JavaScript for details.
-    devtools.errorconsole.deprecation_warnings = true. Detect deprecated code use.
-https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
 
 View contents of simplestorage
 
