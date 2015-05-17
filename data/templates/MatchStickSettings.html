@@ -1,0 +1,39 @@
+﻿<div class="container-fluid">
+	<br />
+	<div class="btn-group" role="group">
+		<button class="btn btn-default" type="button" ng-click="reboot()">Reboot</button>
+		<button class="btn btn-default" type="button" ng-click="reset()">Reset</button>
+		<button class="btn btn-default" type="button" ng-click="forgetWifi()">Forget Wifi</button>
+	</div>
+	<br />
+	<div class="input-group" style="width:350px">
+		<input class="form-control" type="text" ng-change="setName()" ng-model="device.name" />
+	</div>
+	<h3 ng-show="tvKeyCode">{{tvKeyCode}}</h3>
+	<select ng-change="setLanguage()" ng-model="device.language" ng-options="language as language.name for language in languages"></select>
+	<select ng-change="setTimezone()" ng-model="device.timezone" ng-options="timezone for timezone in timezones"></select>
+	<select ng-change="setUSBMode()" ng-model="device.usbMode" ng-options="index as name for (index, name) in usbModes"></select>
+	<slider ng-change="setScale()" ng-model="device.scale" min="50" max="100" step="5"></slider>
+
+	<br />
+	<br />
+	<button class="btn btn-default" type="button" ng-click="getNetworks()">Refresh Networks</button>
+	<br/>
+	<table ng-show="visibleNetworks" class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Security</th>
+				<th>MAC</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="network in visibleNetworks">
+				<td>{{network.ssid}}</td>
+				<td ng-show="network.security">{{network.security}}</td>
+				<td ng-hide="network.security">None</td>
+				<td>{{network.bssid}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

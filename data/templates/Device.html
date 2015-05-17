@@ -49,7 +49,7 @@
 				<li role="presentation" class="active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
 				<li ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')" role="presentation"><a data-target="#capabilities" aria-controls="capabilities" role="tab" data-toggle="tab">Capabilities</a></li>
 				<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
-				<li role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+				<li ng-show="isMatchStick()" role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
 				<li role="presentation" class="pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
 			</ul><!-- Nav tabs -->
 			<div class="tab-content">
@@ -59,8 +59,8 @@
 					<capabilities ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></capabilities>
 				</div>
 				<div ng-include="'templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
-				<div role="tabpanel" class="tab-pane" id="settings">
-					<device-settings></device-settings>
+				<div ng-show="isMatchStick()" role="tabpanel" class="tab-pane" id="settings">
+					<matchstick-settings ng-if="isMatchStick()"></matchstick-settings>
 				</div>
 				<div ng-include="'templates/DebugInfo.html'" role="tabpanel" class="tab-pane" id="debug"></div>
 			</div><!-- Tab panes -->

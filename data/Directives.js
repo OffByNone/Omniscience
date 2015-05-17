@@ -31,12 +31,12 @@ angular.module("omniscience").directive("deviceList", function () {
 
 	function link(scope, element, attributes) {}
 });
-angular.module("omniscience").directive("deviceSettings", function () {
+angular.module("omniscience").directive("matchstickSettings", function () {
 	return ({
-		controller: "DeviceSettingsController",
+		controller: "MatchStickSettingsController",
 		link: link,
 		restrict: "E",
-		templateUrl: "templates/DeviceSettings.html"
+		templateUrl: "templates/MatchStickSettings.html"
 	});
 
 	function link(scope, element, attributes) {}

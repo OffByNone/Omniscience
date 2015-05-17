@@ -1,5 +1,5 @@
 'use strict';
-var omniscience = angular.module('omniscience', ['ngRoute','ui.unique']);
+var omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider']);
 
 omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
 	$routeProvider

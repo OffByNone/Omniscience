@@ -12,6 +12,13 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 		return false;
 	};
 
+	$scope.isMatchStick = function isMatchStick() {
+		if ($scope.device && $scope.device.model && $scope.device.manufacturer)
+			return $scope.device.model.name === "MatchStick" && $scope.device.manufacturer.name === "openflint";
+
+		return false;
+	};
+
 	function getDevice() {
 	    var device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0];
 	    if (!device) return $timeout(() => getDevice(), 100);

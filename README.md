@@ -132,3 +132,9 @@ matchstick, chromecast, and firestick will need extra setup in the new service o
 Need to find a way to add manufacturer specific methods to services
 
 Save found devices in case user is in a situation where only the passive searcher works.  If we didn't save devices closing and re-opening the browser would lose all devices and potentially take hours to find any given device again
+
+Connect to MatchStick for debugging purposes
+adb connect ip:5555 (5555 is default so you should be able to omit the port)
+adb devices (you should see your device, mine just shows as device)
+open webide and it should be listed under usb devices
+
