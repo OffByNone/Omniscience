@@ -1,21 +1,31 @@
 <div class="container-fluid">
-	<nav class="navbar">
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<div class="dropdown-toggle clearfix" data-toggle="dropdown" role="button" aria-expanded="false">
-					<img class="icon pull-left" ng-show="device.icons[0].url" ng-src="{{ device.icons[0].url }}" />
-					<h2 class="active-device-header pull-left">
-						<span>{{device.name}}</span>
-						<span class="caret"></span>
-					</h2>
-				</div>
-				<div class="list-group dropdown-menu pull-left" role="menu">
-					<device-list></device-list>
-				</div>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#/">Omniscience</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-content">
+				<ul class="nav navbar-nav">
+					<li role="presentation" class="active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+					<li ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')" role="presentation"><a data-target="#capabilities" aria-controls="capabilities" role="tab" data-toggle="tab">Capabilities</a></li>
+					<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
+					<li role="presentation" ng-show="hasService('urn:schemas-upnp-org:service:AVTransport:1')"><a data-target="#playlist" aria-controls="playlist" role="tab" data-toggle="tab">Playlist</a></li>
+					<li ng-show="isMatchStick()" role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+					<li role="presentation"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
+				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li> <a href="/about" class="nav navbar-nav navbar-right">About</a> </li>
+					<li class="dropdown" role="presentation">
+						<a class="dropdown-toggle" data-toggle="dropdown" role="tab" aria-expanded="false">{{device.name}} <span class="caret"></span></a>
+						<div class="list-group dropdown-menu" role="menu">
+							<device-list></device-list>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -43,31 +53,21 @@
 				</h1>
 			</div>
 		</div>
-		<div role="tabpanel">
-			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a data-target="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
-				<li ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')" role="presentation"><a data-target="#capabilities" aria-controls="capabilities" role="tab" data-toggle="tab">Capabilities</a></li>
-				<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
-				<li role="presentation" ng-show="hasService('urn:schemas-upnp-org:service:AVTransport:1')"><a data-target="#playlist" aria-controls="playlist" role="tab" data-toggle="tab">Playlist</a></li>
-				<li ng-show="isMatchStick()" role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-				<li role="presentation" class="pull-right"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
-			</ul><!-- Nav tabs -->
-			<div class="tab-content">
-				<div ng-include="'templates/DeviceInfo.html'" role="tabpanel" class="tab-pane active" id="info">
-				</div>
-				<div role="tabpanel" class="tab-pane" id="capabilities" ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')">
-					<capabilities ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></capabilities>
-				</div>
-				<div ng-include="'templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
-				<div class="tab-pane" id="playlist" role="tabpanel">
-					<playlist ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
-				</div>
-				<div ng-show="isMatchStick()" role="tabpanel" class="tab-pane" id="settings">
-					<matchstick-settings ng-if="isMatchStick()"></matchstick-settings>
-				</div>
-				<div ng-include="'templates/DebugInfo.html'" role="tabpanel" class="tab-pane" id="debug"></div>
-			</div><!-- Tab panes -->
-		</div>
+		<div class="tab-content">
+			<div ng-include="'templates/DeviceInfo.html'" role="tabpanel" class="tab-pane active" id="info">
+			</div>
+			<div role="tabpanel" class="tab-pane" id="capabilities" ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')">
+				<capabilities ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></capabilities>
+			</div>
+			<div ng-include="'templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
+			<div class="tab-pane" id="playlist" role="tabpanel">
+				<playlist ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
+			</div>
+			<div ng-show="isMatchStick()" role="tabpanel" class="tab-pane" id="settings">
+				<matchstick-settings ng-if="isMatchStick()"></matchstick-settings>
+			</div>
+			<div ng-include="'templates/DebugInfo.html'" role="tabpanel" class="tab-pane" id="debug"></div>
+		</div><!-- Tab panes -->
 	</div>
 	<playback class="clearfix" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playback>
 </div>

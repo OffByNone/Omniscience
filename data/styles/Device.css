@@ -11,22 +11,12 @@
 	padding: 0;
 }
 
-.navbar-header .caret {
-	border-top-width: 6px;
-	border-right-width: 6px;
-	border-left-width: 6px;
-}
-
-.nav.nav-tabs li, .navbar-header .dropdown-toggle {
+.nav li, .dropdown-toggle {
 	cursor: pointer;
 }
 
-.navbar-header .media {
-	margin-top: 0;
-}
-
 .navbar .list-group {
-	max-width: 320px;
+	width: 320px;
 }
 
 .tab-padding, .list-padding {
