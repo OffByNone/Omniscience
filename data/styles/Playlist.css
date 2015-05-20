@@ -1,36 +1,31 @@
-﻿.playlist {
-	width: 315px;
-	padding: 0 15px;
+﻿.playlist-title {
+	text-align: center;
+	font-size: 22px;
 }
 
-	.playlist .playlist-title {
-		text-align: center;
-		font-size: 22px;
-	}
+.playlist-footer {
+	font-size: 22px;
+}
 
-	.playlist .playlist-footer {
-		font-size: 22px;
-	}
-
-		.playlist .playlist-footer .glyphicon {
-			padding: 5px;
-		}
-
-	.playlist .playlist-item .close {
-		top: 0;
-		right: 0;
-		position: absolute;
+	.playlist-footer .glyphicon {
 		padding: 5px;
 	}
 
-	.playlist .playlist-item {
-		word-break: break-all;
-	}
+.playlist-item .close {
+	top: 0;
+	right: 0;
+	position: absolute;
+	padding: 5px;
+}
 
-	.playlist .local-file input[readonly] {
-		cursor: auto;
-		background-color: #FFF;
-	}
+.playlist-item {
+	word-break: break-all;
+}
+
+.local-file input[readonly] {
+	cursor: auto;
+	background-color: #FFF;
+}
 
 .no-padding {
 	padding: 0 !important;
