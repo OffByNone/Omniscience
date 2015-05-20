@@ -1,0 +1,15 @@
+﻿#capabilities .dl-horizontal {
+	margin-bottom: 0;
+}
+
+	#capabilities .dl-horizontal dd {
+		margin-left: auto;
+	}
+
+	#capabilities .dl-horizontal dt {
+		width: auto;
+	}
+
+.capability {
+	margin: 5px;
+}

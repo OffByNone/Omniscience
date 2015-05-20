@@ -1,0 +1,35 @@
+﻿.methods ul, .methods h5, .property .allowedValues, .property .values {
+	display: inline;
+}
+
+.methods h4 {
+	display: inline;
+	vertical-align: bottom;
+}
+
+.methods .parameter {
+	padding-right: 0;
+}
+
+.methods .method, .properties .property {
+	display: block;
+}
+
+.property h4 {
+	display: inline;
+	padding: 0 5px;
+}
+
+.service .label {
+	position: relative;
+	top: -2px;
+}
+
+.return-values {
+	display: inline-block;
+}
+
+.service-name, .device-name {
+	display: inline-block;
+	margin-top: 0;
+}

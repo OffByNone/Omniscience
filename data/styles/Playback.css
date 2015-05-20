@@ -1,0 +1,54 @@
+﻿playback .progress {
+	display: inline-block;
+	vertical-align: middle;
+	margin-bottom: 0;
+	width: 100%;
+}
+
+.file-time {
+	display: inline-block;
+}
+
+playback {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: #FFF;
+	width: 100%;
+	padding: 10px;
+}
+
+.volume-detail {
+	font-weight: bold;
+	background-color: #FFF;
+	text-align: center;
+	font-size: 16px;
+	display: inline-block;
+	width: 70px;
+}
+
+	.volume-detail .volume-detail-text {
+		font-size: 20px;
+	}
+
+	.volume-detail .glyphicon-minus {
+		float: left;
+	}
+
+	.volume-detail .glyphicon-plus {
+		float: right;
+	}
+
+.volume-speaker {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	line-height: 20px;
+	vertical-align: middle;
+}
+
+	.volume-speaker .glyphicon-volume-up,
+	.volume-speaker .glyphicon-volume-off {
+		font-size: 20px;
+	}

@@ -1,0 +1,51 @@
+﻿.active-device-header {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.navbar .list-group-item {
+	border: none;
+}
+
+.navbar .dropdown-menu {
+	padding: 0;
+}
+
+.navbar-header .caret {
+	border-top-width: 6px;
+	border-right-width: 6px;
+	border-left-width: 6px;
+}
+
+.nav.nav-tabs li, .navbar-header .dropdown-toggle {
+	cursor: pointer;
+}
+
+.navbar-header .media {
+	margin-top: 0;
+}
+
+.navbar .list-group {
+	max-width: 320px;
+}
+
+.tab-padding, .list-padding {
+	padding: 10px 15px;
+}
+
+.tab-content {
+	background: #FFF;
+	border-width: 1px;
+	border-style: solid;
+	border-color: transparent #DDD #DDD;
+}
+
+.row ul {
+	margin-bottom: 0;
+}
+
+span.glyphicon:hover, small.glyphicon:hover {
+	color: #337AB7;
+	font-weight: bold;
+	cursor: pointer;
+}

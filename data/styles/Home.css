@@ -1,0 +1,33 @@
+﻿.home-list {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+	.home-list a.list-group-item {
+		border: 0;
+		width: 320px;
+	}
+
+@media(min-width: 1200px) {
+	.home-container.container {
+		width: 990px;
+	}
+}
+
+.home-container h1 {
+	text-align: center;
+}
+
+.nav .glyphicon-refresh {
+	font-size: 21px;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 100px;
+	margin-top: 13px;
+	margin-right: 5px;
+}
+
+.home-list h3 {
+	margin: 0 auto;
+}
