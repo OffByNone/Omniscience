@@ -12,7 +12,7 @@
 		});
 	}
 
-	eventService.on("UPnPEvent", (serviceHash, eventXmlString) => {
+	eventService.on("subscriptionService.UPnPEvent", (serviceHash, eventXmlString) => {
 		var callbacks = subscriptions[serviceHash].callbacks;
 		if (!callbacks) return;
 
