@@ -1,26 +1,28 @@
-﻿<div class="progress">
-	<div class="progress-bar" role="progressbar" aria-valuenow="{{currentTrack.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{currentTrack.totalSeconds}}" style="width: {{percentComplete()}}%;">
-		<span class="sr-only">{{currentTrack.currentSeconds}} seconds in</span>
+﻿<div>
+	<div class="progress">
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{currentTrack.currentSeconds}}" aria-valuemin="0" aria-valuemax="{{currentTrack.totalSeconds}}" style="width: {{percentComplete()}}%;">
+			<span class="sr-only">{{currentTrack.currentSeconds}} seconds in</span>
+		</div>
 	</div>
-</div>
-<div class="btn-group" role="group">
-	<button type="button" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
-	<button type="button" ng-show="playback.state.toLowerCase() !== 'playing'" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
-	<button type="button" ng-hide="playback.state.toLowerCase() !== 'playing'" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
-	<button type="button" ng-click="next(false)" class="btn btn-default glyphicon glyphicon-forward"></button>
-	<button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
-</div>
-<div class="volume-speaker">
-	<span class="glyphicon" ng-class="{'glyphicon-volume-off': isMuted, 'glyphicon-volume-up': !isMuted}" ng-click="toggleMute()"></span>
-	<div class="volume-detail">
-		<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
-		<span class="volume-detail-text">{{volume}}</span>
-		<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
+	<div class="btn-group" role="group">
+		<button type="button" ng-click="previous()" class="btn btn-default glyphicon glyphicon-backward"></button>
+		<button type="button" ng-show="playback.state.toLowerCase() !== 'playing'" ng-click="play()" class="btn btn-default glyphicon glyphicon-play"></button>
+		<button type="button" ng-hide="playback.state.toLowerCase() !== 'playing'" ng-click="pause()" class="btn btn-default glyphicon glyphicon-pause"></button>
+		<button type="button" ng-click="next(false)" class="btn btn-default glyphicon glyphicon-forward"></button>
+		<button type="button" ng-click="stop()" class="btn btn-default glyphicon glyphicon-stop"></button>
 	</div>
-</div>
-<div class="file-time">
-	<span>{{currentTrack.currentMinutes}}</span>
-	<span>/</span>
-	<span>{{currentTrack.totalMinutes}}</span>
-	<span>{{currentTrack.name}}</span>
+	<div class="volume-speaker">
+		<span class="glyphicon" ng-class="{'glyphicon-volume-off': isMuted, 'glyphicon-volume-up': !isMuted}" ng-click="toggleMute()"></span>
+		<div class="volume-detail">
+			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
+			<span class="volume-detail-text">{{volume}}</span>
+			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
+		</div>
+	</div>
+	<div class="file-time">
+		<span>{{currentTrack.currentMinutes}}</span>
+		<span>/</span>
+		<span>{{currentTrack.totalMinutes}}</span>
+		<span>{{currentTrack.name}}</span>
+	</div>
 </div>

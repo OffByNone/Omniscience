@@ -7,3 +7,30 @@
 	font-size: 12px;
 	margin: 2px 0 3px 0;
 }
+
+a.list-group-item {
+	border: 0;
+	min-width: 275px;
+}
+
+@media (max-width: 550px) {
+	a.list-group-item {
+		width: 100%;
+	}
+}
+
+@media (min-width: 550px) and (max-width: 989px) {
+	a.list-group-item {
+		max-width: 320px;
+	}
+}
+
+@media (min-width: 960px) {
+	a.list-group-item {
+		min-width: 300px;
+	}
+}
+
+.nav .list-group-item {
+	min-width:320px;
+}
