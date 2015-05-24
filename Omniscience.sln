@@ -45,30 +45,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1165AB1F-BB6E-496B-A149-853693054AFA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		manifest.json = manifest.json
 		package.json = package.json
 		README.md = README.md
 		UPnP Info.txt = UPnP Info.txt
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Chrome", "Chrome\", "{61CB7A9A-557B-4B02-BE85-582B31F66D86}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_55419"
-		Debug.AspNetCompiler.PhysicalPath = "Chrome\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55419\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_55419"
-		Release.AspNetCompiler.PhysicalPath = "Chrome\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55419\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "55419"
-		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
 Global
@@ -80,8 +60,6 @@ Global
 		{B73C23DE-58A9-40DE-A01B-1C392F1CC6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D5ACAC1-4012-427B-B923-F74D59938225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D5ACAC1-4012-427B-B923-F74D59938225}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61CB7A9A-557B-4B02-BE85-582B31F66D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61CB7A9A-557B-4B02-BE85-582B31F66D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

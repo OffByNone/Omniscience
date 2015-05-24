@@ -1,0 +1,21 @@
+{
+	"author": "Off By None",
+	"name": "Omniscience",
+	"description": "Finds UPnP devices on the local network",
+	"icons": {
+		"32": "./data/icons/logo_32.png",
+		"64": "./data/icons/logo_64.png"
+	},
+	"version": "0.5.0",
+	"background": {
+		"scripts": [ "./lib/SDK/NodeRequire.js", "./lib/ChromeMain.js" ]
+	},
+	"browser_action": {
+		"default_title": "Omniscience",
+		"default_icon": "./data/icons/logo_64.png"
+	},
+	"manifest_version": 2,
+	"permissions": [
+		"tabs","<all_urls>"
+	]
+}

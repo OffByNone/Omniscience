@@ -1,19 +1,19 @@
 {
 	"author": "Off By None",
-	"bugs": {
-		"url": "https://github.com/OffByNone/Omniscience/issues"
-	},
+	"title": "Omniscience",
+	"name": "omniscience",
 	"description": "Finds UPnP devices on the local network",
 	"icon": "./data/icons/logo_32.png",
 	"icon64": "./data/icons/logo_64.png",
+	"version": "0.5.0",
+	"main": "./lib/FirefoxMain.js",
+	"bugs": {
+		"url": "https://github.com/OffByNone/Omniscience/issues"
+	},
 	"id": "jid1-A3BeMgzQQjOvNg@jetpack",
 	"license": "yes",
-	"main": "./lib/FirefoxMain.js",
-	"name": "omniscience",
 	"repository": {
 		"url": "https://github.com/OffByNone/Omniscience",
 		"type": "git"
-	},
-	"title": "Omniscience",
-	"version": "0.3.2"
+	}
 }

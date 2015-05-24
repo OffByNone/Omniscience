@@ -138,3 +138,6 @@ adb connect ip:5555 (5555 is default so you should be able to omit the port)
 adb devices (you should see your device, mine just shows as device)
 open webide and it should be listed under usb devices
 
+
+
+babel data --out-dir data/out
