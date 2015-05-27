@@ -23,7 +23,7 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 	    var device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0];
 	    if (!device) return $timeout(() => getDevice(), 100);
 
-	    $scope.device = $rootScope.devices.filter(device => device.id === $routeParams.deviceId)[0] || {};
+	    $scope.device = device || {};
 	    $scope.device.services.forEach(informationService.put);
 	    $scope.device.services
         .filter((service) => {
