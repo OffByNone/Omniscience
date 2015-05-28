@@ -1,4 +1,4 @@
-﻿omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser) {
+﻿omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
 	"use strict";
 
 	var subscriptions = {};
@@ -22,11 +22,22 @@
 			callbacks.filter((callback) => typeof callback.lastChangeCallback === 'function')
 					.forEach((callback) => callback.lastChangeCallback(lastChangeObj));
 		else
-			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function');
-					//.forEach((callback) => {
-						//var eventJson = jxon.build(eventXmlString);
-						//callback.genericEventCallback(eventJson);
-					//});
+			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function')
+					.forEach((callback) => {
+						var eventJson = jxon.build(eventXmlString);
+
+						var result = [];
+
+						if (eventJson.propertyset && eventJson.propertyset.property) {
+							if (Array.isArray(eventJson.propertyset.property))
+								result = eventJson.propertyset.property;
+							else
+								result.push(eventJson.propertyset.property);
+						}
+
+
+						callback.genericEventCallback(result);
+					});
 	});
 
 	return {

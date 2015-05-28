@@ -1,25 +1,24 @@
 ﻿omniscience.factory('jxon', function () {
+	"use strict";
 	/*
- * JXON framework - Copyleft 2011 by Mozilla Developer Network
- *
- * Revision #1 - September 5, 2014
- *
- * https://developer.mozilla.org/en-US/docs/JXON
- *
- * This framework is released under the GNU Public License, version 3 or later.
- * http://www.gnu.org/licenses/gpl-3.0-standalone.html
- *
- * small modifications performed by the iD project:
- * https://github.com/openstreetmap/iD/commits/18aa33ba97b52cacf454e95c65d154000e052a1f/js/lib/jxon.js
- *
- * small modifications performed by user @bugreport0
- * https://github.com/tyrasd/JXON/pull/2/commits
- *
- * some additions and modifications by user @igord
- * https://github.com/tyrasd/JXON/pull/5/commits
- *
- * adapted for nodejs and npm by Martin Raifer <tyr.asd@gmail.com>
- */
+	 * JXON framework - Copyleft 2011 by Mozilla Developer Network
+	 *
+	 * https://developer.mozilla.org/en-US/docs/JXON
+	 *
+	 * This framework is released under the GNU Public License, version 3 or later.
+	 * http://www.gnu.org/licenses/gpl-3.0-standalone.html
+	 *
+	 * small modifications performed by the iD project:
+	 * https://github.com/openstreetmap/iD/commits/18aa33ba97b52cacf454e95c65d154000e052a1f/js/lib/jxon.js
+	 *
+	 * small modifications performed by user @bugreport0
+	 * https://github.com/tyrasd/JXON/pull/2/commits
+	 *
+	 * some additions and modifications by user @igord
+	 * https://github.com/tyrasd/JXON/pull/5/commits
+	 *
+	 * adapted for nodejs and npm by Martin Raifer <tyr.asd@gmail.com>
+	 */
 
 	/*
 	 * Modifications:
@@ -37,151 +36,162 @@
 	 *
    */
 
+	var nodeTypes = {
+		4: "CDATASection",
+		3: "Text",
+		1: "Element"
+	};
+
 	var JXON = new (function () {
 		var
 		  sValProp = "keyValue",
-		  sAttrProp = "keyAttributes",
-		  sAttrsPref = "@",
-		  sLowCase = true,
+		  attributesPropertyName = "keyAttributes",
+		  attributePrefix = "@",
+		  normalizeCasing = true,
 		  sEmptyTrue = true,
-		  sAutoDate = true,
-		  sIgnorePrefixed = false, /* you can customize these values */
-		  aCache = [], rIsNull = /^\s*$/, rIsBool = /^(?:true|false)$/i;
+		  parseDates = true,
+		  removePrefixes = true,
+		  ignorePrefixedElements = false,
+		  isNullRegex = /^\s*$/,
+		  isBoolRegex = /^(?:true|false)$/i;
 
-		function parseText(sValue) {
-			if (rIsNull.test(sValue)) { return null; }
-			if (rIsBool.test(sValue)) { return sValue.toLowerCase() === "true"; }
-			if (isFinite(sValue)) { return parseFloat(sValue); }
-			if (sAutoDate && isFinite(Date.parse(sValue))) { return new Date(sValue); }
-			return sValue;
+		function parseText(value) {
+			if (isNullRegex.test(value)) { return null; }
+			if (isBoolRegex.test(value)) { return value.toLowerCase() === "true"; }
+			if (isFinite(value)) { return parseFloat(value); }
+			if (parseDates && isFinite(Date.parse(value))) { return new Date(value); }
+			return value;
 		}
 
 		function EmptyTree() { }
 		EmptyTree.prototype.toString = function () { return "null"; };
 		EmptyTree.prototype.valueOf = function () { return null; };
 
-		function objectify(vValue) {
-			return vValue === null ? new EmptyTree() : vValue instanceof Object ? vValue : new vValue.constructor(vValue);
+		function objectify(value) {
+			return value === null ? new EmptyTree() : value instanceof Object ? value : new value.constructor(value);
 		}
 
-		function createObjTree(oParentNode, nVerb, bFreeze, bNesteAttr) {
-			var
-			  nLevelStart = aCache.length, bChildren = oParentNode.hasChildNodes(),
-			  bAttributes = oParentNode.nodeType === oParentNode.ELEMENT_NODE && oParentNode.hasAttributes(), bHighVerb = Boolean(nVerb & 2);
+		function createObjTree(parent, verbosity, shouldFreeze, putAttributesInOwnProperty) {
+			var children = [];
+			var hasChildren = parent.hasChildNodes();
+			var hasAttributes = parent.nodeType === parent.ELEMENT_NODE && parent.hasAttributes();
+			var bHighVerb = Boolean(verbosity & 2);
 
-			var
-			  sProp, vContent, nLength = 0, sCollectedTxt = "",
-			  vResult = bHighVerb ? {} : /* put here the default value for empty nodes: */ true;
+			var value;
+			var sCollectedText = "";
+			var jsonResult = bHighVerb ? {} : null;
 
-			if (bChildren) {
-				for (var oNode, nItem = 0; nItem < oParentNode.childNodes.length; nItem++) {
-					oNode = oParentNode.childNodes.item(nItem);
-					if (oNode.nodeType === 4) { sCollectedTxt += oNode.nodeValue; } /* nodeType is "CDATASection" (4) */
-					else if (oNode.nodeType === 3) { sCollectedTxt += oNode.nodeValue.trim(); } /* nodeType is "Text" (3) */
-					else if (oNode.nodeType === 1 && !(sIgnorePrefixed && oNode.prefix)) { aCache.push(oNode); } /* nodeType is "Element" (1) */
+			for (var childNode of parent.childNodes) {
+				var nodeType = nodeTypes[childNode.nodeType];
+
+				if (nodeType === "CDATASection") sCollectedText += childNode.nodeValue;
+				else if (nodeType === "Text") sCollectedText += childNode.nodeValue.trim();
+				else if (nodeType === "Element" && !(ignorePrefixedElements && childNode.prefix)) children.push(childNode);
+			}
+
+			var vBuiltVal = parseText(sCollectedText);
+
+			if (!bHighVerb && (hasChildren || hasAttributes))
+				jsonResult = verbosity === 0 ? objectify(vBuiltVal) : {};
+
+			children.forEach((child) => {
+				var propertyName = child.nodeName;
+				if (normalizeCasing) propertyName = propertyName.toLowerCase();
+				if (removePrefixes && propertyName.indexOf(":") >= 0) propertyName = propertyName.split(":")[1];
+
+				value = createObjTree(child, verbosity, shouldFreeze, putAttributesInOwnProperty);
+				if (jsonResult.hasOwnProperty(propertyName)) {
+					if (!Array.isArray(jsonResult[propertyName]))
+						jsonResult[propertyName] = [jsonResult[propertyName]];
+
+					jsonResult[propertyName].push(value);
+				}
+				else
+					jsonResult[propertyName] = value;
+			});
+
+			if (hasAttributes) {
+				var attributes = parent.attributes;
+				var currrentAttributePrefix = putAttributesInOwnProperty ? "" : attributePrefix;
+				var attributeContainer = putAttributesInOwnProperty ? {} : jsonResult;
+
+				for (var i = 0; i < attributes.length; i++) {
+					var attribute = attributes.item(i);
+					var attributeName = attribute.name;
+					if (normalizeCasing) attributeName = attributeName.toLowerCase();
+					attributeContainer[currrentAttributePrefix + attributeName] = parseText(attribute.value.trim());
+				}
+
+				if (putAttributesInOwnProperty) {
+					if (shouldFreeze) Object.freeze(attributeContainer);
+					jsonResult[attributesPropertyName] = attributeContainer;
 				}
 			}
 
-			var nLevelEnd = aCache.length, vBuiltVal = parseText(sCollectedTxt);
+			if (verbosity === 3 || (verbosity === 2 || verbosity === 1 && hasChildren) && sCollectedText)
+				jsonResult[sValProp] = vBuiltVal;
+			else if (!bHighVerb && !hasChildren && sCollectedText)
+				jsonResult = vBuiltVal;
 
-			if (!bHighVerb && (bChildren || bAttributes)) { vResult = nVerb === 0 ? objectify(vBuiltVal) : {}; }
+			if (shouldFreeze && (bHighVerb || hasChildren)) Object.freeze(jsonResult);
 
-			for (var nElId = nLevelStart; nElId < nLevelEnd; nElId++) {
-				sProp = aCache[nElId].nodeName;
-				if (sLowCase) sProp = sProp.toLowerCase();
-				vContent = createObjTree(aCache[nElId], nVerb, bFreeze, bNesteAttr);
-				if (vResult.hasOwnProperty(sProp)) {
-					if (vResult[sProp].constructor !== Array) { vResult[sProp] = [vResult[sProp]]; }
-					vResult[sProp].push(vContent);
-				} else {
-					vResult[sProp] = vContent;
-					nLength++;
-				}
-			}
-
-			if (bAttributes) {
-				var
-				  nAttrLen = oParentNode.attributes.length,
-				  sAPrefix = bNesteAttr ? "" : sAttrsPref, oAttrParent = bNesteAttr ? {} : vResult;
-
-				for (var oAttrib, oAttribName, nAttrib = 0; nAttrib < nAttrLen; nLength++, nAttrib++) {
-					oAttrib = oParentNode.attributes.item(nAttrib);
-					oAttribName = oAttrib.name;
-					if (sLowCase) oAttribName = oAttribName.toLowerCase();
-					oAttrParent[sAPrefix + oAttribName] = parseText(oAttrib.value.trim());
-				}
-
-				if (bNesteAttr) {
-					if (bFreeze) { Object.freeze(oAttrParent); }
-					vResult[sAttrProp] = oAttrParent;
-					nLength -= nAttrLen - 1;
-				}
-			}
-
-			if (nVerb === 3 || (nVerb === 2 || nVerb === 1 && nLength > 0) && sCollectedTxt) {
-				vResult[sValProp] = vBuiltVal;
-			} else if (!bHighVerb && nLength === 0 && sCollectedTxt) {
-				vResult = vBuiltVal;
-			}
-
-			if (bFreeze && (bHighVerb || nLength > 0)) { Object.freeze(vResult); }
-
-			aCache.length = nLevelStart;
-
-			return vResult;
+			return jsonResult;
 		}
 
-		function loadObjTree(oXMLDoc, oParentEl, oParentObj) {
-			var vValue, oChild;
+		function convertJsonToXml(xml, parentElement, parentObject) {
+			var value, oChild;
 
-			if (oParentObj.constructor === String || oParentObj.constructor === Number || oParentObj.constructor === Boolean) {
-				oParentEl.appendChild(oXMLDoc.createTextNode(oParentObj.toString())); /* verbosity level is 0 or 1 */
-				if (oParentObj === oParentObj.valueOf()) { return; }
-			} else if (oParentObj.constructor === Date) {
-				oParentEl.appendChild(oXMLDoc.createTextNode(oParentObj.toGMTString()));
+			if (parentObject.constructor === String || parentObject.constructor === Number || parentObject.constructor === Boolean) {
+				parentElement.appendChild(xml.createTextNode(parentObject.toString())); /* verbosity level is 0 or 1 */
+				if (parentObject === parentObject.valueOf()) { return; }
+			} else if (parentObject.constructor === Date) {
+				parentElement.appendChild(xml.createTextNode(parentObject.toGMTString()));
 			}
 
-			for (var sName in oParentObj) {
-				vValue = oParentObj[sName];
-				if (isFinite(sName) || vValue instanceof Function) { continue; } /* verbosity level is 0 */
+			for (var sName in parentObject) {
+				value = parentObject[sName];
+				if (isFinite(sName) || value instanceof Function) { continue; } /* verbosity level is 0 */
 				// when it is _
 				if (sName === sValProp) {
-					if (vValue !== null && vValue !== true) { oParentEl.appendChild(oXMLDoc.createTextNode(vValue.constructor === Date ? vValue.toGMTString() : String(vValue))); }
-				} else if (sName === sAttrProp) { /* verbosity level is 3 */
-					for (var sAttrib in vValue) { oParentEl.setAttribute(sAttrib, vValue[sAttrib]); }
-				} else if (sName.charAt(0) === sAttrsPref && sName !== sAttrsPref + 'xmlns') {
-					oParentEl.setAttribute(sName.slice(1), vValue);
-				} else if (vValue.constructor === Array) {
-					for (var nItem = 0; nItem < vValue.length; nItem++) {
-						oChild = oXMLDoc.createElementNS(vValue[nItem][sAttrsPref + 'xmlns'] || oParentEl.namespaceURI, sName);
-						loadObjTree(oXMLDoc, oChild, vValue[nItem]);
-						oParentEl.appendChild(oChild);
+					if (value !== null && value !== true) { parentElement.appendChild(xml.createTextNode(value.constructor === Date ? value.toGMTString() : String(value))); }
+				} else if (sName === attributesPropertyName) { /* verbosity level is 3 */
+					for (var sAttrib in value) { parentElement.setAttribute(sAttrib, value[sAttrib]); }
+				} else if (sName.charAt(0) === attributePrefix && sName !== attributePrefix + 'xmlns') {
+					parentElement.setAttribute(sName.slice(1), value);
+				} else if (value.constructor === Array) {
+					for (var i = 0; i < value.length; i++) {
+						oChild = xml.createElementNS(value[i][attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+						convertJsonToXml(xml, oChild, value[i]);
+						parentElement.appendChild(oChild);
 					}
 				} else {
-					oChild = oXMLDoc.createElementNS((vValue || {})[sAttrsPref + 'xmlns'] || oParentEl.namespaceURI, sName);
-					if (vValue instanceof Object) {
-						loadObjTree(oXMLDoc, oChild, vValue);
-					} else if (vValue !== null && vValue !== true) {
-						oChild.appendChild(oXMLDoc.createTextNode(vValue.toString()));
-					} else if (!sEmptyTrue && vValue === true) {
-						oChild.appendChild(oXMLDoc.createTextNode(vValue.toString()));
+					oChild = xml.createElementNS((value || {})[attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+					if (value instanceof Object) {
+						convertJsonToXml(xml, oChild, value);
+					} else if (value !== null && value !== true) {
+						oChild.appendChild(xml.createTextNode(value.toString()));
+					} else if (!sEmptyTrue && value === true) {
+						oChild.appendChild(xml.createTextNode(value.toString()));
 
 					}
-					oParentEl.appendChild(oChild);
+					parentElement.appendChild(oChild);
 
 				}
 			}
 		}
 
-		this.xmlToJs = this.build = function (oXMLParent, nVerbosity /* optional */, bFreeze /* optional */, bNesteAttributes /* optional */) {
-			var _nVerb = arguments.length > 1 && typeof nVerbosity === "number" ? nVerbosity & 3 : /* put here the default verbosity level: */ 1;
-			return createObjTree(oXMLParent, _nVerb, bFreeze || false, arguments.length > 3 ? bNesteAttributes : _nVerb === 3);
+		this.xmlToJson = this.build = function (xml, verbosity /* optional */, shouldFreeze /* optional */, putAttributesInOwnProperty /* optional */) {
+			var _verbosity = arguments.length > 1 && typeof verbosity === "number" ? verbosity & 3 : /* put here the default verbosity level: */ 1;
+
+			var xmlActual = typeof xml === "string" ? this.stringToXml(xml) : xml;
+
+			return createObjTree(xmlActual, _verbosity, shouldFreeze || false, arguments.length > 3 ? putAttributesInOwnProperty : _verbosity === 3);
 		};
 
-		this.jsToXml = this.unbuild = function (oObjTree, sNamespaceURI /* optional */, sQualifiedName /* optional */, oDocumentType /* optional */) {
-			var oNewDoc = window.document.implementation.createDocument(sNamespaceURI || null, sQualifiedName || "", oDocumentType || null);
-			loadObjTree(oNewDoc, oNewDoc.documentElement || oNewDoc, oObjTree);
-			return oNewDoc;
+		this.jsonToXml = this.unbuild = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
+			var xmlDocument = window.document.implementation.createDocument(namespaceUri || null, qualifiedName || "", documentType || null);
+			convertJsonToXml(xmlDocument, xmlDocument.documentElement || xmlDocument, jsonObject);
+			return xmlDocument;
 		};
 
 		this.config = function (o) {
@@ -191,22 +201,22 @@
 						sValProp = o.valueKey;
 						break;
 					case 'attrKey':
-						sAttrProp = o.attrKey;
+						attributesPropertyName = o.attrKey;
 						break;
 					case 'attrPrefix':
-						sAttrsPref = o.attrPrefix;
+						attributePrefix = o.attrPrefix;
 						break;
 					case 'lowerCaseTags':
-						sLowCase = o.lowerCaseTags;
+						normalizeCasing = o.lowerCaseTags;
 						break;
 					case 'trueIsEmpty':
 						sEmptyTrue = o.trueIsEmpty;
 						break;
 					case 'autoDate':
-						sAutoDate = o.autoDate;
+						parseDates = o.autoDate;
 						break;
 					case 'ignorePrefixedNodes':
-						sIgnorePrefixed = o.ignorePrefixedNodes;
+						ignorePrefixedElements = o.ignorePrefixedNodes;
 						break;
 					default:
 						break;
@@ -229,14 +239,15 @@
 
 		this.stringToJs = function (str) {
 			var xmlObj = this.stringToXml(str);
-			return this.xmlToJs(xmlObj);
+			return this.xmlToJson(xmlObj);
 		};
 
-		this.jsToString = this.stringify = function (oObjTree, sNamespaceURI /* optional */, sQualifiedName /* optional */, oDocumentType /* optional */) {
+		this.jsToString = this.stringify = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
 			return this.xmlToString(
-			  this.jsToXml(oObjTree, sNamespaceURI, sQualifiedName, oDocumentType)
+			  this.jsonToXml(jsonObject, namespaceUri, qualifiedName, documentType)
 			);
 		};
 	})();
+
 	return JXON;
 });
