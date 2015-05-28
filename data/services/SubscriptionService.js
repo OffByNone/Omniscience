@@ -1,4 +1,4 @@
-﻿omniscience.factory('subscriptionService', function (eventService, lastChangeEventParser, $q, $timeout) {
+﻿omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser) {
 	"use strict";
 
 	var subscriptions = {};
@@ -23,8 +23,10 @@
 					.forEach((callback) => callback.lastChangeCallback(lastChangeObj));
 		else
 			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function');
-					//.forEach((callback) => callback.genericEventCallback(eventXmlString))
-		//todo: turn the string into a json object
+					//.forEach((callback) => {
+						//var eventJson = jxon.build(eventXmlString);
+						//callback.genericEventCallback(eventJson);
+					//});
 	});
 
 	return {

@@ -1,0 +1,249 @@
+﻿omniscience.factory('jxon', function () {
+	"use strict";
+	/*
+	 * JXON framework - Copyleft 2011 by Mozilla Developer Network
+	 *
+	 * https://developer.mozilla.org/en-US/docs/JXON
+	 *
+	 * This framework is released under the GNU Public License, version 3 or later.
+	 * http://www.gnu.org/licenses/gpl-3.0-standalone.html
+	 *
+	 * small modifications performed by the iD project:
+	 * https://github.com/openstreetmap/iD/commits/18aa33ba97b52cacf454e95c65d154000e052a1f/js/lib/jxon.js
+	 *
+	 * small modifications performed by user @bugreport0
+	 * https://github.com/tyrasd/JXON/pull/2/commits
+	 *
+	 * some additions and modifications by user @igord
+	 * https://github.com/tyrasd/JXON/pull/5/commits
+	 *
+	 * adapted for nodejs and npm by Martin Raifer <tyr.asd@gmail.com>
+	 */
+
+	/*
+	 * Modifications:
+	 * - added config method that excepts objects with props:
+	 *   - valueKey (default: keyValue)
+	 *   - attrKey (default: keyAttributes)
+	 *   - attrPrefix (default: @)
+	 *   - lowerCaseTags (default: true)
+	 *   - trueIsEmpty (default: true)
+	 *   - autoDate (default: true)
+	 * - turning tag and attributes to lower case is optional
+	 * - optional turning boolean true to empty tag
+	 * - auto Date parsing is optional
+	 * - added parseXml method
+	 *
+   */
+
+	var JXON = new (function () {
+		var
+		  sValProp = "keyValue",
+		  sAttrProp = "keyAttributes",
+		  attributePrefix = "@",
+		  shouldLowerCase = true,
+		  sEmptyTrue = true,
+		  sAutoDate = true,
+		  ignorePrefixedElements = false,
+		  elementsToParse = [],
+		  isNullRegex = /^\s*$/,
+		  isBoolRegex = /^(?:true|false)$/i;
+
+		function parseText(value) {
+			if (isNullRegex.test(value)) { return null; }
+			if (isBoolRegex.test(value)) { return value.toLowerCase() === "true"; }
+			if (isFinite(value)) { return parseFloat(value); }
+			if (sAutoDate && isFinite(Date.parse(value))) { return new Date(value); }
+			return value;
+		}
+
+		function EmptyTree() { }
+		EmptyTree.prototype.toString = function () { return "null"; };
+		EmptyTree.prototype.valueOf = function () { return null; };
+
+		function objectify(vValue) {
+			return vValue === null ? new EmptyTree() : vValue instanceof Object ? vValue : new vValue.constructor(vValue);
+		}
+
+		function createObjTree(parent, verbosity, shouldFreeze, nestAttributesInChildElement) {
+			var startingIndex = elementsToParse.length;
+			var hasChildren = parent.hasChildNodes();
+			var hasAttributes = parent.nodeType === parent.ELEMENT_NODE && parent.hasAttributes();
+			var bHighVerb = Boolean(verbosity & 2);
+
+			var vContent, nLength = 0, sCollectedText = "",
+			  vResult = bHighVerb ? {} : /* put here the default value for empty nodes: */ true;
+
+			if (hasChildren) {
+				var childNode;
+				for (var i = 0; i < parent.childNodes.length; i++) {
+					childNode = parent.childNodes.item(i);
+					if (childNode.nodeType === 4) { sCollectedText += childNode.nodeValue; } /* nodeType is "CDATASection" (4) */
+					else if (childNode.nodeType === 3) { sCollectedText += childNode.nodeValue.trim(); } /* nodeType is "Text" (3) */
+					else if (childNode.nodeType === 1 && !(ignorePrefixedElements && childNode.prefix)) { elementsToParse.push(childNode); } /* nodeType is "Element" (1) */
+				}
+			}
+
+			var vBuiltVal = parseText(sCollectedText);
+
+			if (!bHighVerb && (hasChildren || hasAttributes)) { vResult = verbosity === 0 ? objectify(vBuiltVal) : {}; }
+
+			for (var j = startingIndex; j < elementsToParse.length; j++) {
+				var propertyName = elementsToParse[j].nodeName;
+				if (shouldLowerCase) propertyName = propertyName.toLowerCase();
+
+				vContent = createObjTree(elementsToParse[j], verbosity, shouldFreeze, nestAttributesInChildElement);
+				if (vResult.hasOwnProperty(propertyName)) {
+					if (vResult[propertyName].constructor !== Array) { vResult[propertyName] = [vResult[propertyName]]; }
+					vResult[propertyName].push(vContent);
+				} else {
+					vResult[propertyName] = vContent;
+					nLength++;
+				}
+			}
+
+			if (hasAttributes) {
+				var attributesLength = parent.attributes.length;
+				var currrentAttributePrefix = nestAttributesInChildElement ? "" : attributePrefix;
+				var oAttrParent = nestAttributesInChildElement ? {} : vResult;
+
+				for (var oAttrib, oAttribName, nAttrib = 0; nAttrib < attributesLength; nLength++, nAttrib++) {
+					oAttrib = parent.attributes.item(nAttrib);
+					oAttribName = oAttrib.name;
+					if (shouldLowerCase) oAttribName = oAttribName.toLowerCase();
+					oAttrParent[currrentAttributePrefix + oAttribName] = parseText(oAttrib.value.trim());
+				}
+
+				if (nestAttributesInChildElement) {
+					if (shouldFreeze) { Object.freeze(oAttrParent); }
+					vResult[sAttrProp] = oAttrParent;
+					nLength -= attributesLength - 1;
+				}
+			}
+
+			if (verbosity === 3 || (verbosity === 2 || verbosity === 1 && nLength > 0) && sCollectedText) {
+				vResult[sValProp] = vBuiltVal;
+			} else if (!bHighVerb && nLength === 0 && sCollectedText) {
+				vResult = vBuiltVal;
+			}
+
+			if (shouldFreeze && (bHighVerb || nLength > 0)) { Object.freeze(vResult); }
+
+			elementsToParse.length = startingIndex;
+
+			return vResult;
+		}
+
+		function convertJsonToXml(xml, parentElement, parentObject) {
+			var vValue, oChild;
+
+			if (parentObject.constructor === String || parentObject.constructor === Number || parentObject.constructor === Boolean) {
+				parentElement.appendChild(xml.createTextNode(parentObject.toString())); /* verbosity level is 0 or 1 */
+				if (parentObject === parentObject.valueOf()) { return; }
+			} else if (parentObject.constructor === Date) {
+				parentElement.appendChild(xml.createTextNode(parentObject.toGMTString()));
+			}
+
+			for (var sName in parentObject) {
+				vValue = parentObject[sName];
+				if (isFinite(sName) || vValue instanceof Function) { continue; } /* verbosity level is 0 */
+				// when it is _
+				if (sName === sValProp) {
+					if (vValue !== null && vValue !== true) { parentElement.appendChild(xml.createTextNode(vValue.constructor === Date ? vValue.toGMTString() : String(vValue))); }
+				} else if (sName === sAttrProp) { /* verbosity level is 3 */
+					for (var sAttrib in vValue) { parentElement.setAttribute(sAttrib, vValue[sAttrib]); }
+				} else if (sName.charAt(0) === attributePrefix && sName !== attributePrefix + 'xmlns') {
+					parentElement.setAttribute(sName.slice(1), vValue);
+				} else if (vValue.constructor === Array) {
+					for (var i = 0; i < vValue.length; i++) {
+						oChild = xml.createElementNS(vValue[i][attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+						convertJsonToXml(xml, oChild, vValue[i]);
+						parentElement.appendChild(oChild);
+					}
+				} else {
+					oChild = xml.createElementNS((vValue || {})[attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+					if (vValue instanceof Object) {
+						convertJsonToXml(xml, oChild, vValue);
+					} else if (vValue !== null && vValue !== true) {
+						oChild.appendChild(xml.createTextNode(vValue.toString()));
+					} else if (!sEmptyTrue && vValue === true) {
+						oChild.appendChild(xml.createTextNode(vValue.toString()));
+
+					}
+					parentElement.appendChild(oChild);
+
+				}
+			}
+		}
+
+		this.xmlToJson = this.build = function (xml, verbosity /* optional */, shouldFreeze /* optional */, nestAttributesInChildElement /* optional */) {
+			var _verbosity = arguments.length > 1 && typeof verbosity === "number" ? verbosity & 3 : /* put here the default verbosity level: */ 1;
+
+			var xmlActual = typeof xml === "string" ? this.stringToXml(xml) : xml;
+
+			return createObjTree(xmlActual, _verbosity, shouldFreeze || false, arguments.length > 3 ? nestAttributesInChildElement : _verbosity === 3);
+		};
+
+		this.jsonToXml = this.unbuild = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
+			var xmlDocument = window.document.implementation.createDocument(namespaceUri || null, qualifiedName || "", documentType || null);
+			convertJsonToXml(xmlDocument, xmlDocument.documentElement || xmlDocument, jsonObject);
+			return xmlDocument;
+		};
+
+		this.config = function (o) {
+			for (var k in o) {
+				switch (k) {
+					case 'valueKey':
+						sValProp = o.valueKey;
+						break;
+					case 'attrKey':
+						sAttrProp = o.attrKey;
+						break;
+					case 'attrPrefix':
+						attributePrefix = o.attrPrefix;
+						break;
+					case 'lowerCaseTags':
+						shouldLowerCase = o.lowerCaseTags;
+						break;
+					case 'trueIsEmpty':
+						sEmptyTrue = o.trueIsEmpty;
+						break;
+					case 'autoDate':
+						sAutoDate = o.autoDate;
+						break;
+					case 'ignorePrefixedNodes':
+						ignorePrefixedElements = o.ignorePrefixedNodes;
+						break;
+					default:
+						break;
+				}
+			}
+		};
+
+		this.stringToXml = function (xmlStr) {
+			return (new window.DOMParser()).parseFromString(xmlStr, 'application/xml');
+		};
+
+		this.xmlToString = function (xmlObj) {
+			if (typeof xmlObj.xml !== "undefined") {
+				return xmlObj.xml;
+			} else {
+				if (typeof window.XMLSerializer === "undefined") window.XMLSerializer = require("xmldom").XMLSerializer;
+				return (new window.XMLSerializer()).serializeToString(xmlObj);
+			}
+		};
+
+		this.stringToJs = function (str) {
+			var xmlObj = this.stringToXml(str);
+			return this.xmlToJson(xmlObj);
+		};
+
+		this.jsToString = this.stringify = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
+			return this.xmlToString(
+			  this.jsonToXml(jsonObject, namespaceUri, qualifiedName, documentType)
+			);
+		};
+	})();
+
+	return JXON;
+});

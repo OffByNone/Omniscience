@@ -8,7 +8,10 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 	$scope.transportInfo = {};
 	$scope.record = {};
 	$scope.presets = [];
-	$scope.currentTrack = {};
+	$scope.currentTrack = {
+		currentSeconds: 0,
+		totalSeconds: 0
+	};
 	$scope.currentMedia = {};
 	$scope.nextMedia = {};
 	$scope.playback = {state: "stopped"};
