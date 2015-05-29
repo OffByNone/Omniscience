@@ -25,16 +25,13 @@
 			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function')
 					.forEach((callback) => {
 						var eventJson = jxon.build(eventXmlString);
-
 						var result = [];
-
 						if (eventJson.propertyset && eventJson.propertyset.property) {
 							if (Array.isArray(eventJson.propertyset.property))
 								result = eventJson.propertyset.property;
 							else
 								result.push(eventJson.propertyset.property);
 						}
-
 
 						callback.genericEventCallback(result);
 					});

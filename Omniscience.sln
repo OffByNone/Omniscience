@@ -51,6 +51,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		UPnP Info.txt = UPnP Info.txt
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "tests", "tests\", "{74AF65E5-37A8-4407-99C2-640DC4358152}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51563"
+		Debug.AspNetCompiler.PhysicalPath = "tests\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51563\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51563"
+		Release.AspNetCompiler.PhysicalPath = "tests\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51563\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51563"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +80,8 @@ Global
 		{B73C23DE-58A9-40DE-A01B-1C392F1CC6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D5ACAC1-4012-427B-B923-F74D59938225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D5ACAC1-4012-427B-B923-F74D59938225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74AF65E5-37A8-4407-99C2-640DC4358152}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74AF65E5-37A8-4407-99C2-640DC4358152}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

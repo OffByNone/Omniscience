@@ -35,110 +35,125 @@
 	 * - added parseXml method
 	 *
    */
+	var sEmptyTrue = true;
 
-	var nodeTypes = {
-		4: "CDATASection",
-		3: "Text",
-		1: "Element"
-	};
+	return {
+		freezeGeneratedObject: false,
+		storeTextInSeparateObject: false,
+		textObjectName: "text",
+		attributesObjectName: "attributes",
+		storeAttributesInSeparateObject: false,
+		attributePrefix: "",
+		normalizeCasing: true,
+		parseDates: true,
+		removePrefixes: true,
+		includePrefixedElements: true,
+		nodeTypes: {
+			4: "CDATASection",
+			3: "text",
+			1: "Element"
+		},
 
-	var JXON = new (function () {
-		var
-		  sValProp = "keyValue",
-		  attributesPropertyName = "keyAttributes",
-		  attributePrefix = "@",
-		  normalizeCasing = true,
-		  sEmptyTrue = true,
-		  parseDates = true,
-		  removePrefixes = true,
-		  ignorePrefixedElements = false,
-		  isNullRegex = /^\s*$/,
-		  isBoolRegex = /^(?:true|false)$/i;
 
-		function parseText(value) {
-			if (isNullRegex.test(value)) { return null; }
-			if (isBoolRegex.test(value)) { return value.toLowerCase() === "true"; }
-			if (isFinite(value)) { return parseFloat(value); }
-			if (parseDates && isFinite(Date.parse(value))) { return new Date(value); }
+		build: function (xml) {
+			var xmlActual = typeof xml === "string" ? this.stringToXml(xml) : xml;
+			xmlActual.normalize();
+			return this.createObject(xmlActual);
+		},
+		stringToXml: function (xmlStr) {
+			return (new window.DOMParser()).parseFromString(xmlStr, 'application/xml');
+		},
+		parseText: function (value) {
+			if (value.trim() === "") return null;
+			if (/^(true|false)$/i.test(value)) return value.toLowerCase() === "true";
+			if (isFinite(value)) return parseFloat(value);
+			if (this.parseDates && !isNaN(Date.parse(value))) return new Date(value);
 			return value;
-		}
+		},
+		createObject: function (parent) {
+			var childElements = this.getChildElements(parent.childNodes);
+			var jsonResult = this.parseAttributes(parent.attributes);
 
-		function EmptyTree() { }
-		EmptyTree.prototype.toString = function () { return "null"; };
-		EmptyTree.prototype.valueOf = function () { return null; };
-
-		function objectify(value) {
-			return value === null ? new EmptyTree() : value instanceof Object ? value : new value.constructor(value);
-		}
-
-		function createObjTree(parent, verbosity, shouldFreeze, putAttributesInOwnProperty) {
-			var children = [];
-			var hasChildren = parent.hasChildNodes();
-			var hasAttributes = parent.nodeType === parent.ELEMENT_NODE && parent.hasAttributes();
-			var bHighVerb = Boolean(verbosity & 2);
-
-			var value;
-			var sCollectedText = "";
-			var jsonResult = bHighVerb ? {} : null;
-
-			for (var childNode of parent.childNodes) {
-				var nodeType = nodeTypes[childNode.nodeType];
-
-				if (nodeType === "CDATASection") sCollectedText += childNode.nodeValue;
-				else if (nodeType === "Text") sCollectedText += childNode.nodeValue.trim();
-				else if (nodeType === "Element" && !(ignorePrefixedElements && childNode.prefix)) children.push(childNode);
-			}
-
-			var vBuiltVal = parseText(sCollectedText);
-
-			if (!bHighVerb && (hasChildren || hasAttributes))
-				jsonResult = verbosity === 0 ? objectify(vBuiltVal) : {};
-
-			children.forEach((child) => {
-				var propertyName = child.nodeName;
-				if (normalizeCasing) propertyName = propertyName.toLowerCase();
-				if (removePrefixes && propertyName.indexOf(":") >= 0) propertyName = propertyName.split(":")[1];
-
-				value = createObjTree(child, verbosity, shouldFreeze, putAttributesInOwnProperty);
-				if (jsonResult.hasOwnProperty(propertyName)) {
-					if (!Array.isArray(jsonResult[propertyName]))
-						jsonResult[propertyName] = [jsonResult[propertyName]];
-
-					jsonResult[propertyName].push(value);
-				}
-				else
-					jsonResult[propertyName] = value;
+			childElements.forEach((child) => {
+				var childObject = this.createObject(child);
+				this.addPropertyToObject(jsonResult, child.nodeName, childObject);
 			});
 
-			if (hasAttributes) {
-				var attributes = parent.attributes;
-				var currrentAttributePrefix = putAttributesInOwnProperty ? "" : attributePrefix;
-				var attributeContainer = putAttributesInOwnProperty ? {} : jsonResult;
+			var innerText = this.getInnerText(parent.childNodes);
 
-				for (var i = 0; i < attributes.length; i++) {
-					var attribute = attributes.item(i);
-					var attributeName = attribute.name;
-					if (normalizeCasing) attributeName = attributeName.toLowerCase();
-					attributeContainer[currrentAttributePrefix + attributeName] = parseText(attribute.value.trim());
-				}
-
-				if (putAttributesInOwnProperty) {
-					if (shouldFreeze) Object.freeze(attributeContainer);
-					jsonResult[attributesPropertyName] = attributeContainer;
-				}
+			if (innerText != null) { //todo: make sure to have a test where innerText comes back as 0
+				if (this.storeTextInSeparateObject || childElements.some(() => true))
+					jsonResult[this.textObjectName] = innerText;
+				else
+					jsonResult = innerText;
 			}
 
-			if (verbosity === 3 || (verbosity === 2 || verbosity === 1 && hasChildren) && sCollectedText)
-				jsonResult[sValProp] = vBuiltVal;
-			else if (!bHighVerb && !hasChildren && sCollectedText)
-				jsonResult = vBuiltVal;
-
-			if (shouldFreeze && (bHighVerb || hasChildren)) Object.freeze(jsonResult);
+			if (this.freezeGeneratedObject && childElements.some(() => true))
+				Object.freeze(jsonResult);
 
 			return jsonResult;
-		}
+		},
+		addPropertyToObject: function (object, propertyName, propertyValue) {
+			var propertyName = this.normalizePropertyName(propertyName);
 
-		function convertJsonToXml(xml, parentElement, parentObject) {
+			if (object.hasOwnProperty(propertyName)) {
+				if (!Array.isArray(object[propertyName]))
+					object[propertyName] = [object[propertyName]];
+
+				object[propertyName].push(propertyValue);
+			}
+			else
+				object[propertyName] = propertyValue;
+		},
+		normalizePropertyName: function (propertyName) {
+			if (this.normalizeCasing) propertyName = propertyName.toLowerCase();
+			if (this.removePrefixes && propertyName.indexOf(":") >= 0) propertyName = propertyName.split(":")[1];
+
+			return propertyName;
+		},
+		getChildElements: function (childNodes) {
+			var children = [];
+			for (var childNode of childNodes) {
+				if (this.nodeTypes[childNode.nodeType] === "Element" && (this.includePrefixedElements || !childNode.prefix))
+					children.push(childNode)
+			}
+			return children;
+		},
+		getInnerText: function (childNodes) {
+			var innerText = "";
+			for (var childNode of childNodes) {
+				var nodeType = this.nodeTypes[childNode.nodeType];
+
+				if (nodeType === "CDATASection" || nodeType === "text")
+					innerText += childNode.nodeValue.trim();
+			}
+
+			return this.parseText(innerText);
+		},
+		parseAttributes: function (attributes) {
+			var attributesObj = {};
+
+			if (!attributes) return {};
+
+			for (var i = 0; i < attributes.length; i++) {
+				var attribute = attributes.item(i);
+				var attributeName = attribute.name;
+				if (this.normalizeCasing) attributeName = attributeName.toLowerCase();
+				attributesObj[this.attributePrefix + attributeName] = this.parseText(attribute.value.trim());
+			}
+
+			if (this.storeAttributesInSeparateObject) {
+				if (this.freezeGeneratedObject) Object.freeze(attributes);
+				var result = {};
+				result[this.attributesObjectName] = attributesObj;
+				return result;
+			}
+
+			return attributesObj;
+		},
+
+
+		convertJsonToXml: function (xml, parentElement, parentObject) {
 			var value, oChild;
 
 			if (parentObject.constructor === String || parentObject.constructor === Number || parentObject.constructor === Boolean) {
@@ -152,20 +167,20 @@
 				value = parentObject[sName];
 				if (isFinite(sName) || value instanceof Function) { continue; } /* verbosity level is 0 */
 				// when it is _
-				if (sName === sValProp) {
+				if (sName === this.textObjectName) {
 					if (value !== null && value !== true) { parentElement.appendChild(xml.createTextNode(value.constructor === Date ? value.toGMTString() : String(value))); }
 				} else if (sName === attributesPropertyName) { /* verbosity level is 3 */
 					for (var sAttrib in value) { parentElement.setAttribute(sAttrib, value[sAttrib]); }
-				} else if (sName.charAt(0) === attributePrefix && sName !== attributePrefix + 'xmlns') {
+				} else if (sName.charAt(0) === this.attributePrefix && sName !== this.attributePrefix + 'xmlns') {
 					parentElement.setAttribute(sName.slice(1), value);
 				} else if (value.constructor === Array) {
 					for (var i = 0; i < value.length; i++) {
-						oChild = xml.createElementNS(value[i][attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+						oChild = xml.createElementNS(value[i][this.attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
 						convertJsonToXml(xml, oChild, value[i]);
 						parentElement.appendChild(oChild);
 					}
 				} else {
-					oChild = xml.createElementNS((value || {})[attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
+					oChild = xml.createElementNS((value || {})[this.attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
 					if (value instanceof Object) {
 						convertJsonToXml(xml, oChild, value);
 					} else if (value !== null && value !== true) {
@@ -178,76 +193,57 @@
 
 				}
 			}
-		}
-
-		this.xmlToJson = this.build = function (xml, verbosity /* optional */, shouldFreeze /* optional */, putAttributesInOwnProperty /* optional */) {
-			var _verbosity = arguments.length > 1 && typeof verbosity === "number" ? verbosity & 3 : /* put here the default verbosity level: */ 1;
-
-			var xmlActual = typeof xml === "string" ? this.stringToXml(xml) : xml;
-
-			return createObjTree(xmlActual, _verbosity, shouldFreeze || false, arguments.length > 3 ? putAttributesInOwnProperty : _verbosity === 3);
-		};
-
-		this.jsonToXml = this.unbuild = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
+		},
+		unbuild: function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
 			var xmlDocument = window.document.implementation.createDocument(namespaceUri || null, qualifiedName || "", documentType || null);
 			convertJsonToXml(xmlDocument, xmlDocument.documentElement || xmlDocument, jsonObject);
 			return xmlDocument;
-		};
-
-		this.config = function (o) {
+		},
+		config: function (o) {
 			for (var k in o) {
 				switch (k) {
 					case 'valueKey':
-						sValProp = o.valueKey;
+						this.textObjectName = o.valueKey;
 						break;
 					case 'attrKey':
 						attributesPropertyName = o.attrKey;
 						break;
 					case 'attrPrefix':
-						attributePrefix = o.attrPrefix;
+						this.attributePrefix = o.attrPrefix;
 						break;
 					case 'lowerCaseTags':
-						normalizeCasing = o.lowerCaseTags;
+						this.normalizeCasing = o.lowerCaseTags;
 						break;
 					case 'trueIsEmpty':
 						sEmptyTrue = o.trueIsEmpty;
 						break;
 					case 'autoDate':
-						parseDates = o.autoDate;
+						this.parseDates = o.autoDate;
 						break;
 					case 'ignorePrefixedNodes':
-						ignorePrefixedElements = o.ignorePrefixedNodes;
+						this.includePrefixedElements = o.ignorePrefixedNodes;
 						break;
 					default:
 						break;
 				}
 			}
-		};
-
-		this.stringToXml = function (xmlStr) {
-			return (new window.DOMParser()).parseFromString(xmlStr, 'application/xml');
-		};
-
-		this.xmlToString = function (xmlObj) {
+		},
+		xmlToString: function (xmlObj) {
 			if (typeof xmlObj.xml !== "undefined") {
 				return xmlObj.xml;
 			} else {
 				if (typeof window.XMLSerializer === "undefined") window.XMLSerializer = require("xmldom").XMLSerializer;
 				return (new window.XMLSerializer()).serializeToString(xmlObj);
 			}
-		};
-
-		this.stringToJs = function (str) {
+		},
+		stringToJs: function (str) {
 			var xmlObj = this.stringToXml(str);
 			return this.xmlToJson(xmlObj);
-		};
-
-		this.jsToString = this.stringify = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
+		},
+		jsToString: this.stringify = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
 			return this.xmlToString(
 			  this.jsonToXml(jsonObject, namespaceUri, qualifiedName, documentType)
 			);
-		};
-	})();
-
-	return JXON;
+		},
+	};
 });

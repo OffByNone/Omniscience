@@ -50,7 +50,7 @@
 						</div>
 						<div class="row" ng-repeat="e in event.subEvents">
 							<div class="col-md-offset-1 col-md-11">
-								<div class="row" ng-hide="value == ''" ng-repeat="(key, value) in e">
+								<div class="row" ng-hide="value === ''" ng-repeat="(key, value) in e">
 									<div class="col-md-4">{{key}}</div>
 									<div class="col-md-4">{{value}}</div>
 								</div>
