@@ -14,11 +14,8 @@
 		"default_title": "Omniscience",
 		"default_icon": "./data/icons/logo_64.png"
 	},
-	//"sockets": {	},
 	"manifest_version": 2,
 	"permissions": [
-		"tabs", "storage"
-
-		//"<all_urls>"
+		"tabs","<all_urls>"
 	]
 }

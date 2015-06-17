@@ -17,6 +17,7 @@ How To Run
 		--Needs to be run from the root of your addon
 
 CFX Firefox for Android
+
     cfx run -b "c:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe" -a fennec-on-device --force-mobile
         this requires an android device to be attached via usb and for adb to be installed, running, and able to see the device
         -b path-to-adb
@@ -44,6 +45,7 @@ JPM
 		--watches for files to change when they do it auto builds and posts the xpi.  I could not get this to work in Cgywin
 
 useful Devtools settings - https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Firefox_for_Metro
+
 	devtools.debugger.force-local = false (if you want to connect from a different machine over the network)
 	devtools.debugger.remote-host (to change the TCP hostname where Firefox will listen for connections)
 	devtools.debugger.remote-port (to change the TCP port number where Firefox will listen for connections)
@@ -53,6 +55,15 @@ View contents of simplestorage
 
 	--From addon-debugger console run
 		loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
+
+Connect to MatchStick for debugging purposes
+
+	adb connect [ip]:5555 (5555 is default so you should be able to omit the port, ip is the ip of your device)
+	adb devices (you should see your device, mine just shows as device)
+	open webide and it should be listed under usb devices
+
+
+
 
 To-Do
 
@@ -75,7 +86,7 @@ To-Do
 				[ ] Navigating away from page and back shouldn't lose the list
 				[ ] Show metadata info if available
 				[ ] Drag and Drop re-order
-				[ ] Limit to mediums supported on device (if device only supports audio only allow users to add audio file types) same for video and images
+				[ ] Limit to mediums supported on device (if device only supports audio, only allow users to add audio file types) same for video and images
 				[ ] Adding a folder should cause all items in said folder to get added.
 
 			Services
@@ -90,8 +101,6 @@ To-Do
 					[ ] If property is known (ex. instanceid is almost always 0 and we can determine this) somehow display to user
 
 			[ ] Intelligently pick which icon to show - currently it shows first, probably choose biggest png
-			[ ] Add ability to change device settings on settings tab
-			[ ] Increase usability on smaller screen sizes - phone/tablet/desktop (phone would look like the panel)
 
 		About Page
 			[ ] Make it
@@ -125,19 +134,11 @@ To-Do
 		[ ] Get metadata for files
 		[ ] Add ffmpegjs and attempt to change container if container is unsupported but underlying codecs are supported
 		[ ] Better error handling
-		[ ] Remove TransportService
 
-matchstick, chromecast, and firestick will need extra setup in the new service oriented arch.  They will need to setup a service on the device in the device factory of themselves
 
 Need to find a way to add manufacturer specific methods to services
 
 Save found devices in case user is in a situation where only the passive searcher works.  If we didn't save devices closing and re-opening the browser would lose all devices and potentially take hours to find any given device again
-
-Connect to MatchStick for debugging purposes
-adb connect ip:5555 (5555 is default so you should be able to omit the port)
-adb devices (you should see your device, mine just shows as device)
-open webide and it should be listed under usb devices
-
 
 
 babel data --out-dir data/out

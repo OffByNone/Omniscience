@@ -23,8 +23,8 @@
 					<dd ng-show="device.model.description">{{device.model.description}}</dd>
 					<dt ng-show="device.timezone">Timezone</dt>
 					<dd ng-show="device.timezone">{{device.timezone}}</dd>
-					<dt ng-show="device.uuid">UUID</dt>
-					<dd ng-show="device.uuid">{{device.uuid}}</dd>
+					<dt ng-show="device.id">ID</dt>
+					<dd ng-show="device.id">{{device.id}}</dd>
 					<dt ng-show="device.upnpVersion">UPnP</dt>
 					<dd ng-show="device.upnpVersion">v{{device.upnpVersion.major}}.{{device.upnpVersion.minor}}</dd>
 					<dt ng-show="device.macAddress">Mac Address</dt>
@@ -50,7 +50,7 @@
 						</div>
 						<div class="row" ng-repeat="e in event.subEvents">
 							<div class="col-md-offset-1 col-md-11">
-								<div class="row" ng-hide="value == ''" ng-repeat="(key, value) in e">
+								<div class="row" ng-hide="value === ''" ng-repeat="(key, value) in e">
 									<div class="col-md-4">{{key}}</div>
 									<div class="col-md-4">{{value}}</div>
 								</div>
