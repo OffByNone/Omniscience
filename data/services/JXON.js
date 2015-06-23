@@ -94,7 +94,7 @@
 			return jsonResult;
 		},
 		addPropertyToObject: function (object, propertyName, propertyValue) {
-			var propertyName = this.normalizePropertyName(propertyName);
+			propertyName = this.normalizePropertyName(propertyName);
 
 			if (object.hasOwnProperty(propertyName)) {
 				if (!Array.isArray(object[propertyName]))

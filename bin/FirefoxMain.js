@@ -1,10 +1,12 @@
+'use strict';
+
 var button;
 /**
  * extension startup
  */
 module.exports.main = function main() {
-	const CompositionRoot = require('./CompositionRoot');
-	const SdkResolver = require('omniscience-sdk-resolver');
+	var CompositionRoot = require('./CompositionRoot');
+	var SdkResolver = require('omniscience-sdk-resolver');
 	var sdkResolver = new SdkResolver();
 	var compositionRoot = new CompositionRoot(sdkResolver.resolve());
 
@@ -12,7 +14,7 @@ module.exports.main = function main() {
 	var httpServer = compositionRoot.createHttpServer();
 	httpServer.start();
 
-	compositionRoot.createDeviceService(serviceExecutor).then((deviceService) => {
+	compositionRoot.createDeviceService(serviceExecutor).then(function (deviceService) {
 		var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, httpServer);
 
 		button = compositionRoot.createButton();
