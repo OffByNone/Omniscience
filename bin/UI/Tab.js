@@ -59,14 +59,14 @@ var Tab = (function (_Eventable) {
 							return;
 						}
 						(_frontEndBridge = _this2._frontEndBridge).handleMessageFromFrontEnd.apply(_frontEndBridge, [messageObj.eventType].concat(_toConsumableArray(messageObj.data)));
-						_this2._frontEndBridge.on('sendToFrontEnd', function (eventType) {
-							for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-								data[_key - 1] = arguments[_key];
-							}
+					});
+					_this2._frontEndBridge.on('sendToFrontEnd', function (eventType) {
+						for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+							data[_key - 1] = arguments[_key];
+						}
 
-							var message = { eventType: eventType, data: _this2._makeSafeForEmit.apply(_this2, data) };
-							_this2._pageWorker.postMessage(JSON.stringify(message));
-						});
+						var message = { eventType: eventType, data: _this2._makeSafeForEmit.apply(_this2, data) };
+						_this2._pageWorker.postMessage(JSON.stringify(message));
 					});
 				},
 				onClose: function onClose(tab) {

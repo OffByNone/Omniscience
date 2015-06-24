@@ -85,7 +85,6 @@ var FrontEndBridge = (function (_Eventable) {
 					this._serviceExecutor.callService(service.controlUrl, service.hash, method, info).then(function (response) {
 						return _this2.sendToFrontEnd('emitResponse', uniqueId, response);
 					});
-					//todo: this._serviceExecutor.callService(...data) is returning null
 					break;
 				case 'chooseFiles':
 					this._fileUtilities.openFileBrowser().then(function (files) {

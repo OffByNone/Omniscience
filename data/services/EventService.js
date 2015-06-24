@@ -3,13 +3,13 @@ omniscience.factory('eventService', function ($rootScope, $window, $q) {
 	var subscriptions = {};
 
 
-	if (!$window.self.on) {
-		$window.self.on = (eventType, func) => {
-			if(eventType === "message")
-				chrome.runtime.onMessage.addListener((request, sender, sendResponse) => func(request));
-		};
-		$window.self.postMessage = (message) => chrome.runtime.sendMessage(message);
-	}
+	//if (!$window.self.on) {
+	//	$window.self.on = (eventType, func) => {
+	//		if (eventType === "message")
+	//			chrome.runtime.onMessage.addListener((request, sender, sendResponse) => func(request));
+	//	};
+	//	$window.self.postMessage = (message) => chrome.runtime.sendMessage(message);
+	//}
 
 	$window.self.on("message", (message) => {
 		var messageObj;
@@ -65,7 +65,9 @@ omniscience.factory('eventService', function ($rootScope, $window, $q) {
 			delete emitPromises[uniqueId];
 			deferred.resolve(...args);
 		}
-		else console.log("no deferred for the response");
+		else {
+			console.log("no deferred for the response");
+		}
 	});
 
 	return {
