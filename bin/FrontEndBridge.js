@@ -60,13 +60,13 @@ var FrontEndBridge = (function (_Eventable) {
 				case 'Subscribe':
 					var eventSubUrl = data[0],
 					    subscriptionId = data[1],
-					    serviceHash = data[2],
+					    serviceUUID = data[2],
 					    serverIP = data[3],
 					    timeoutInSeconds = data[4];
 
-					var directResponsesTo = 'http://' + serverIP + ':' + this._httpServer.port + '/events/' + serviceHash;
+					var directResponsesTo = 'http://' + serverIP + ':' + this._httpServer.port + '/events/' + serviceUUID;
 					this._httpServer.registerPath(directResponsesTo, function (request) {
-						_this2.sendToFrontEnd('UPnPEvent', serviceHash, request.body);
+						_this2.sendToFrontEnd('UPnPEvent', serviceUUID, request.body);
 						//this._httpResponder.sendOkResponse(request.socket);
 					});
 					this._subscriptionService.subscribe(directResponsesTo, eventSubUrl, timeoutInSeconds, subscriptionId).then(function (subscriptionId) {
@@ -84,7 +84,7 @@ var FrontEndBridge = (function (_Eventable) {
 					    method = data[1],
 					    info = data[2];
 
-					this._serviceExecutor.callService(service.controlUrl, service.hash, method, info).then(function (response) {
+					this._serviceExecutor.callService(service.controlUrl, service.uuid, method, info).then(function (response) {
 						return _this2.sendToFrontEnd('emitResponse', uniqueId, response);
 					});
 					break;
