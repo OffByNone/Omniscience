@@ -8,26 +8,26 @@
   "version": "0.5.0",
   "main": "./bin/FirefoxMain.js",
   "bugs": {
-	"url": "https://github.com/OffByNone/Omniscience/issues"
+    "url": "https://github.com/OffByNone/Omniscience/issues"
   },
   "id": "jid1-A3BeMgzQQjOvNg@jetpack",
   "license": "GNU GPL v3",
   "repository": {
-	"url": "https://github.com/OffByNone/Omniscience.git",
-	"type": "git"
+    "url": "https://github.com/OffByNone/Omniscience.git",
+    "type": "git"
   },
   "devDependencies": {
-	"babel": "^5.5.8",
-	"eslint": "^0.23.0",
-	"jasmine": "^2.3.1",
-	"jpm": "^1.0.0",
-	"jpm-mobile": "0.0.5"
+    "babel": "^5.5.8",
+    "eslint": "^0.23.0",
+    "jasmine": "^2.3.1",
+    "jpm": "^1.0.0",
+    "jpm-mobile": "0.0.5"
   },
   "dependencies": {
-	"omniscience-http-server": "^0.5.1",
-	"omniscience-sdk-resolver": "^0.5.1",
-	"omniscience-ssdp-searcher": "^0.5.1",
-	"omniscience-upnp": "^0.5.1",
-	"omniscience-utilities": "^0.6.3"
+    "omniscience-http-server": "^0.5.1",
+    "omniscience-networking": "^0.7.0",
+    "omniscience-sdk-resolver": "^0.6.1",
+    "omniscience-upnp": "^0.5.1",
+    "omniscience-utilities": "^0.8.1"
   }
 }

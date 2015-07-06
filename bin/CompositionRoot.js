@@ -7,21 +7,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Tab = require('./UI/Tab');
 var Button = require('./UI/Button');
 
-var Constants = require('./Utilities/Constants');
-var TCPSocketProvider = require('./Utilities/TCPSocketProvider');
-var FrontEndBridge = require('./Services/FrontEndBridge');
-var DeviceService = require('./Services/DeviceService');
+var FrontEndBridge = require('./FrontEndBridge');
 
-var HttpServer = require('omniscience-http-server');
-var SSDPSearcher = require('omniscience-ssdp-searcher');
-var Utilities = require('omniscience-utilities');
+var Networking = require('omniscience-networking');
 var UPnP = require('omniscience-upnp');
+var SdkResolver = require('omniscience-sdk-resolver');
 
 var CompositionRoot = (function () {
-	function CompositionRoot(sdk) {
+	function CompositionRoot() {
 		_classCallCheck(this, CompositionRoot);
 
-		this._sdk = sdk;
+		this._sdk = new SdkResolver().resolve();
+		this._upnp = new UPnP();
+		this._networking = new Networking();
 		//this._tcpSender = new TCPSender(this._sdk.timers(), new TCPSocketProvider(sdk), new SocketSender(), NetworkingUtils); //used by matchstick
 	}
 
@@ -43,26 +41,22 @@ var CompositionRoot = (function () {
 	}, {
 		key: 'createHttpServer',
 		value: function createHttpServer() {
-			return HttpServer.createHttpServer();
+			return this._networking.createHttpServer();
 		}
 	}, {
-		key: 'createServiceExecutor',
-		value: function createServiceExecutor() {
-			return UPnP.createServiceExecutor();
+		key: 'getServiceExecutor',
+		value: function getServiceExecutor() {
+			return this._upnp.getServiceExecutor();
 		}
 	}, {
 		key: 'createDeviceService',
 		value: function createDeviceService(serviceExecutor) {
-			var _this = this;
-
-			return SSDPSearcher.createDeviceLocator().then(function (deviceLocator) {
-				return new DeviceService(UPnP.createDeviceFactory(), deviceLocator, _this._sdk.storage(), serviceExecutor, _this._sdk.notifications());
-			});
+			return this._upnp.createDeviceService();
 		}
 	}, {
 		key: 'createFrontEndBridge',
 		value: function createFrontEndBridge(deviceService, serviceExecutor, httpServer) {
-			return new FrontEndBridge(UPnP.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, HttpServer.createFileSharer(httpServer), deviceService, httpServer);
+			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, this._networking.createFileSharer(httpServer), deviceService, httpServer);
 		}
 	}, {
 		key: 'createTab',

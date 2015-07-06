@@ -6,15 +6,13 @@ var button;
  */
 module.exports.main = function main() {
 	var CompositionRoot = require('./CompositionRoot');
-	var SdkResolver = require('omniscience-sdk-resolver');
-	var sdkResolver = new SdkResolver();
-	var compositionRoot = new CompositionRoot(sdkResolver.resolve());
+	var compositionRoot = new CompositionRoot();
 
-	var serviceExecutor = compositionRoot.createServiceExecutor();
+	var serviceExecutor = compositionRoot.getServiceExecutor();
 	var httpServer = compositionRoot.createHttpServer();
 	httpServer.start();
 
-	compositionRoot.createDeviceService(serviceExecutor).then(function (deviceService) {
+	compositionRoot.createDeviceService().then(function (deviceService) {
 		var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, httpServer);
 
 		button = compositionRoot.createButton();
