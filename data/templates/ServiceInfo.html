@@ -13,7 +13,7 @@
 						<span ng-show="service.type.version">v{{service.type.version}}</span>
 					</h4>
 					<span class="label label-primary" ng-show="service.type.isStandard">Standard</span>
-					<span class="label label-info" ng-show="service.type.isVendorSpecific">Vendor Specific</span>
+					<span class="label label-info" ng-show="!service.type.isStandard">Vendor Specific</span>
 					<dl class="dl-horizontal">
 						<dt ng-show="service.type.raw">Raw Name</dt>
 						<dd ng-show="service.type.raw">{{service.type.raw}}</dd>

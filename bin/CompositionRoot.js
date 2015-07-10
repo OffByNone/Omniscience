@@ -20,7 +20,6 @@ var CompositionRoot = (function () {
 		this._sdk = new SdkResolver().resolve();
 		this._upnp = new UPnP();
 		this._networking = new Networking();
-		//this._tcpSender = new TCPSender(this._sdk.timers(), new TCPSocketProvider(sdk), new SocketSender(), NetworkingUtils); //used by matchstick
 	}
 
 	_createClass(CompositionRoot, [{
@@ -56,7 +55,7 @@ var CompositionRoot = (function () {
 	}, {
 		key: 'createFrontEndBridge',
 		value: function createFrontEndBridge(deviceService, serviceExecutor, httpServer) {
-			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, this._networking.createFileSharer(httpServer), deviceService, httpServer);
+			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, this._networking.createFileSharer(httpServer), deviceService, httpServer, this._networking.createTCPCommunicator());
 		}
 	}, {
 		key: 'createTab',

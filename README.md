@@ -21,6 +21,11 @@ JPM
 			Note that it will copy that profile and you will use a copy of the profile which will be destroyed when you close the window.  Your original profile will not be touched
 		--debug tells it to start with the addon debugger open
 
+Debug Node unit tests
+	node --debug-brk node_modules/jasmine/bin/jasmine.js spec\UnitTestFileHere.js
+Istanbul code coverage
+    istanbul cover node_modules/jasmine/bin/jasmine.js
+
 View contents of simplestorage
 
 	--From addon-debugger console run

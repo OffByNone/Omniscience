@@ -24,10 +24,9 @@
     "jpm-mobile": "0.0.5"
   },
   "dependencies": {
-    "omniscience-http-server": "^0.5.1",
-    "omniscience-networking": "^0.7.0",
-    "omniscience-sdk-resolver": "^0.6.1",
-    "omniscience-upnp": "^0.5.1",
-    "omniscience-utilities": "^0.8.1"
+    "omniscience-networking": "offbynone/omniscience-networking",
+    "omniscience-sdk-resolver": "offbynone/omniscience-sdk-resolver",
+    "omniscience-upnp": "offbynone/omniscience-upnp",
+    "omniscience-utilities": "offbynone/omniscience-utilities"
   }
 }

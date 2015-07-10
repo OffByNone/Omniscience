@@ -216,7 +216,7 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 	});
 
 
-	var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
+	//var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
 
 	$scope.$on('$destroy', () => {
 		renderingControlService.unsubscribe();

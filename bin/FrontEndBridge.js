@@ -2,7 +2,7 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -13,7 +13,7 @@ var _require = require('omniscience-utilities');
 var Eventable = _require.Eventable;
 
 var FrontEndBridge = (function (_Eventable) {
-	function FrontEndBridge(subscriptionService, serviceExecutor, fileUtilities, fileSharer, deviceService, httpServer) {
+	function FrontEndBridge(subscriptionService, serviceExecutor, fileUtilities, fileSharer, deviceService, httpServer, tcpConversationalist) {
 		var _this = this;
 
 		_classCallCheck(this, FrontEndBridge);
@@ -25,6 +25,7 @@ var FrontEndBridge = (function (_Eventable) {
 		this._fileSharer = fileSharer;
 		this._deviceService = deviceService;
 		this._httpServer = httpServer;
+		this._tcpConversationalist = tcpConversationalist;
 
 		this._deviceService.on('deviceFound', function () {
 			for (var _len = arguments.length, data = Array(_len), _key = 0; _key < _len; _key++) {
@@ -47,14 +48,14 @@ var FrontEndBridge = (function (_Eventable) {
 	_createClass(FrontEndBridge, [{
 		key: 'handleMessageFromFrontEnd',
 		value: function handleMessageFromFrontEnd(eventType, uniqueId) {
-			var _subscriptionService,
-			    _fileSharer,
-			    _tcpSender,
-			    _this2 = this;
-
 			for (var _len3 = arguments.length, data = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
 				data[_key3 - 2] = arguments[_key3];
 			}
+
+			var _subscriptionService,
+			    _fileSharer,
+			    _tcpConversationalist,
+			    _this2 = this;
 
 			switch (eventType) {
 				case 'Subscribe':
@@ -66,11 +67,12 @@ var FrontEndBridge = (function (_Eventable) {
 
 					var directResponsesTo = 'http://' + serverIP + ':' + this._httpServer.port + '/events/' + serviceUUID;
 					this._httpServer.registerPath(directResponsesTo, function (request) {
-						_this2.sendToFrontEnd('UPnPEvent', serviceUUID, request.body);
-						//this._httpResponder.sendOkResponse(request.socket);
+						return _this2.sendToFrontEnd('UPnPEvent', serviceUUID, request.body);
 					});
 					this._subscriptionService.subscribe(directResponsesTo, eventSubUrl, timeoutInSeconds, subscriptionId).then(function (subscriptionId) {
 						return _this2.sendToFrontEnd('emitResponse', uniqueId, subscriptionId);
+					}, function (err) {
+						return _this2.sendToFrontEnd('emitResponse', uniqueId);
 					});
 					break;
 				case 'Unsubscribe':
@@ -106,7 +108,7 @@ var FrontEndBridge = (function (_Eventable) {
 					this._deviceService.search();
 					break;
 				case 'sendTCP':
-					(_tcpSender = this._tcpSender).send.apply(_tcpSender, data).then(function (response) {
+					(_tcpConversationalist = this._tcpConversationalist).send.apply(_tcpConversationalist, data).then(function (response) {
 						return _this2.sendToFrontEnd('emitResponse', uniqueId, response);
 					});
 					break;
