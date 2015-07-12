@@ -6,7 +6,7 @@
 	function addSubscription(service, timeoutInSeconds) {
 		subscriptions[service.uuid].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
 		//todo: do not set up the timeout if the subscribe failed, or more likely cancel the timeout if subscribe failed
-		return eventService.emit("Subscribe", service.eventSubUrl, service.subscriptionId, service.uuid, service.serverIP, timeoutInSeconds).then((subscriptionId) => {
+		return eventService.emit("Subscribe", service.eventSubUrl, service.uuid, service.serverIP, timeoutInSeconds, service.subscriptionId).then((subscriptionId) => {
 			if (!subscriptionId) $timeout.cancel(subscriptions[service.uuid].timeout)
 
 			service.subscriptionId = subscriptionId;
@@ -23,20 +23,30 @@
 		if (lastChangeObj)
 			callbacks.filter((callback) => typeof callback.lastChangeCallback === 'function')
 					.forEach((callback) => callback.lastChangeCallback(lastChangeObj));
-		else
-			callbacks.filter((callback) => typeof callback.genericEventCallback === 'function')
-					.forEach((callback) => {
-						var eventJson = jxon.build(eventXmlString);
-						var result = [];
-						if (eventJson.propertyset && eventJson.propertyset.property) {
-							if (Array.isArray(eventJson.propertyset.property))
-								result = eventJson.propertyset.property;
-							else
-								result.push(eventJson.propertyset.property);
-						}
+		else {
+			var eventJson = jxon.build(eventXmlString);
+			if (eventJson.propertyset && eventJson.propertyset.property) {
+				var eventObj = {};
 
-						callback.genericEventCallback(result);
-					});
+				if (!Array.isArray(eventJson.propertyset.property))
+					eventJson.propertyset.property = [eventJson.propertyset.property];
+
+				eventJson.propertyset.property.forEach(property => {
+					for (var key in property) {
+						if (eventObj.hasOwnProperty(key)) {
+							if (!Array.isArray(eventObj[key]))
+								eventObj[key] = [eventObj[key]];
+
+							eventObj[key].push(property[key]);
+						}
+						eventObj[key] = property[key];
+					}
+				});
+
+				callbacks.filter((callback) => typeof callback.genericEventCallback === 'function')
+						.forEach((callback) => callback.genericEventCallback([eventObj]));
+			}
+		}
 	});
 
 	return {
