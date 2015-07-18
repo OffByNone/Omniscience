@@ -63,7 +63,7 @@
 			}
 
 			subscriptions[service.uuid] = { callbacks: [{ genericEventCallback, lastChangeCallback }] };
-			return addSubscription(service, timeoutInSeconds || 20);
+			return addSubscription(service, timeoutInSeconds || 900);
 		},
 		unsubscribe: function unsubscribe(serviceUUID, subscriptionId, eventSubUrl) {
 			if (!serviceUUID) throw new Error("Argument null exception service.uuid cannot be null.");
