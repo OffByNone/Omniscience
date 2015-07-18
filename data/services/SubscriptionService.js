@@ -5,9 +5,8 @@
 
 	function addSubscription(service, timeoutInSeconds) {
 		subscriptions[service.uuid].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
-		//todo: do not set up the timeout if the subscribe failed, or more likely cancel the timeout if subscribe failed
 		return eventService.emit("Subscribe", service.eventSubUrl, service.uuid, service.serverIP, timeoutInSeconds, service.subscriptionId).then((subscriptionId) => {
-			if (!subscriptionId) $timeout.cancel(subscriptions[service.uuid].timeout)
+			if (!subscriptionId) $timeout.cancel(subscriptions[service.uuid].timeout);
 
 			service.subscriptionId = subscriptionId;
 			return subscriptionId;
