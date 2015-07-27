@@ -16,6 +16,10 @@
     "url": "https://github.com/OffByNone/Omniscience.git",
     "type": "git"
   },
+  "engines": {
+    "Firefox": ">=38.0a1",
+    "Fennec": ">=38.0a1"
+  },	
   "devDependencies": {
     "babel": "^5.5.8",
     "eslint": "^0.23.0",
