@@ -5,7 +5,7 @@
 	controlUrl.port = 8881;
 
 	function parseResponse(response) {
-		return JSON.parse(response._data.slice(response._data.length.toString().length + 1));
+		return JSON.parse(response.slice(response.length.toString().length + 1));
 	}
 
 	$scope.reboot = function reboot() {
