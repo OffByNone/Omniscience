@@ -1,4 +1,5 @@
 omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {

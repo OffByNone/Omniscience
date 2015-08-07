@@ -1,15 +1,17 @@
 omniscience.factory('eventService', function ($rootScope, $window, $q) {
+	"use strict";
+
 	var emitPromises = {};
 	var subscriptions = {};
 
 
-	//if (!$window.self.on) {
-	//	$window.self.on = (eventType, func) => {
-	//		if (eventType === "message")
-	//			chrome.runtime.onMessage.addListener((request, sender, sendResponse) => func(request));
-	//	};
-	//	$window.self.postMessage = (message) => chrome.runtime.sendMessage(message);
-	//}
+	if (typeof $window.self.on !== "function") {
+		$window.self.on = (eventType, func) => {
+			if (eventType === "message")
+				chrome.runtime.onMessage.addListener((request) => func(request));
+		};
+		$window.self.postMessage = (message) => chrome.runtime.sendMessage(message);
+	}
 
 	$window.self.on("message", (message) => {
 		var messageObj;

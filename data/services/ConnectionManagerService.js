@@ -153,7 +153,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		},
 		unsubscribe: function(){
 			var service = getService();
-			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);		
+			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);
 		},
 		parseProtocolInfo: function(rawProtocolInfo){
 			return _parseProtocolResponse(rawProtocolInfo) || [];

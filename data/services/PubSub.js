@@ -1,4 +1,6 @@
 ﻿omniscience.factory('pubSub', function ($rootScope) {
+	"use strict";
+
 	return {
 		pub: function (...args) {
 			$rootScope.$emit(...args);
