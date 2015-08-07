@@ -14,7 +14,7 @@
 		}
 	});
 
-	omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
+	window.omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
 		$routeProvider
 			.when('/', {
 				templateUrl: 'templates/Home.html',
@@ -33,6 +33,7 @@
 				controller: 'DeviceController'
 			})
 			.otherwise({ redirectTo: '/home' });
-		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|ftp|mailto|resource|filesystem:chrome-extension|blob:chrome-extension|chrome‌​-extension|unsafe:chrome-extension):/);
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|resource|mailto|chrome-extension):/);
+		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|resource|chrome-extension):|data:image\//);
 	});
 })();
