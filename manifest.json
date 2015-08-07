@@ -9,7 +9,8 @@
 	"permissions": [
 		"http://*/",
 		"notifications",
-		"storage"
+		"storage",
+		"system.network"
 	],
 	"sockets": {
 		"tcpServer": { "listen": [ "*" ] },
