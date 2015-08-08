@@ -36,7 +36,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		}
 	};
 
-	function _parseProtocolResponse(protocolResponse, type){
+	function _parseProtocolResponse(protocolResponse){
 		var protocolInfo = [];
 
 		if(!protocolResponse) return null;
@@ -52,7 +52,6 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 			[newRow.protocol, newRow.network, contentFormat, additionalInfo] = row.split(':');
 			newRow.contentFormat = _parseContentFormat(contentFormat);
 			newRow.additionalInfo = _parseAdditionalinfo(additionalInfo);
-			newRow.type = type;
 			protocolInfo.push(newRow);
 		});
 		return protocolInfo;
@@ -154,7 +153,10 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		},
 		unsubscribe: function(){
 			var service = getService();
-			return subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);		
+			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);
+		},
+		parseProtocolInfo: function(rawProtocolInfo){
+			return _parseProtocolResponse(rawProtocolInfo) || [];
 		}
 	}
 });

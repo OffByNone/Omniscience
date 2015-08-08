@@ -3,3 +3,5 @@ npm-debug.log
 *.name
 .idea/
 .vs/
+
+/node_modules/

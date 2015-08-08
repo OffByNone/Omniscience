@@ -1,19 +1,36 @@
 {
-	"author": "Off By None",
-	"title": "Omniscience",
-	"name": "omniscience",
-	"description": "Finds UPnP devices on the local network",
-	"icon": "./data/icons/logo_32.png",
-	"icon64": "./data/icons/logo_64.png",
-	"version": "0.5.0",
-	"main": "./lib/FirefoxMain.js",
-	"bugs": {
-		"url": "https://github.com/OffByNone/Omniscience/issues"
-	},
-	"id": "jid1-A3BeMgzQQjOvNg@jetpack",
-	"license": "yes",
-	"repository": {
-		"url": "https://github.com/OffByNone/Omniscience",
-		"type": "git"
-	}
+  "author": "OffByNone",
+  "title": "Omniscience",
+  "name": "omniscience",
+  "description": "Finds UPnP devices on the local network",
+  "icon": "./data/icons/logo_32.png",
+  "icon64": "./data/icons/logo_64.png",
+  "version": "0.5.0",
+  "main": "./bin/FirefoxMain.js",
+  "bugs": {
+    "url": "https://github.com/OffByNone/Omniscience/issues"
+  },
+  "id": "jid1-A3BeMgzQQjOvNg@jetpack",
+  "license": "GNU GPL v3",
+  "repository": {
+    "url": "https://github.com/OffByNone/Omniscience.git",
+    "type": "git"
+  },
+  "engines": {
+    "Firefox": ">=38.0a1",
+    "Fennec": ">=38.0a1"
+  },
+  "devDependencies": {
+    "babel": "^5.5.8",
+    "eslint": "^0.23.0",
+    "jasmine": "^2.3.1",
+    "jpm": "^1.0.0",
+    "jpm-mobile": "0.0.5"
+  },
+  "dependencies": {
+    "omniscience-networking": "offbynone/omniscience-networking",
+    "omniscience-sdk-resolver": "offbynone/omniscience-sdk-resolver",
+    "omniscience-upnp": "offbynone/omniscience-upnp",
+    "omniscience-utilities": "offbynone/omniscience-utilities"
+  }
 }

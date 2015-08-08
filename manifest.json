@@ -1,21 +1,25 @@
 {
-	"author": "Off By None",
 	"name": "Omniscience",
-	"description": "Finds UPnP devices on the local network",
-	"icons": {
-		"32": "./data/icons/logo_32.png",
-		"64": "./data/icons/logo_64.png"
-	},
+	"description": "Omniscience",
 	"version": "0.5.0",
-	"background": {
-		"scripts": [ "./lib/SDK/NodeRequire.js", "./lib/ChromeMain.js" ]
-	},
-	"browser_action": {
-		"default_title": "Omniscience",
-		"default_icon": "./data/icons/logo_64.png"
-	},
 	"manifest_version": 2,
+	"app": {
+		"background": { "scripts": [ "./lib/libs/Chrome_Require.js" ] }
+	},
 	"permissions": [
-		"tabs","<all_urls>"
-	]
+		"http://*/",
+		"notifications",
+		"storage",
+		"system.network"
+	],
+	"sockets": {
+		"tcpServer": { "listen": [ "*" ] },
+		"tcp": { "connect": "*" },
+		"udp": {
+			"bind": "*",
+			"send": "*",
+			"multicastMembership": ""
+		}
+	},
+	"icons": { "64": "./data/icons/logo_64.png" }
 }

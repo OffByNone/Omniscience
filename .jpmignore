@@ -1,0 +1,33 @@
+# Ignore .DS_Store files created by mac
+.DS_Store
+
+# Ignore any zip or xpi files
+*.zip
+*.xpi
+
+#ignore .db AKA Thumbs.db
+*.db
+
+#ignore anything that starts with . such as .git, .settings, .eslintrc, .eslintignore, .gitignore, .gitattributes
+.*
+
+#ignore driver files
+Chrome_*
+
+#ignore files not directly used by the code
+manifest.json
+jsconfig.json
+circle.yml
+README.md
+*.sln
+
+#ignore unit tests
+spec/**
+
+#ignore node modules that are only dev dependencies
+/node_modules/.bin/**
+/node_modules/babel/**
+/node_modules/eslint/**
+/node_modules/jasmine/**
+/node_modules/jpm/**
+/node_modules/jpm-mobile/**

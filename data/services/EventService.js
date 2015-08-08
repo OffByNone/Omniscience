@@ -1,12 +1,14 @@
 omniscience.factory('eventService', function ($rootScope, $window, $q) {
+	"use strict";
+
 	var emitPromises = {};
 	var subscriptions = {};
 
 
-	if (!$window.self.on) {
+	if (typeof $window.self.on !== "function") {
 		$window.self.on = (eventType, func) => {
-			if(eventType === "message")
-				chrome.runtime.onMessage.addListener((request, sender, sendResponse) => func(request));
+			if (eventType === "message")
+				chrome.runtime.onMessage.addListener((request) => func(request));
 		};
 		$window.self.postMessage = (message) => chrome.runtime.sendMessage(message);
 	}
@@ -65,7 +67,9 @@ omniscience.factory('eventService', function ($rootScope, $window, $q) {
 			delete emitPromises[uniqueId];
 			deferred.resolve(...args);
 		}
-		else console.log("no deferred for the response");
+		else {
+			console.log("no deferred for the response");
+		}
 	});
 
 	return {

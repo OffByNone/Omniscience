@@ -1,4 +1,5 @@
 omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {
@@ -34,7 +35,7 @@ omniscience.factory('contentDirectoryService', function ($rootScope, eventServic
 		},
 		unsubscribe: function () {
 			var service = getService();
-			return subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);
+			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);
 		}
 	};
 });

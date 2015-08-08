@@ -7,7 +7,10 @@
 			return eventService.emit('chooseFiles');
 		},
 		shareFile: function shareFile(file, serverIP) {
-		    return eventService.emit("shareFile", file, serverIP);
+			return eventService.emit("shareFile", file, serverIP).then(fileUri => {
+				console.log(fileUri);
+				return fileUri;
+			});
 		}
 	};
 });

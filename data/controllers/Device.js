@@ -52,6 +52,6 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 					return false;
 				}
 			})
-			.forEach((service) => subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl));
+			.forEach((service) => subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl));
 	});
 });

@@ -198,15 +198,7 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 		}
 	});
 
-	renderingControlService.getMute().then(isMuted => $scope.isMuted = isMuted);
-	renderingControlService.getVolume().then(volume => $scope.volume = volume);
-	renderingControlService.listPresets().then(newPresets => $scope.presets = newPresets);
-	avTransportService.getMediaInfo().then(mediaInfo => $scope.currentMediaInfo = mediaInfo);
-	avTransportService.getTransportInfo().then(transportInfo => $scope.transportInfo = transportInfo);
-	avTransportService.getPositionInfo().then((response) => parsePositionInfo(response));
-	avTransportService.getCurrentTransportActions().then(currentTransportActions => $scope.currentTransportActions = currentTransportActions);
-	avTransportService.getDeviceCapabilities().then(deviceCapabilities => $scope.deviceCapabilities = deviceCapabilities);
-	avTransportService.getTransportSettings().then(transportSettings => $scope.transportSettings = transportSettings);
+
 
 	avTransportService.subscribe(null, (response) => {
 		response.forEach(parseAVTransportLastChangeEvent)
@@ -216,14 +208,13 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 	});
 
 
-	var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
+	//var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
 
 	$scope.$on('$destroy', () => {
 		renderingControlService.unsubscribe();
 		avTransportService.unsubscribe();
-		$interval.cancel(interval);
+		//$interval.cancel(interval);
 	});
-
 
 	pubSub.sub("updatePlaybackState", updatePlaybackState, $scope);
 });

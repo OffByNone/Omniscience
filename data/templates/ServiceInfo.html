@@ -1,11 +1,11 @@
 ﻿<div class="well">
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" ng-class="{active: $first}" ng-repeat="service in device.services">
-			<a data-target="#{{service.hash}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
+			<a data-target="#{{service.uuid}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
 		</li>
 	</ul>
 	<div class="tab-content tab-padding">
-		<div ng-repeat="service in device.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.hash}}">
+		<div ng-repeat="service in device.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.uuid}}">
 			<div class="row" ng-show="service.type.raw">
 				<div class="col-md-12">
 					<h4 class="service-name">
@@ -13,7 +13,7 @@
 						<span ng-show="service.type.version">v{{service.type.version}}</span>
 					</h4>
 					<span class="label label-primary" ng-show="service.type.isStandard">Standard</span>
-					<span class="label label-info" ng-show="service.type.isVendorSpecific">Vendor Specific</span>
+					<span class="label label-info" ng-show="!service.type.isStandard">Vendor Specific</span>
 					<dl class="dl-horizontal">
 						<dt ng-show="service.type.raw">Raw Name</dt>
 						<dd ng-show="service.type.raw">{{service.type.raw}}</dd>
