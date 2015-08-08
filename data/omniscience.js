@@ -1,16 +1,14 @@
 ﻿(function () {
 	'use strict';
+	//, 'chrome-image-storage'
 	window.omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider'], function ($provide) {
 		// Prevent Angular from sniffing for the history API
 		// since it's not supported in chrome packaged apps.
-		try {
+		if(typeof window.chrome !== "undefined")  { //only do this for chrome 
 			$provide.decorator('$window', function ($delegate) {
 				$delegate.history = null;
 				return $delegate;
 			});
-		}
-		catch (err) {
-			//here for firefox
 		}
 	});
 
@@ -34,6 +32,6 @@
 			})
 			.otherwise({ redirectTo: '/home' });
 		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|resource|mailto|chrome-extension):/);
-		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|resource|chrome-extension):|data:image\//);
+		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|resource|data|chrome-extension):|data:image\//);
 	});
 })();
