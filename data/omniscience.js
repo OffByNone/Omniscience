@@ -4,7 +4,7 @@
 	window.omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider'], function ($provide) {
 		// Prevent Angular from sniffing for the history API
 		// since it's not supported in chrome packaged apps.
-		if(typeof window.chrome !== "undefined")  { //only do this for chrome 
+		if(typeof window.chrome !== "undefined")  { //only do this for chrome
 			$provide.decorator('$window', function ($delegate) {
 				$delegate.history = null;
 				return $delegate;

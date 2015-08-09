@@ -21,7 +21,7 @@
 
 				device.services.forEach(deviceService => {
 					var service = scopeDevice.services.filter(scopeDeviceService => scopeDeviceService.id.raw === deviceService.id.raw && (!scopeDeviceService.scpdUrl || scopeDeviceService.scpdUrl === deviceService.scpdUrl))[0];
-					//Match up on Id, but a device could have two services with the same id (should probably make sure that is true), 
+					//Match up on Id, but a device could have two services with the same id (should probably make sure that is true),
 					//so also match the scpdUrl which means it is effectively the same service
 					//but the MatchStick doesn't have an scpdUrl so allow for it to be null
 

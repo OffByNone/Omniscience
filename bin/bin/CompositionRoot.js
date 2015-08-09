@@ -1,8 +1,20 @@
 "use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () {
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
+})();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
+}
 
 var FrontEndBridge = require("./FrontEndBridge");
 
@@ -36,9 +48,9 @@ var CompositionRoot = (function () {
 			return new Button(button, menu);
 		}
 	}, {
-		key: "createSimpleServer",
-		value: function createSimpleServer() {
-			return this._networking.createSimpleServer();
+		key: "createHttpServer",
+		value: function createHttpServer() {
+			return this._networking.createHttpServer();
 		}
 	}, {
 		key: "getServiceExecutor",
@@ -52,8 +64,8 @@ var CompositionRoot = (function () {
 		}
 	}, {
 		key: "createFrontEndBridge",
-		value: function createFrontEndBridge(deviceService, serviceExecutor, simpleServer) {
-			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, deviceService, simpleServer, this._sdk.createSimpleTCP());
+		value: function createFrontEndBridge(deviceService, serviceExecutor, httpServer) {
+			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, this._networking.createFileSharer(httpServer), deviceService, httpServer, this._networking.createTCPCommunicator());
 		}
 	}, {
 		key: "createTab",
