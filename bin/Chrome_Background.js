@@ -17,11 +17,13 @@ chrome.app.runtime.onLaunched.addListener(function () {
 
 		appWindow.contentWindow.addEventListener('load', function (e) {
 			var serviceExecutor = compositionRoot.getServiceExecutor();
-			var httpServer = compositionRoot.createHttpServer();
-			httpServer.start();
+			var simpleServer = compositionRoot.createSimpleServer();
+			var port = simpleServer.start();
+			console.log('server started on port:' + port);
 
 			compositionRoot.createDeviceService().then(function (deviceService) {
-				var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, httpServer);
+				deviceService.search();
+				var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, simpleServer);
 
 				frontEndBridge.on('sendToFrontEnd', function (eventType) {
 					for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -33,7 +35,7 @@ chrome.app.runtime.onLaunched.addListener(function () {
 				});
 
 				chrome.runtime.onMessage.addListener(function (message) {
-					var messageObj;
+					var messageObj = undefined;
 					try {
 						messageObj = JSON.parse(message);
 					} catch (err) {

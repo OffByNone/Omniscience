@@ -3,7 +3,7 @@
 (function () {
 	"use strict";
 
-	var autorequire = "/lib/bin/Chrome_Background.js";
+	var autorequire = "/bin/Chrome_Background.js";
 	var moduledir;
 
 	var require = window.require = makeRequire("/");
