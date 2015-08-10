@@ -53,7 +53,7 @@ var CompositionRoot = (function () {
 	}, {
 		key: "createFrontEndBridge",
 		value: function createFrontEndBridge(deviceService, serviceExecutor, simpleServer) {
-			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.FileUtilities, deviceService, simpleServer, this._sdk.createSimpleTCP());
+			return new FrontEndBridge(this._upnp.createSubscriptionService(), serviceExecutor, this._sdk.createFileUtilities(), deviceService, simpleServer, this._sdk.createSimpleTCP());
 		}
 	}, {
 		key: "createTab",

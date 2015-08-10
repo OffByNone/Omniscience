@@ -10,7 +10,8 @@
 		"http://*/",
 		"notifications",
 		"storage",
-		"system.network"
+		"system.network",
+		"fileSystem"
 	],
 	"sockets": {
 		"tcpServer": { "listen": [ "*" ] },
