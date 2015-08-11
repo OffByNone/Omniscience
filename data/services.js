@@ -318,17 +318,6 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 	var emitPromises = {};
 	var subscriptions = {};
 
-	if (typeof $window.self.on !== "function") {
-		$window.self.on = function (eventType, func) {
-			if (eventType === "message") chrome.runtime.onMessage.addListener(function (request) {
-				return func(request);
-			});
-		};
-		$window.self.postMessage = function (message) {
-			return chrome.runtime.sendMessage(message);
-		};
-	}
-
 	$window.self.on("message", function (message) {
 		var messageObj;
 		try {
