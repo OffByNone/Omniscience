@@ -21,11 +21,11 @@
     "Fennec": ">=38.0a1"
   },
   "devDependencies": {
-    "babel": "^5.5.8",
-    "eslint": "^0.23.0",
-    "jasmine": "^2.3.1",
-    "jpm": "^1.0.0",
-    "jpm-mobile": "0.0.5"
+    "babel": "^5.8.21",
+    "eslint": "^1.1.0",
+    "jasmine": "^2.3.2",
+    "jpm": "^1.0.1",
+    "jpm-mobile": "^0.0.5"
   },
   "dependencies": {
     "omniscience-networking": "offbynone/omniscience-networking",
