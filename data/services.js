@@ -1,3 +1,5 @@
+'use strict';
+
 omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
 	'use strict';
 
@@ -67,6 +69,7 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 		}
 	};
 });
+'use strict';
 
 function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
@@ -262,8 +265,10 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
+	'use strict';
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {
@@ -303,10 +308,13 @@ omniscience.factory('contentDirectoryService', function ($rootScope, eventServic
 		}
 	};
 });
+"use strict";
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 omniscience.factory("eventService", function ($rootScope, $window, $q) {
+	"use strict";
+
 	var emitPromises = {};
 	var subscriptions = {};
 
@@ -393,6 +401,7 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 		callService: callService
 	};
 });
+'use strict';
 
 omniscience.factory('fileService', function (eventService) {
 	'use strict';
@@ -404,12 +413,12 @@ omniscience.factory('fileService', function (eventService) {
 		},
 		shareFile: function shareFile(file, serverIP) {
 			return eventService.emit('shareFile', file, serverIP).then(function (fileUri) {
-				console.log(fileUri);
 				return fileUri;
 			});
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("informationService", function informationService() {
 	"use strict";
@@ -428,6 +437,7 @@ omniscience.factory("informationService", function informationService() {
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("jxon", function () {
 	"use strict";
@@ -527,6 +537,7 @@ omniscience.factory("jxon", function () {
 			return jsonResult;
 		},
 		addPropertyToObject: function addPropertyToObject(object, propertyName, propertyValue) {
+
 			propertyName = this.normalizePropertyName(propertyName);
 
 			if (object.hasOwnProperty(propertyName)) {
@@ -732,6 +743,7 @@ omniscience.factory("jxon", function () {
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("lastChangeEventParser", function () {
 	"use strict";
@@ -771,6 +783,7 @@ omniscience.factory("lastChangeEventParser", function () {
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('matchstickMessageGenerator', function matchstickMessageGenerator() {
 	'use strict';
@@ -805,6 +818,7 @@ omniscience.factory('matchstickMessageGenerator', function matchstickMessageGene
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService) {
 	'use strict';
@@ -833,6 +847,7 @@ omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, event
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("persistenceService", function persistenceService(eventService) {
 	"use strict";
@@ -858,8 +873,11 @@ omniscience.factory("persistenceService", function persistenceService(eventServi
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('pubSub', function ($rootScope) {
+	'use strict';
+
 	return {
 		pub: function pub() {
 			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -880,6 +898,7 @@ omniscience.factory('pubSub', function ($rootScope) {
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
 	'use strict';
@@ -924,6 +943,7 @@ omniscience.factory('renderingControlService', function (eventService, informati
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("stubFactory", function ($rootScope, eventService) {
 	"use strict";
@@ -965,6 +985,7 @@ omniscience.factory("stubFactory", function ($rootScope, eventService) {
 		}
 	};
 });
+"use strict";
 
 omniscience.factory("subscriptionService", function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
 	"use strict";
@@ -1051,6 +1072,7 @@ omniscience.factory("subscriptionService", function ($q, $timeout, eventService,
 		}
 	};
 });
+'use strict';
 
 omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService) {
 	'use strict';

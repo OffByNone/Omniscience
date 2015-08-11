@@ -95,7 +95,9 @@ var FrontEndBridge = (function (_Eventable) {
 					});
 					break;
 				case 'shareFile':
-					this.sendToFrontEnd('emitResponse', uniqueId, (_simpleServer = this._simpleServer).registerFile.apply(_simpleServer, data));
+					var z = (_simpleServer = this._simpleServer).registerFile.apply(_simpleServer, data);
+					console.log(z);
+					this.sendToFrontEnd('emitResponse', uniqueId, z);
 					break;
 				case 'loadDevices':
 					this._deviceService.loadDevices();
