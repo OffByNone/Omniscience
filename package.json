@@ -4,7 +4,6 @@
   "name": "omniscience",
   "description": "Finds UPnP devices on the local network",
   "icon": "./data/icons/logo_32.png",
-  "icon64": "./data/icons/logo_64.png",
   "version": "0.5.0",
   "main": "./bin/FirefoxMain.js",
   "bugs": {
