@@ -1,11 +1,11 @@
 "use strict";
 
-omniscience.controller("AboutController", function AboutController($scope) {
+omniscience.controller('AboutController', function AboutController($scope) {
 	"use strict";
 });
 "use strict";
 
-omniscience.controller("CapabilitiesController", function CapabilitiesController($scope, persistenceService, connectionManagerService) {
+omniscience.controller('CapabilitiesController', function CapabilitiesController($scope, persistenceService, connectionManagerService) {
 	"use strict";
 
 	$scope.currentConnectionInfo = {};
@@ -56,13 +56,13 @@ omniscience.controller("CapabilitiesController", function CapabilitiesController
 		});
 	}, null);
 
-	$scope.$on("$destroy", function () {
+	$scope.$on('$destroy', function () {
 		return connectionManagerService.unsubscribe();
 	});
 });
 "use strict";
 
-omniscience.controller("DeviceController", function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
+omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
 	"use strict";
 
 	eventService.emit("loadDevices");
@@ -113,7 +113,7 @@ omniscience.controller("DeviceController", function DeviceController($scope, $ro
 
 	getDevice();
 
-	$scope.$on("$destroy", function () {
+	$scope.$on('$destroy', function () {
 		$scope.device.services.filter(function (service) {
 			try {
 				var url = new URL(service.eventSubUrl);
@@ -128,17 +128,59 @@ omniscience.controller("DeviceController", function DeviceController($scope, $ro
 });
 "use strict";
 
-omniscience.controller("DeviceInfoController", function DeviceInfoController($scope) {
+omniscience.controller('DeviceInfoController', function DeviceInfoController($scope) {
 	"use strict";
 });
 "use strict";
 
-omniscience.controller("DeviceListController", function DeviceListController($scope, eventService, $q) {
+omniscience.controller('DeviceListController', function DeviceListController($scope, eventService, $q) {
 	"use strict";
+	var fetched = false;
+	var encoded = "";
+	eventService.emit("loadDevices");
+	var getImage = function getImage(url) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url, true);
+		xhr.responseType = 'arraybuffer';
+		var deferred = $q.defer();
+		xhr.onload = function (e) {
+			if (this.status == 200) {
+				var uInt8Array = new Uint8Array(this.response);
+				var i = uInt8Array.length;
+				var binaryString = new Array(i);
+				while (i--) {
+					binaryString[i] = String.fromCharCode(uInt8Array[i]);
+				}
+				var data = binaryString.join('');
+
+				var base64 = window.btoa(data);
+				deferred.resolve("data:image/jpeg;base64," + base64);
+			} else {
+				deferred.reject();
+			}
+		};
+		console.log(url);
+		xhr.send();
+		return deferred.promise;
+	};
+
+	$scope.fetchImageDataUri = function (url) {
+		return url.base64Image;
+		/*if (!fetched) {
+  	return getImage("http://www.gstatic.com/eureka/images/eureka_device.png").then(function(base64) {
+  		encoded = base64;
+  		fetched = true;
+  		return encoded;
+  	});
+  }
+  else {
+  	return encoded;
+  }*/
+	};
 });
 "use strict";
 
-omniscience.controller("HomeController", function HomeController($scope, eventService) {
+omniscience.controller('HomeController', function HomeController($scope, eventService) {
   "use strict";
 
   eventService.emit("loadDevices");
@@ -146,7 +188,7 @@ omniscience.controller("HomeController", function HomeController($scope, eventSe
 'use strict';
 
 omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
-	'use strict';
+	"use strict";
 
 	$rootScope.devices = [];
 	$rootScope.deviceTypes = [];
@@ -157,7 +199,7 @@ omniscience.controller('IndexController', function IndexController($scope, $root
 		eventService.emit('refreshDevices');
 	};
 	$rootScope.loadDevices = function loadDevices() {
-		eventService.emit('loadDevices');
+		eventService.emit("loadDevices");
 	};
 
 	function addUpdateDevice(device) {
@@ -220,7 +262,7 @@ omniscience.controller('IndexController', function IndexController($scope, $root
 	}
 	function eventOccured(device, events, request) {
 		if (!events) {
-			console.log('event is undefined');return;
+			console.log("event is undefined");return;
 		}
 		if (Array.isArray(events)) events.forEach(function (event) {
 			$rootScope.eventLog.push({ device: device, event: event, request: request });
@@ -233,7 +275,7 @@ omniscience.controller('IndexController', function IndexController($scope, $root
 });
 "use strict";
 
-omniscience.controller("MatchStickSettingsController", function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
+omniscience.controller('MatchStickSettingsController', function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
 	"use strict";
 
 	var controlUrl = new URL($scope.device.address);
@@ -335,13 +377,13 @@ omniscience.controller("MatchStickSettingsController", function MatchStickSettin
 		eventService.emit("sendTCP", controlUrl.hostname, controlUrl.port, message, false);
 	};
 	$scope.setScale = function setScale() {
-		var message = matchstickMessageGenerator.buildv2("scale", { ratio: $scope.device.scale / 5 });
+		var message = matchstickMessageGenerator.buildv2('scale', { ratio: $scope.device.scale / 5 });
 		eventService.emit("sendTCP", controlUrl.hostname, controlUrl.port, message, false);
 	};
 
-	$scope.timezones = ["Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/San_Juan", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "\tAsia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Katmandu", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Riyadh87", "Asia/Riyadh88", "Asia/Riyadh89", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "\tAustralia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "\tEurope/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "Factory", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "Mideast/Riyadh87", "Mideast/Riyadh88", "Mideast/Riyadh89", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Chatham", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"];
-	$scope.languages = [{ name: "English", code: "en-US" }, { name: "Chinese", code: "zh-CN" }];
-	$scope.usbModes = ["ADB", "OTG"];
+	$scope.timezones = ['Africa/Abidjan', 'Africa/Accra', 'Africa/Addis_Ababa', 'Africa/Algiers', 'Africa/Asmara', 'Africa/Asmera', 'Africa/Bamako', 'Africa/Bangui', 'Africa/Banjul', 'Africa/Bissau', 'Africa/Blantyre', 'Africa/Brazzaville', 'Africa/Bujumbura', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Ceuta', 'Africa/Conakry', 'Africa/Dakar', 'Africa/Dar_es_Salaam', 'Africa/Djibouti', 'Africa/Douala', 'Africa/El_Aaiun', 'Africa/Freetown', 'Africa/Gaborone', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Kampala', 'Africa/Khartoum', 'Africa/Kigali', 'Africa/Kinshasa', 'Africa/Lagos', 'Africa/Libreville', 'Africa/Lome', 'Africa/Luanda', 'Africa/Lubumbashi', 'Africa/Lusaka', 'Africa/Malabo', 'Africa/Maputo', 'Africa/Maseru', 'Africa/Mbabane', 'Africa/Mogadishu', 'Africa/Monrovia', 'Africa/Nairobi', 'Africa/Ndjamena', 'Africa/Niamey', 'Africa/Nouakchott', 'Africa/Ouagadougou', 'Africa/Porto-Novo', 'Africa/Sao_Tome', 'Africa/Timbuktu', 'Africa/Tripoli', 'Africa/Tunis', 'Africa/Windhoek', 'America/Adak', 'America/Anchorage', 'America/Anguilla', 'America/Antigua', 'America/Araguaina', 'America/Argentina/Buenos_Aires', 'America/Argentina/Catamarca', 'America/Argentina/ComodRivadavia', 'America/Argentina/Cordoba', 'America/Argentina/Jujuy', 'America/Argentina/La_Rioja', 'America/Argentina/Mendoza', 'America/Argentina/Rio_Gallegos', 'America/Argentina/San_Juan', 'America/Argentina/Tucuman', 'America/Argentina/Ushuaia', 'America/Aruba', 'America/Asuncion', 'America/Atikokan', 'America/Atka', 'America/Bahia', 'America/Barbados', 'America/Belem', 'America/Belize', 'America/Blanc-Sablon', 'America/Boa_Vista', 'America/Bogota', 'America/Boise', 'America/Buenos_Aires', 'America/Cambridge_Bay', 'America/Campo_Grande', 'America/Cancun', 'America/Caracas', 'America/Catamarca', 'America/Cayenne', 'America/Cayman', 'America/Chicago', 'America/Chihuahua', 'America/Coral_Harbour', 'America/Cordoba', 'America/Costa_Rica', 'America/Cuiaba', 'America/Curacao', 'America/Danmarkshavn', 'America/Dawson', 'America/Dawson_Creek', 'America/Denver', 'America/Detroit', 'America/Dominica', 'America/Edmonton', 'America/Eirunepe', 'America/El_Salvador', 'America/Ensenada', 'America/Fort_Wayne', 'America/Fortaleza', 'America/Glace_Bay', 'America/Godthab', 'America/Goose_Bay', 'America/Grand_Turk', 'America/Grenada', 'America/Guadeloupe', 'America/Guatemala', 'America/Guayaquil', 'America/Guyana', 'America/Halifax', 'America/Havana', 'America/Hermosillo', 'America/Indiana/Indianapolis', 'America/Indiana/Knox', 'America/Indiana/Marengo', 'America/Indiana/Petersburg', 'America/Indiana/Tell_City', 'America/Indiana/Vevay', 'America/Indiana/Vincennes', 'America/Indiana/Winamac', 'America/Indianapolis', 'America/Inuvik', 'America/Iqaluit', 'America/Jamaica', 'America/Jujuy', 'America/Juneau', 'America/Kentucky/Louisville', 'America/Kentucky/Monticello', 'America/Knox_IN', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Louisville', 'America/Maceio', 'America/Managua', 'America/Manaus', 'America/Marigot', 'America/Martinique', 'America/Mazatlan', 'America/Mendoza', 'America/Menominee', 'America/Merida', 'America/Mexico_City', 'America/Miquelon', 'America/Moncton', 'America/Monterrey', 'America/Montevideo', 'America/Montreal', 'America/Montserrat', 'America/Nassau', 'America/New_York', 'America/Nipigon', 'America/Nome', 'America/Noronha', 'America/North_Dakota/Center', 'America/North_Dakota/New_Salem', 'America/Panama', 'America/Pangnirtung', 'America/Paramaribo', 'America/Phoenix', 'America/Port-au-Prince', 'America/Port_of_Spain', 'America/Porto_Acre', 'America/Porto_Velho', 'America/Puerto_Rico', 'America/Rainy_River', 'America/Rankin_Inlet', 'America/Recife', 'America/Regina', 'America/Resolute', 'America/Rio_Branco', 'America/Rosario', 'America/Santiago', 'America/Santo_Domingo', 'America/Sao_Paulo', 'America/Scoresbysund', 'America/Shiprock', 'America/St_Barthelemy', 'America/St_Johns', 'America/St_Kitts', 'America/St_Lucia', 'America/St_Thomas', 'America/St_Vincent', 'America/Swift_Current', 'America/Tegucigalpa', 'America/Thule', 'America/Thunder_Bay', 'America/Tijuana', 'America/Toronto', 'America/Tortola', 'America/Vancouver', 'America/Virgin', 'America/Whitehorse', 'America/Winnipeg', 'America/Yakutat', 'America/Yellowknife', 'Antarctica/Casey', 'Antarctica/Davis', 'Antarctica/DumontDUrville', 'Antarctica/Mawson', 'Antarctica/McMurdo', 'Antarctica/Palmer', 'Antarctica/Rothera', 'Antarctica/South_Pole', 'Antarctica/Syowa', 'Antarctica/Vostok', 'Arctic/Longyearbyen', 'Asia/Aden', 'Asia/Almaty', 'Asia/Amman', 'Asia/Anadyr', 'Asia/Aqtau', 'Asia/Aqtobe', 'Asia/Ashgabat', 'Asia/Ashkhabad', 'Asia/Baghdad', '	Asia/Bahrain', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Beirut', 'Asia/Bishkek', 'Asia/Brunei', 'Asia/Calcutta', 'Asia/Choibalsan', 'Asia/Chongqing', 'Asia/Chungking', 'Asia/Colombo', 'Asia/Dacca', 'Asia/Damascus', 'Asia/Dhaka', 'Asia/Dili', 'Asia/Dubai', 'Asia/Dushanbe', 'Asia/Gaza', 'Asia/Harbin', 'Asia/Hong_Kong', 'Asia/Hovd', 'Asia/Irkutsk', 'Asia/Istanbul', 'Asia/Jakarta', 'Asia/Jayapura', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kashgar', 'Asia/Katmandu', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuching', 'Asia/Kuwait', 'Asia/Macao', 'Asia/Macau', 'Asia/Magadan', 'Asia/Makassar', 'Asia/Manila', 'Asia/Muscat', 'Asia/Nicosia', 'Asia/Novosibirsk', 'Asia/Omsk', 'Asia/Oral', 'Asia/Phnom_Penh', 'Asia/Pontianak', 'Asia/Pyongyang', 'Asia/Qatar', 'Asia/Qyzylorda', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Riyadh87', 'Asia/Riyadh88', 'Asia/Riyadh89', 'Asia/Saigon', 'Asia/Sakhalin', 'Asia/Samarkand', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tel_Aviv', 'Asia/Thimbu', 'Asia/Thimphu', 'Asia/Tokyo', 'Asia/Ujung_Pandang', 'Asia/Ulaanbaatar', 'Asia/Ulan_Bator', 'Asia/Urumqi', 'Asia/Vientiane', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Bermuda', 'Atlantic/Canary', 'Atlantic/Cape_Verde', 'Atlantic/Faeroe', 'Atlantic/Faroe', 'Atlantic/Jan_Mayen', 'Atlantic/Madeira', 'Atlantic/Reykjavik', 'Atlantic/South_Georgia', 'Atlantic/St_Helena', 'Atlantic/Stanley', 'Australia/ACT', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Broken_Hill', 'Australia/Canberra', 'Australia/Currie', 'Australia/Darwin', 'Australia/Eucla', 'Australia/Hobart', 'Australia/LHI', 'Australia/Lindeman', 'Australia/Lord_Howe', 'Australia/Melbourne', 'Australia/NSW', 'Australia/North', 'Australia/Perth', 'Australia/Queensland', 'Australia/South', 'Australia/Sydney', 'Australia/Tasmania', 'Australia/Victoria', 'Australia/West', '	Australia/Yancowinna', 'Brazil/Acre', 'Brazil/DeNoronha', 'Brazil/East', 'Brazil/West', 'CET', 'CST6CDT', 'Canada/Atlantic', 'Canada/Central', 'Canada/East-Saskatchewan', 'Canada/Eastern', 'Canada/Mountain', 'Canada/Newfoundland', 'Canada/Pacific', 'Canada/Saskatchewan', 'Canada/Yukon', 'Chile/Continental', 'Chile/EasterIsland', 'Cuba', 'EET', 'EST', 'EST5EDT', 'Egypt', 'Eire', 'Etc/GMT', 'Etc/GMT+0', 'Etc/GMT+1', 'Etc/GMT+10', 'Etc/GMT+11', 'Etc/GMT+12', 'Etc/GMT+2', 'Etc/GMT+3', 'Etc/GMT+4', 'Etc/GMT+5', 'Etc/GMT+6', 'Etc/GMT+7', 'Etc/GMT+8', 'Etc/GMT+9', 'Etc/GMT-0', 'Etc/GMT-1', 'Etc/GMT-10', 'Etc/GMT-11', 'Etc/GMT-12', 'Etc/GMT-13', 'Etc/GMT-14', 'Etc/GMT-2', 'Etc/GMT-3', 'Etc/GMT-4', 'Etc/GMT-5', 'Etc/GMT-6', 'Etc/GMT-7', 'Etc/GMT-8', 'Etc/GMT-9', 'Etc/GMT0', 'Etc/Greenwich', 'Etc/UCT', 'Etc/UTC', 'Etc/Universal', 'Etc/Zulu', 'Europe/Amsterdam', 'Europe/Andorra', 'Europe/Athens', 'Europe/Belfast', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Chisinau', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Gibraltar', 'Europe/Guernsey', 'Europe/Helsinki', 'Europe/Isle_of_Man', 'Europe/Istanbul', 'Europe/Jersey', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Luxembourg', 'Europe/Madrid', 'Europe/Malta', 'Europe/Mariehamn', 'Europe/Minsk', 'Europe/Monaco', 'Europe/Moscow', 'Europe/Nicosia', 'Europe/Oslo', 'Europe/Paris', 'Europe/Podgorica', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/San_Marino', 'Europe/Sarajevo', 'Europe/Simferopol', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Tirane', 'Europe/Tiraspol', 'Europe/Uzhgorod', 'Europe/Vaduz', 'Europe/Vatican', 'Europe/Vienna', 'Europe/Vilnius', '	Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Europe/Zaporozhye', 'Europe/Zurich', 'Factory', 'GB', 'GB-Eire', 'GMT', 'GMT+0', 'GMT-0', 'GMT0', 'Greenwich', 'HST', 'Hongkong', 'Iceland', 'Indian/Antananarivo', 'Indian/Chagos', 'Indian/Christmas', 'Indian/Cocos', 'Indian/Comoro', 'Indian/Kerguelen', 'Indian/Mahe', 'Indian/Maldives', 'Indian/Mauritius', 'Indian/Mayotte', 'Indian/Reunion', 'Iran', 'Israel', 'Jamaica', 'Japan', 'Kwajalein', 'Libya', 'MET', 'MST', 'MST7MDT', 'Mexico/BajaNorte', 'Mexico/BajaSur', 'Mexico/General', 'Mideast/Riyadh87', 'Mideast/Riyadh88', 'Mideast/Riyadh89', 'NZ', 'NZ-CHAT', 'Navajo', 'PRC', 'PST8PDT', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Easter', 'Pacific/Efate', 'Pacific/Enderbury', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Funafuti', 'Pacific/Galapagos', 'Pacific/Gambier', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Johnston', 'Pacific/Kiritimati', 'Pacific/Kosrae', 'Pacific/Kwajalein', 'Pacific/Majuro', 'Pacific/Marquesas', 'Pacific/Midway', 'Pacific/Nauru', 'Pacific/Niue', 'Pacific/Norfolk', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Palau', 'Pacific/Pitcairn', 'Pacific/Ponape', 'Pacific/Port_Moresby', 'Pacific/Rarotonga', 'Pacific/Saipan', 'Pacific/Samoa', 'Pacific/Tahiti', 'Pacific/Tarawa', 'Pacific/Tongatapu', 'Pacific/Truk', 'Pacific/Wake', 'Pacific/Wallis', 'Pacific/Yap', 'Poland', 'Portugal', 'ROC', 'ROK', 'Singapore', 'Turkey', 'UCT', 'US/Alaska', 'US/Aleutian', 'US/Arizona', 'US/Central', 'US/East-Indiana', 'US/Eastern', 'US/Hawaii', 'US/Indiana-Starke', 'US/Michigan', 'US/Mountain', 'US/Pacific', 'US/Pacific-New', 'US/Samoa', 'UTC', 'Universal', 'W-SU', 'WET', 'Zulu'];
+	$scope.languages = [{ name: 'English', code: 'en-US' }, { name: 'Chinese', code: 'zh-CN' }];
+	$scope.usbModes = ['ADB', 'OTG'];
 
 	$scope.getDeviceInfo().then(function () {
 		return $scope.getTVKeyCode();
@@ -379,9 +421,9 @@ omniscience.controller("MatchStickSettingsController", function MatchStickSettin
 });
 "use strict";
 
-function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
 
-omniscience.controller("PlaybackController", function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
+omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
 	$scope.availableActions = ["play"];
@@ -439,12 +481,12 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 		renderingControlService.setMute(mute);
 	}
 	function fractionToFloat(fraction) {
-		var y = fraction.split(" ");
+		var y = fraction.split(' ');
 		if (y.length > 1) {
-			var z = y[1].split("/");
+			var z = y[1].split('/');
 			return +y[0] + z[0] / z[1];
 		} else {
-			var z = y[0].split("/");
+			var z = y[0].split('/');
 			if (z.length > 1) return z[0] / z[1];else return z[0];
 		}
 	}
@@ -453,10 +495,10 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 		try {
 			if (!(url instanceof URL)) url = new URL(url);
 		} catch (e) {
-			return "";
+			return '';
 		}
 
-		return decodeURI(url.pathname.replace(/^.*(\\|\/|\:)/, ""));
+		return decodeURI(url.pathname.replace(/^.*(\\|\/|\:)/, ''));
 	}
 
 	function secondsToMinutes(duration) {
@@ -480,7 +522,7 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 		duration = duration.replace(/[\+\-]/g, ""); //remove any + or -
 		duration = duration.replace(/\.*/, ""); //remove any fractional seconds
 
-		var _duration$split = duration.split(":");
+		var _duration$split = duration.split(':');
 
 		var _duration$split2 = _slicedToArray(_duration$split, 3);
 
@@ -509,8 +551,8 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 	}
 	function parseRenderControlLastChangeEvent(lastChangeEvent) {
 		if (lastChangeEvent.hasOwnProperty("Mute")) $scope.isMuted = lastChangeEvent.Mute === "1" || lastChangeEvent.Mute === "true";
-		if (lastChangeEvent.hasOwnProperty("Volume")) $scope.volume = parseInt(lastChangeEvent.Volume);
-		if (lastChangeEvent.hasOwnProperty("PresetNameList")) $scope.presets = lastChangeEvent.PresetNameList.split(",");
+		if (lastChangeEvent.hasOwnProperty('Volume')) $scope.volume = parseInt(lastChangeEvent.Volume);
+		if (lastChangeEvent.hasOwnProperty('PresetNameList')) $scope.presets = lastChangeEvent.PresetNameList.split(",");
 	}
 	function parseAVTransportLastChangeEvent(lastChangeEvent) {
 		//The first time a last change event returns it sends back all possible properties with their current values
@@ -518,12 +560,12 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 		//will exist and which will be null
 
 		if (lastChangeEvent.hasOwnProperty("AVTransportURI")) $scope.currentMedia.uri = lastChangeEvent.AVTransportURI;
-		if (lastChangeEvent.hasOwnProperty("AVTransportURIMetaData")) $scope.currentMedia.metadata = lastChangeEvent.AVTransportURIMetaData;
-		if (lastChangeEvent.hasOwnProperty("CurrentPlayMode")) $scope.playback.mode = lastChangeEvent.CurrentPlayMode;
+		if (lastChangeEvent.hasOwnProperty('AVTransportURIMetaData')) $scope.currentMedia.metadata = lastChangeEvent.AVTransportURIMetaData;
+		if (lastChangeEvent.hasOwnProperty('CurrentPlayMode')) $scope.playback.mode = lastChangeEvent.CurrentPlayMode;
 		if (lastChangeEvent.hasOwnProperty("CurrentRecordQualityMode")) $scope.record.currentQualityMode = lastChangeEvent.CurrentRecordQualityMode;
-		if (lastChangeEvent.hasOwnProperty("CurrentTrack")) $scope.currentTrack.trackNumber = lastChangeEvent.CurrentTrack;
-		if (lastChangeEvent.hasOwnProperty("CurrentTrackMetaData")) $scope.currentTrack.metadata = lastChangeEvent.CurrentTrackMetaData;
-		if (lastChangeEvent.hasOwnProperty("CurrentTransportActions")) $scope.availableActions = lastChangeEvent.CurrentTransportActions.split(",");
+		if (lastChangeEvent.hasOwnProperty('CurrentTrack')) $scope.currentTrack.trackNumber = lastChangeEvent.CurrentTrack;
+		if (lastChangeEvent.hasOwnProperty('CurrentTrackMetaData')) $scope.currentTrack.metadata = lastChangeEvent.CurrentTrackMetaData;
+		if (lastChangeEvent.hasOwnProperty('CurrentTransportActions')) $scope.availableActions = lastChangeEvent.CurrentTransportActions.split(",");
 		if (lastChangeEvent.hasOwnProperty("NumberOfTracks")) $scope.currentMedia.trackCount = lastChangeEvent.NumberOfTracks;
 		if (lastChangeEvent.hasOwnProperty("PlaybackStorageMedium")) $scope.playback.storageMedium = lastChangeEvent.PlaybackStorageMedium;
 		if (lastChangeEvent.hasOwnProperty("PossiblePlaybackStorageMedia")) $scope.playback.possibleStorageMedia = lastChangeEvent.PossiblePlaybackStorageMedia;
@@ -533,37 +575,37 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 		if (lastChangeEvent.hasOwnProperty("NextAVTransportURIMetaData")) $scope.nextMedia.metadata = lastChangeEvent.NextAVTransportURIMetaData;
 		if (lastChangeEvent.hasOwnProperty("RecordMediumWriteStatus")) $scope.record.mediumWriteStatus = lastChangeEvent.RecordMediumWriteStatus;
 		if (lastChangeEvent.hasOwnProperty("RecordStorageMedium")) $scope.record.storageMedium = lastChangeEvent.RecordStorageMedium;
-		if (lastChangeEvent.hasOwnProperty("TransportStatus")) $scope.playback.status = lastChangeEvent.TransportStatus;
+		if (lastChangeEvent.hasOwnProperty('TransportStatus')) $scope.playback.status = lastChangeEvent.TransportStatus;
 		// Supported speeds can be retrieved from the AllowedValueList of this state variable in the AVTransport service description.
 		// 1 is required, 0 is not allowed.
 		//Example values are '1', '1/2', '2', '-1', '1/10', etc
-		if (lastChangeEvent.hasOwnProperty("TransportPlaySpeed")) $scope.playback.speed = fractionToFloat(lastChangeEvent.TransportPlaySpeed);
+		if (lastChangeEvent.hasOwnProperty('TransportPlaySpeed')) $scope.playback.speed = fractionToFloat(lastChangeEvent.TransportPlaySpeed);
 
-		if (lastChangeEvent.hasOwnProperty("CurrentTrackDuration")) {
+		if (lastChangeEvent.hasOwnProperty('CurrentTrackDuration')) {
 			var trackTotal = parseDLNATime(lastChangeEvent.CurrentTrackDuration);
 			$scope.currentTrack.totalTime = trackTotal.minutes;
 			$scope.currentTrack.totalSeconds = trackTotal.seconds;
 		}
-		if (lastChangeEvent.hasOwnProperty("CurrentMediaDuration")) {
+		if (lastChangeEvent.hasOwnProperty('CurrentMediaDuration')) {
 			var mediaTotal = parseDLNATime(lastChangeEvent.CurrentMediaDuration);
 			$scope.currentMedia.totalTime = mediaTotal.minutes;
 			$scope.currentMedia.totalSeconds = mediaTotal.seconds;
 		}
-		if (lastChangeEvent.hasOwnProperty("TransportState")) {
-			if (lastChangeEvent.TransportState.toLowerCase() === "stopped" && $scope.playback.state.toLowerCase() === "playing") {
+		if (lastChangeEvent.hasOwnProperty('TransportState')) {
+			if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
 				//we are at the end of the song and currently playing. Play next song
 				//todo: having two computers on the same network on the same device will be an issue here
 				$scope.next(true);
 			}
 			updatePlaybackState(lastChangeEvent.TransportState);
 		}
-		if (lastChangeEvent.hasOwnProperty("CurrentTrackURI")) {
+		if (lastChangeEvent.hasOwnProperty('CurrentTrackURI')) {
 			$scope.currentTrack.uri = lastChangeEvent.CurrentTrackURI;
 			$scope.currentTrack.name = getNameFromUrl(lastChangeEvent.CurrentTrackURI);
 		}
 	}
 
-	$scope.$on("keydown", function (notSureWhatThisIs, event) {
+	$scope.$on('keydown', function (notSureWhatThisIs, event) {
 		if (event.target.tagName.toLowerCase() === "input") return;
 
 		switch (event.key.toLowerCase()) {
@@ -577,7 +619,7 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 				$scope.previous();
 				break;
 			case "delete":
-				pubSub.pub("removeCurrent");
+				pubSub.pub('removeCurrent');
 				break;
 		}
 	});
@@ -591,7 +633,7 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 
 	//var interval = $interval(() => avTransportService.getPositionInfo().then((response) => parsePositionInfo(response)), 1000);
 
-	$scope.$on("$destroy", function () {
+	$scope.$on('$destroy', function () {
 		renderingControlService.unsubscribe();
 		avTransportService.unsubscribe();
 		//$interval.cancel(interval);
@@ -601,7 +643,7 @@ omniscience.controller("PlaybackController", function playbackController($scope,
 });
 "use strict";
 
-omniscience.controller("PlaylistController", function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
+omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
 	"use strict";
 
 	$scope.filePickerisOpen = true;
@@ -642,11 +684,11 @@ omniscience.controller("PlaylistController", function PlaylistController($scope,
 		for (var i = 0; i < $scope.playlist.length; i++) {
 			if ($scope.playlist[i] === $scope.currentFile) if (i == $scope.playlist.length - 1) if (!abideByRepeat || $scope.repeat) return $scope.play($scope.playlist[0]); //we are the last file and either pushed the next button, or repeat is enabled, so play the first file
 			else {
-				//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
-				$scope.stop().then(function () {
-					return load($scope.playlist[0]);
-				});
-			} else return $scope.play($scope.playlist[Number(i) + 1]); //we are not the last file so play the next
+					//we are the last file, didn't push the button and repeat is not enabled.  Stop playback, then load the first file
+					$scope.stop().then(function () {
+						return load($scope.playlist[0]);
+					});
+				} else return $scope.play($scope.playlist[Number(i) + 1]); //we are not the last file so play the next
 		}
 	};
 	$scope.add = function add(playImmediately) {
@@ -722,10 +764,12 @@ omniscience.controller("PlaylistController", function PlaylistController($scope,
 		if ($scope.filePicker.urlPath && $scope.filePicker.urlPath.length > 0) {
 			try {
 				new URL($scope.filePicker.urlPath);
-			} catch (e) {}
+			} catch (e) {
+				//todo: invalid url should report that to user and abort
+			}
 			$scope.filePicker.url = {
 				path: $scope.filePicker.urlPath,
-				name: $scope.filePicker.urlPath.replace(/^.*(\\|\/|\:)/, "") //set file name from url
+				name: $scope.filePicker.urlPath.replace(/^.*(\\|\/|\:)/, '') //set file name from url
 			};
 
 			files.push($scope.filePicker.url);
@@ -772,5 +816,3 @@ omniscience.controller("PlaylistController", function PlaylistController($scope,
 	pubSub.sub("previous", $scope.previous, $scope);
 	pubSub.sub("next", $scope.next, $scope);
 });
-
-//todo: invalid url should report that to user and abort
