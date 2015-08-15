@@ -18,10 +18,10 @@
     window.addEventListener("keydown", function (event) {
         var command = keyCodes[event.keyCode];
         info.innerHTML += keyCodes[event.keyCode];
-        if (command === "play/pause") {
-            if (!isPlaying) executeCommands(["play"], "video");else executeCommands(["pause"], "video");
+        if (command === 'play/pause') {
+            if (!isPlaying) executeCommands(['play'], 'video');else executeCommands(['pause'], 'video');
             isPlaying = !isPlaying;
-        } else executeCommands([command], "video");
+        } else executeCommands([command], 'video');
     }, false);
 
     messageChannel.on("message", function (senderId, data) {
@@ -45,16 +45,16 @@
         }
     }
 
-    setProperties({ src: "../BigBuckBunny.mp4" }, "video");
+    setProperties({ src: "../BigBuckBunny.mp4" }, 'video');
 
     var keyCodes = {
-        13: "enter",
-        37: "left",
-        38: "up",
-        39: "right",
-        40: "down",
-        179: "play/pause",
-        227: "rewind",
-        228: "fastforward"
+        13: 'enter',
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        179: 'play/pause',
+        227: 'rewind',
+        228: 'fastforward'
     };
 })();

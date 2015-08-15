@@ -58,7 +58,7 @@
 		request.onerror = function () {
 			errback(this);
 		};
-		request.open("GET", path + "?" + (Math.random() * 4294967296).toString(36), true);
+		request.open("GET", path + "?" + (Math.random() * 0x100000000).toString(36), true);
 		request.send();
 	}
 	////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@
 	var requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 	requestFileSystem(window.TEMPORARY, null, function (fileSystem) {
 		fs = fileSystem;
-		var scripts = document.getElementsByTagName("script");
+		var scripts = document.getElementsByTagName('script');
 		for (var i = 0, l = scripts.length; i < l; i++) {
 			if (autorequire) {
 				window.require.async(autorequire, onLoad);
@@ -95,7 +95,7 @@
 					callback(fileEntry.toURL());
 				};
 				fileWriter.onerror = errback;
-				fileWriter.write(new Blob([contents], { type: "text/plain" }));
+				fileWriter.write(new Blob([contents], { type: 'text/plain' }));
 			}, errback);
 		}, errback);
 	}
@@ -259,14 +259,14 @@
 
 		function save() {
 			// Wrap and save the file
-			var wrappedjs = "window.define(" + JSON.stringify(path) + ", function (module, exports, require, __dirname, __filename) { " + contents + "});";
+			var wrappedjs = 'window.define(' + JSON.stringify(path) + ', function (module, exports, require, __dirname, __filename) { ' + contents + '});';
 			writeFile(path.substr(1).replace(/\//g, "_"), wrappedjs, function (url) {
 				defCallbacks[path] = function () {
 					//console.log("Loaded module", path);
 					return callback.apply(this, arguments);
 				};
-				var script = document.createElement("script");
-				script.type = "text/javascript";
+				var script = document.createElement('script');
+				script.type = 'text/javascript';
 				script.src = url;
 				document.head.appendChild(script);
 			}, errback);
@@ -289,7 +289,7 @@
 			if (char === "/") {
 				return $slash;
 			}
-			if (char === "'" || char === "\"") {
+			if (char === "'" || char === '"') {
 				quote = char;
 				return $string;
 			}
@@ -314,7 +314,7 @@
 
 		function $call(char) {
 			if (isWhitespace.test(char)) return $call;
-			if (char === "'" || char === "\"") {
+			if (char === "'" || char === '"') {
 				quote = char;
 				name = "";
 				return $name;
@@ -332,7 +332,7 @@
 
 		function $close(char) {
 			if (isWhitespace.test(char)) return $close;
-			if (char === ")" || char === ",") {
+			if (char === ")" || char === ',') {
 				names.push(name);
 			}
 			name = undefined;

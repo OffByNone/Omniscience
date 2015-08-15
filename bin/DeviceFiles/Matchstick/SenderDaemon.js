@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -25,7 +25,7 @@ var MessageChannel = function MessageChannel(wsURL) {
 
 	var ws = new Services.appShell.hiddenDOMWindow.WebSocket(wsServer);
 	ws.onopen = function (evt) {
-		'onopened' in self && self.onopened();
+		"onopened" in self && self.onopened();
 	};
 	ws.onclose = function (evt) {
 		if (self.closeSignal) {} else {
@@ -38,7 +38,7 @@ var MessageChannel = function MessageChannel(wsURL) {
 		if (evt.data) {
 			try {
 				var msg = JSON.parse(evt.data);
-				'onmessage' in self && msg && self.onmessage(msg);
+				"onmessage" in self && msg && self.onmessage(msg);
 			} catch (e) {
 				console.error(evt);
 			}
@@ -61,7 +61,7 @@ var MessageChannel = function MessageChannel(wsURL) {
 				self.send(data);
 			}, 50);
 		} else {
-			throw Error('Underlying websocket is not open');
+			throw Error("Underlying websocket is not open");
 		}
 	};
 
@@ -71,7 +71,7 @@ var MessageChannel = function MessageChannel(wsURL) {
 	};
 
 	self.on = function (type, func) {
-		self['on' + type] = func;
+		self["on" + type] = func;
 	};
 };
 
@@ -80,7 +80,7 @@ var MessageChannel = function MessageChannel(wsURL) {
 **/
 var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 	var self = this;
-	var appUrl = '';
+	var appUrl = "";
 	var maxInactive = -1;
 	self.flingDConnected = false;
 	self.token = null;
@@ -91,11 +91,11 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 	self.appHref = null;
 	self.additionalDatas = {};
 
-	var wsServer = 'ws://' + deviceIp + ':9431/receiver/' + appid,
+	var wsServer = "ws://" + deviceIp + ":9431/receiver/" + appid,
 	    ws = null,
 	    sender = {
-		'count': 0,
-		'list': {}
+		"count": 0,
+		"list": {}
 	};
 
 	self.simpleHttpRequest = function (method, headers, url, data, callback) {
@@ -113,7 +113,7 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 						callback(xhr.responseText);
 					}
 				} else {
-					console.error('XmlHttpRequest Error', xhr.readyState, xhr.status);
+					console.error("XmlHttpRequest Error", xhr.readyState, xhr.status);
 				}
 			}
 		};
@@ -136,9 +136,9 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 		if (self.flingDConnected && self.useIpc && !self.heartBeatLocked) {
 			self.heartBeatLocked = true;
 			timers.setTimeout(function () {
-				var serverAddress = 'http://' + deviceIp + ':9431/apps/' + appid,
-				    headers = [['Accept', 'application/xml; charset=utf8'], ['Authorization', self.token]];
-				self.simpleHttpRequest('GET', headers, serverAddress, null, function (responseText) {
+				var serverAddress = "http://" + deviceIp + ":9431/apps/" + appid,
+				    headers = [["Accept", "application/xml; charset=utf8"], ["Authorization", self.token]];
+				self.simpleHttpRequest("GET", headers, serverAddress, null, function (responseText) {
 					self.heartBeatLocked = false;
 					self._heartbeat();
 				});
@@ -153,18 +153,18 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
     * @param {String} you can set launch/relaunch or join.
     **/
 	self.launchApp = function (appUrl, maxInactive, useIpc, type) {
-		var serverAddress = 'http://' + deviceIp + ':9431/apps/' + appid,
-		    headers = [['Content-Type', 'application/json']];
+		var serverAddress = "http://" + deviceIp + ":9431/apps/" + appid,
+		    headers = [["Content-Type", "application/json"]];
 		if (!maxInactive) {
 			maxInactive = -1;
 		}
-		if (typeof useIpc == 'undefined') {
+		if (typeof useIpc == "undefined") {
 			self.useIpc = true;
 		} else {
 			self.useIpc = useIpc;
 		}
-		if (typeof type == 'undefined') {
-			type = 'launch';
+		if (typeof type == "undefined") {
+			type = "launch";
 		}
 		var data = {
 			type: type,
@@ -175,11 +175,11 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 			}
 		};
 		self.flingDConnected = true;
-		self.simpleHttpRequest('POST', headers, serverAddress, data, function (responseText) {
+		self.simpleHttpRequest("POST", headers, serverAddress, data, function (responseText) {
 			var resp = JSON.parse(responseText);
-			self.token = resp['token'];
-			self.appHeartbeatInterval = resp['interval'];
-			'onapplaunched' in self && self.onapplaunched(resp);
+			self.token = resp["token"];
+			self.appHeartbeatInterval = resp["interval"];
+			"onapplaunched" in self && self.onapplaunched(resp);
 		});
 	};
 
@@ -187,33 +187,33 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
     * Get Receiver Application status
     **/
 	self.getState = function () {
-		var serverAddress = 'http://' + deviceIp + ':9431/apps/' + appid,
-		    headers = [['Accept', 'application/xml; charset=utf8'], ['Authorization', self.token]];
+		var serverAddress = "http://" + deviceIp + ":9431/apps/" + appid,
+		    headers = [["Accept", "application/xml; charset=utf8"], ["Authorization", self.token]];
 
-		self.simpleHttpRequest('GET', headers, serverAddress, null, function (responseText) {
+		self.simpleHttpRequest("GET", headers, serverAddress, null, function (responseText) {
 			var lines = responseText.split('\n');
 			lines.splice(0, 1);
 			responseText = lines.join('');
-			var doc = parser.parseFromString(responseText, 'text/xml');
-			var additionalData = doc.getElementsByTagName('additionalData');
+			var doc = parser.parseFromString(responseText, "text/xml");
+			var additionalData = doc.getElementsByTagName("additionalData");
 			if (additionalData.length == 0) {
 				timers.setTimeout(function () {
 					self.getState();
 				}, 1000);
 			} else {
-				self.appName = doc.getElementsByTagName('name')[0].innerHTML;
-				self.appState = doc.getElementsByTagName('state')[0].innerHTML;
+				self.appName = doc.getElementsByTagName("name")[0].innerHTML;
+				self.appState = doc.getElementsByTagName("state")[0].innerHTML;
 
-				var link = doc.getElementsByTagName('link');
+				var link = doc.getElementsByTagName("link");
 				if (link) {
 					link = link[0];
-					self.appHref = link.getAttribute('href');
+					self.appHref = link.getAttribute("href");
 				}
 				var items = additionalData[0].childNodes;
 				if (items) {
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].tagName) {
-							if (typeof items[i].innerHTML == 'undefined') {
+							if (typeof items[i].innerHTML == "undefined") {
 								self.additionalDatas[items[i].tagName] = items[i].textContent;
 							} else {
 								self.additionalDatas[items[i].tagName] = items[i].innerHTML;
@@ -222,7 +222,7 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 					}
 				}
 			}
-			'onstatereceived' in self && self.onstatereceived(self);
+			"onstatereceived" in self && self.onstatereceived(self);
 		});
 	};
 
@@ -230,10 +230,10 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
     * Disconnect with fling service
     **/
 	self.disconnect = function () {
-		var serverAddress = 'http://' + deviceIp + ':9431/apps/' + appid;
-		self.simpleHttpRequest('DELETE', null, serverAddress, null, function (responseText) {
+		var serverAddress = "http://" + deviceIp + ":9431/apps/" + appid;
+		self.simpleHttpRequest("DELETE", null, serverAddress, null, function (responseText) {
 			self.flingDConnected = false;
-			'onstoped' in self && self.onstoped(self);
+			"onstoped" in self && self.onstoped(self);
 		});
 	};
 
@@ -242,33 +242,33 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
     **/
 	self.closeApp = function () {
 		if (self.appHref == null) {
-			self.appHref = 'run';
+			self.appHref = "run";
 		}
-		var serverAddress = 'http://' + deviceIp + ':9431/apps/' + appid + '/' + self.appHref,
-		    headers = [['Accept', 'application/xml; charset=utf8'], ['Authorization', self.token]];
-		self.simpleHttpRequest('DELETE', headers, serverAddress, null, function (responseText) {
+		var serverAddress = "http://" + deviceIp + ":9431/apps/" + appid + "/" + self.appHref,
+		    headers = [["Accept", "application/xml; charset=utf8"], ["Authorization", self.token]];
+		self.simpleHttpRequest("DELETE", headers, serverAddress, null, function (responseText) {
 			self.flingDConnected = false;
-			'onclosed' in self && self.onstoped(self);
+			"onclosed" in self && self.onstoped(self);
 		});
 	};
 
 	self.systemControl = function (data) {
-		var serverAddress = 'http://' + deviceIp + ':9431/system/control';
-		self.simpleHttpRequest('POST', null, serverAddress, data, function (responseText) {
+		var serverAddress = "http://" + deviceIp + ":9431/system/control";
+		self.simpleHttpRequest("POST", null, serverAddress, data, function (responseText) {
 			if (callback) {
-				'onsystemcontrol' in self && self.onsystemcontrol(JSON.parse(responseText));
+				"onsystemcontrol" in self && self.onsystemcontrol(JSON.parse(responseText));
 			}
 		});
 	};
 
 	//heigh level launch app interface
 	self.openApp = function (appUrl, maxInactive, useIpc) {
-		self.on('applaunched', function (res) {
-			self.on('statereceived', function (data) {
-				if ('additionalDatas' in data && 'channelBaseUrl' in data['additionalDatas']) {
-					var channel = new MessageChannel(data['additionalDatas']['channelBaseUrl'] + '/senders/' + self.token);
-					channel.on('opened', function () {
-						'onappopened' in self && self.onappopened(channel);
+		self.on("applaunched", function (res) {
+			self.on("statereceived", function (data) {
+				if ("additionalDatas" in data && "channelBaseUrl" in data["additionalDatas"]) {
+					var channel = new MessageChannel(data["additionalDatas"]["channelBaseUrl"] + "/senders/" + self.token);
+					channel.on("opened", function () {
+						"onappopened" in self && self.onappopened(channel);
 					});
 				}
 				self._heartbeat();
@@ -279,7 +279,7 @@ var SenderDaemon = function SenderDaemon(deviceIp, appid) {
 	};
 
 	self.on = function (type, func) {
-		self['on' + type] = func;
+		self["on" + type] = func;
 	};
 };
 
@@ -287,7 +287,7 @@ var Sender = (function () {
 	function Sender(matchstickIpAddress) {
 		_classCallCheck(this, Sender);
 
-		this.appid = '~omniscience'; //Unique id of your application, must start with a ~
+		this.appid = "~omniscience"; //Unique id of your application, must start with a ~
 		this.timeout = -1; //after not communicating with the sender for this many milliseconds return to the default matchstick screen. -1 means don't timeout
 		this.useInterprocessCommunication = true; //not sure what this means for my application
 		this.matchstickIpAddress = matchstickIpAddress;
@@ -300,15 +300,15 @@ var Sender = (function () {
 			var _this = this;
 
 			this._senderDaemon.openApp(receiverAppPath, this.timeout, this.useInterprocessCommunication);
-			this._senderDaemon.on('appopened', function (channel) {
+			this._senderDaemon.on("appopened", function (channel) {
 				_this._messageChannel = channel;
-				_this.sendProperty('src', fileUri);
+				_this.sendProperty("src", fileUri);
 			});
 		}
 	}, {
 		key: 'sendProperty',
 		value: function sendProperty(key, value, mediaType) {
-			mediaType = mediaType || 'video';
+			mediaType = mediaType || "video";
 			var properties = {};
 			properties[key] = value;
 			var message = {
@@ -320,8 +320,8 @@ var Sender = (function () {
 	}, {
 		key: 'executeCommand',
 		value: function executeCommand(command, mediaType) {
-			if (command === 'stop') this._senderDaemon.closeApp();
-			mediaType = mediaType || 'video';
+			if (command === "stop") this._senderDaemon.closeApp();
+			mediaType = mediaType || "video";
 			var message = {
 				type: mediaType,
 				commands: [command]

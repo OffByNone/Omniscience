@@ -7,7 +7,7 @@ var simpleServer = undefined;
  * extension startup
  */
 module.exports.main = function main() {
-	var CompositionRoot = require("./CompositionRoot");
+	var CompositionRoot = require('./CompositionRoot');
 	var compositionRoot = new CompositionRoot();
 
 	var serviceExecutor = compositionRoot.getServiceExecutor();

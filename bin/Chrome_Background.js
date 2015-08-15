@@ -19,13 +19,13 @@ chrome.app.runtime.onLaunched.addListener(function () {
 			var serviceExecutor = compositionRoot.getServiceExecutor();
 			var simpleServer = compositionRoot.createSimpleServer();
 			var port = simpleServer.start();
-			console.log('server started on port:' + port);
+			console.log("server started on port:" + port);
 
 			compositionRoot.createDeviceService().then(function (deviceService) {
 				deviceService.search();
 				var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, simpleServer);
 
-				frontEndBridge.on('sendToFrontEnd', function (eventType) {
+				frontEndBridge.on("sendToFrontEnd", function (eventType) {
 					for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 						data[_key - 1] = arguments[_key];
 					}
@@ -51,15 +51,15 @@ chrome.app.runtime.onLaunched.addListener(function () {
 });
 
 function makeSafeForEmit() {
-	for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-		args[_key2] = arguments[_key2];
-	}
-
 	//The panel serializes out the data object using the below two lines
 	//the tab does not, therefore the same data sent to both will not appear the same unless we add the below lines
 	var replacer = function replacer(key, value) {
-		return typeof value === 'function' ? void 0 : value instanceof URL ? value.toString() : value;
+		return typeof value === "function" ? void 0 : value instanceof URL ? value.toString() : value;
 	};
+
+	for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+		args[_key2] = arguments[_key2];
+	}
 
 	return args.map(function (argument) {
 		return JSON.parse(JSON.stringify(argument, replacer));

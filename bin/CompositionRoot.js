@@ -4,11 +4,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FrontEndBridge = require("./FrontEndBridge");
+var FrontEndBridge = require('./FrontEndBridge');
 
 var Networking = require("omniscience-networking");
 var UPnP = require("omniscience-upnp");
-var SdkResolver = require("omniscience-sdk-resolver");
+var SdkResolver = require('omniscience-sdk-resolver');
 
 var CompositionRoot = (function () {
 	function CompositionRoot() {
@@ -26,13 +26,13 @@ var CompositionRoot = (function () {
 			var menu = null;
 			try {
 				//desktop sdk
-				button = this._sdk.button();
+				button = this._sdk.firefox.button();
 			} catch (e) {
 				//sdk for Android
-				menu = this._sdk.getNativeWindowMenu();
+				menu = this._sdk.firefox.getNativeWindowMenu();
 			}
 
-			var Button = require("./UI/Button");
+			var Button = require('./UI/Button');
 			return new Button(button, menu);
 		}
 	}, {
@@ -58,8 +58,8 @@ var CompositionRoot = (function () {
 	}, {
 		key: "createTab",
 		value: function createTab(button, frontEndBridge) {
-			var Tab = require("./UI/Tab");
-			return new Tab(this._sdk.tabs(), button, frontEndBridge);
+			var Tab = require('./UI/Tab');
+			return new Tab(this._sdk.firefox.tabs(), button, frontEndBridge);
 		}
 	}]);
 
