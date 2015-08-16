@@ -8,6 +8,8 @@
 #ignore .db AKA Thumbs.db
 *.db
 
+*.mp4
+
 #ignore anything that starts with . such as .git, .settings, .eslintrc, .eslintignore, .gitignore, .gitattributes
 .*
 
@@ -22,7 +24,7 @@ README.md
 *.sln
 
 #ignore unit tests
-spec/**
+**/spec/**
 
 #ignore node modules that are only dev dependencies
 /node_modules/.bin/**
