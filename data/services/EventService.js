@@ -1,4 +1,4 @@
-omniscience.factory('eventService', function ($rootScope, $window, $q) {
+window.omniscience.factory('eventService', function ($rootScope, $window, $q) {
 	"use strict";
 
 	var emitPromises = {};
@@ -10,7 +10,8 @@ omniscience.factory('eventService', function ($rootScope, $window, $q) {
 			messageObj = JSON.parse(message);
 		}
 		catch (err) {
-			console.log("message not json parsable.");
+			console.log(message);
+			console.log(err);
 			return;
 		}
 
