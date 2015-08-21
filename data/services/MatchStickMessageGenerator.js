@@ -1,4 +1,4 @@
-omniscience.factory('matchstickMessageGenerator', function matchstickMessageGenerator() {
+window.omniscience.factory('matchstickMessageGenerator', function matchstickMessageGenerator() {
 	"use strict";
 	return {
 		build(command, type, extraData, protocolVersion) {

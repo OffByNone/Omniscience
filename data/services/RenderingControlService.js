@@ -1,4 +1,4 @@
-omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
+window.omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:RenderingControl:1';

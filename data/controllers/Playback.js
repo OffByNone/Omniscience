@@ -1,4 +1,4 @@
-omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
+window.omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
 	$scope.availableActions = ["play"];

@@ -1,7 +1,7 @@
 'use strict';
 
-omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
-	'use strict';
+window.omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1'; //todo: move this to a constants file
 	var instanceId = 0; //todo: determine this dynamically
@@ -13,52 +13,52 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 
 	return {
 		setAvTransportUri: function setAvTransportUri(currentUri, currentUriMetadata) {
-			return eventService.callService(getService(), 'SetAVTransportURI', { InstanceID: instanceId, CurrentURI: currentUri, CurrentURIMetaData: currentUriMetadata });
+			return eventService.callService(getService(), "SetAVTransportURI", { InstanceID: instanceId, CurrentURI: currentUri, CurrentURIMetaData: currentUriMetadata });
 		},
 		setNextAvTransportUri: function setNextAvTransportUri(nextUri, nextUriMetadata) {
-			return eventService.callService(getService(), 'SetNextAVTransportURI', { InstanceID: instanceId, NextURI: nextUri, NextURIMetaData: nextUriMetadata });
+			return eventService.callService(getService(), "SetNextAVTransportURI", { InstanceID: instanceId, NextURI: nextUri, NextURIMetaData: nextUriMetadata });
 		},
 		getMediaInfo: function getMediaInfo() {
-			return eventService.callService(getService(), 'GetMediaInfo', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetMediaInfo", { InstanceID: instanceId });
 		},
 		getTransportInfo: function getTransportInfo() {
-			return eventService.callService(getService(), 'GetTransportInfo', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetTransportInfo", { InstanceID: instanceId });
 		},
 		getPositionInfo: function getPositionInfo() {
-			return eventService.callService(getService(), 'GetPositionInfo', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetPositionInfo", { InstanceID: instanceId });
 		},
 		getDeviceCapabilities: function getDeviceCapabilities() {
-			return eventService.callService(getService(), 'GetDeviceCapabilities', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetDeviceCapabilities", { InstanceID: instanceId });
 		},
 		getTransportSettings: function getTransportSettings() {
-			return eventService.callService(getService(), 'GetTransportSettings', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetTransportSettings", { InstanceID: instanceId });
 		},
 		stop: function stop() {
-			return eventService.callService(getService(), 'Stop', { InstanceID: instanceId });
+			return eventService.callService(getService(), "Stop", { InstanceID: instanceId });
 		},
 		play: function play() {
-			return eventService.callService(getService(), 'Play', { InstanceID: instanceId, Speed: speed });
+			return eventService.callService(getService(), "Play", { InstanceID: instanceId, Speed: speed });
 		},
 		pause: function pause() {
-			return eventService.callService(getService(), 'Pause', { InstanceID: instanceId });
+			return eventService.callService(getService(), "Pause", { InstanceID: instanceId });
 		},
 		seek: function seek(unit, target) {
-			return eventService.callService(getService(), 'Seek', { InstanceID: instanceId, Unit: unit, Target: target });
+			return eventService.callService(getService(), "Seek", { InstanceID: instanceId, Unit: unit, Target: target });
 		},
 		next: function next() {
-			return eventService.callService(getService(), 'Next', { InstanceID: instanceId });
+			return eventService.callService(getService(), "Next", { InstanceID: instanceId });
 		},
 		previous: function previous() {
-			return eventService.callService(getService(), 'Previous', { InstanceID: instanceId });
+			return eventService.callService(getService(), "Previous", { InstanceID: instanceId });
 		},
 		setPlayMode: function setPlayMode(newPlayMode) {
-			return eventService.callService(getService(), 'SetPlayMode', { InstanceID: instanceId, NewPlayMode: newPlayMode });
+			return eventService.callService(getService(), "SetPlayMode", { InstanceID: instanceId, NewPlayMode: newPlayMode });
 		},
 		getServerIP: function getServerIP() {
 			return getService().serverIP;
 		},
 		getCurrentTransportActions: function getCurrentTransportActions() {
-			return eventService.callService(getService(), 'GetCurrentTransportActions', { InstanceID: instanceId });
+			return eventService.callService(getService(), "GetCurrentTransportActions", { InstanceID: instanceId });
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -71,10 +71,10 @@ omniscience.factory('avTransportService', function (eventService, subscriptionSe
 });
 'use strict';
 
-function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-omniscience.factory('connectionManagerService', function (eventService, informationService, subscriptionService) {
-	'use strict';
+window.omniscience.factory('connectionManagerService', function (eventService, informationService, subscriptionService) {
+	"use strict";
 
 	var connectionId = 0;
 	var constants = {
@@ -152,8 +152,8 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		parsedContentFormat.medium = _contentFormat$split2[0];
 		containerTypeInfo = _contentFormat$split2[1];
 
-		containerTypeInfo = containerTypeInfo || '';
-		parsedContentFormat.containerType = containerTypeInfo.split(';')[0];
+		containerTypeInfo = containerTypeInfo || "";
+		parsedContentFormat.containerType = containerTypeInfo.split(";")[0];
 		if (containerTypeInfo.indexOf(';') >= 0) {
 			parsedContentFormat.containerTypeInfo = {};
 			var extraParams = containerTypeInfo.split(';');
@@ -174,7 +174,7 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 	}
 	function _parseAdditionalinfo(additionalInfo) {
 		var dlnaInfo = {};
-		if (additionalInfo === '*') return additionalInfo;
+		if (additionalInfo === "*") return additionalInfo;
 		var extraParams = additionalInfo.split(';');
 		extraParams.forEach(function (extraParam) {
 			var _extraParam$split3 = extraParam.split('=');
@@ -210,12 +210,12 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 		}
 		if (key === constants.DLNA.playSpeed) {
 			value = value === 1;
-			newKey = 'isValidPlaySpeed';
+			newKey = "isValidPlaySpeed";
 			return [newKey, value];
 		}
 		if (key === constants.DLNA.conversionIndicator) {
 			value = value === 1;
-			newKey = 'isTranscoded';
+			newKey = "isTranscoded";
 			return [newKey, value];
 		}
 		if (key === constants.DLNA.flags) {
@@ -243,15 +243,15 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 
 	return {
 		getCurrentConnectionInfo: function getCurrentConnectionInfo() {
-			return eventService.callService(getService(), 'GetCurrentConnectionInfo', { ConnectionID: connectionId });
+			return eventService.callService(getService(), "GetCurrentConnectionInfo", { ConnectionID: connectionId });
 		},
 		getProtocolInfo: function getProtocolInfo() {
-			return eventService.callService(getService(), 'GetProtocolInfo').then(function (response) {
-				return [].concat(_parseProtocolResponse(response.Sink, 'render') || [], _parseProtocolResponse(response.Source, 'serve') || []);
+			return eventService.callService(getService(), "GetProtocolInfo").then(function (response) {
+				return [].concat(_parseProtocolResponse(response.Sink, "render") || [], _parseProtocolResponse(response.Source, "serve") || []);
 			});
 		},
 		getCurrentConnectionIds: function getCurrentConnectionIds() {
-			return eventService.callService(getService(), 'GetCurrentConnectionIDs');
+			return eventService.callService(getService(), "GetCurrentConnectionIDs");
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -267,8 +267,8 @@ omniscience.factory('connectionManagerService', function (eventService, informat
 });
 'use strict';
 
-omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
-	'use strict';
+window.omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService, informationService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
 	function getService() {
@@ -282,22 +282,22 @@ omniscience.factory('contentDirectoryService', function ($rootScope, eventServic
 			this.x_GetRemoteSharingStatus();
 		},
 		getSearchCapabilities: function getSearchCapabilities() {
-			return eventService.callService(getService(), 'GetSearchCapabilities');
+			return eventService.callService(getService(), "GetSearchCapabilities");
 		},
 		getSortCapabilities: function getSortCapabilities() {
-			return eventService.callService(getService(), 'GetSortCapabilities');
+			return eventService.callService(getService(), "GetSortCapabilities");
 		},
 		getSystemUpdateID: function getSystemUpdateID() {
-			return eventService.callService(getService(), 'GetSystemUpdateID');
+			return eventService.callService(getService(), "GetSystemUpdateID");
 		},
 		browse: function browse(objectId, browseFlag, filter, startingIndex, requestedCount, sortCriteria) {
-			return eventService.callService(getService(), 'Browse', { ObjectId: objectId, BrowseFlag: browseFlag, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
+			return eventService.callService(getService(), "Browse", { ObjectId: objectId, BrowseFlag: browseFlag, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
 		},
 		search: function search(containerId, searchCriteria, filter, startingIndex, requestedCount, sortCriteria) {
-			return eventService.callService(getService(), 'Search', { ContainerId: containerId, SearchCriteria: searchCriteria, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
+			return eventService.callService(getService(), "Search", { ContainerId: containerId, SearchCriteria: searchCriteria, Filter: filter, StartingIndex: startingIndex, RequestedCount: requestedCount, SortCriteria: sortCriteria });
 		},
 		x_GetRemoteSharingStatus: function x_GetRemoteSharingStatus() {
-			return eventService.callService(getService(), 'X_GetRemoteSharingStatus');
+			return eventService.callService(getService(), "X_GetRemoteSharingStatus");
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -312,7 +312,7 @@ omniscience.factory('contentDirectoryService', function ($rootScope, eventServic
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-omniscience.factory("eventService", function ($rootScope, $window, $q) {
+window.omniscience.factory('eventService', function ($rootScope, $window, $q) {
 	"use strict";
 
 	var emitPromises = {};
@@ -323,7 +323,8 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 		try {
 			messageObj = JSON.parse(message);
 		} catch (err) {
-			console.log("message not json parsable.");
+			console.log(message);
+			console.log(err);
 			return;
 		}
 
@@ -336,27 +337,27 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 	function generateQuickGuidish() {
 		//e7 from http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 		var lut = [];for (var i = 0; i < 256; i++) {
-			lut[i] = (i < 16 ? "0" : "") + i.toString(16);
+			lut[i] = (i < 16 ? '0' : '') + i.toString(16);
 		}
-		var d0 = Math.random() * 4294967295 | 0;
-		var d1 = Math.random() * 4294967295 | 0;
-		var d2 = Math.random() * 4294967295 | 0;
-		var d3 = Math.random() * 4294967295 | 0;
-		return lut[d0 & 255] + lut[d0 >> 8 & 255] + lut[d0 >> 16 & 255] + lut[d0 >> 24 & 255] + "-" + lut[d1 & 255] + lut[d1 >> 8 & 255] + "-" + lut[d1 >> 16 & 15 | 64] + lut[d1 >> 24 & 255] + "-" + lut[d2 & 63 | 128] + lut[d2 >> 8 & 255] + "-" + lut[d2 >> 16 & 255] + lut[d2 >> 24 & 255] + lut[d3 & 255] + lut[d3 >> 8 & 255] + lut[d3 >> 16 & 255] + lut[d3 >> 24 & 255];
+		var d0 = Math.random() * 0xffffffff | 0;
+		var d1 = Math.random() * 0xffffffff | 0;
+		var d2 = Math.random() * 0xffffffff | 0;
+		var d3 = Math.random() * 0xffffffff | 0;
+		return lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' + lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' + lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] + lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];
 	}
 	function on(eventType, callback) {
 		subscriptions[eventType] = subscriptions[eventType] || [];
 		subscriptions[eventType].push(callback);
 	}
 	function emit(eventType) {
-		for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-			args[_key - 1] = arguments[_key];
-		}
-
 		var uniqueId = generateQuickGuidish();
 		var deferred = $q.defer();
 
 		emitPromises[uniqueId] = deferred;
+
+		for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+			args[_key - 1] = arguments[_key];
+		}
 
 		var message = JSON.stringify({
 			eventType: eventType,
@@ -371,13 +372,14 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 		return emit("CallService", service, serviceMethod, data);
 	}
 	on("emitResponse", function (uniqueId) {
-		for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-			args[_key2 - 1] = arguments[_key2];
-		}
-
 		var deferred = emitPromises[uniqueId];
 		if (deferred) {
 			delete emitPromises[uniqueId];
+
+			for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+				args[_key2 - 1] = arguments[_key2];
+			}
+
 			deferred.resolve.apply(deferred, args);
 		} else {
 			console.log("no deferred for the response");
@@ -392,8 +394,8 @@ omniscience.factory("eventService", function ($rootScope, $window, $q) {
 });
 'use strict';
 
-omniscience.factory('fileService', function (eventService) {
-	'use strict';
+window.omniscience.factory('fileService', function (eventService) {
+	"use strict";
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1';
 
 	return {
@@ -401,7 +403,7 @@ omniscience.factory('fileService', function (eventService) {
 			return eventService.emit('chooseFiles');
 		},
 		shareFile: function shareFile(file, serverIP) {
-			return eventService.emit('shareFile', file, serverIP).then(function (fileUri) {
+			return eventService.emit("shareFile", file, serverIP).then(function (fileUri) {
 				return fileUri;
 			});
 		}
@@ -409,7 +411,7 @@ omniscience.factory('fileService', function (eventService) {
 });
 "use strict";
 
-omniscience.factory("informationService", function informationService() {
+window.omniscience.factory('informationService', function informationService() {
 	"use strict";
 
 	var _services = {}; //key is service.type.raw
@@ -428,7 +430,7 @@ omniscience.factory("informationService", function informationService() {
 });
 "use strict";
 
-omniscience.factory("jxon", function () {
+window.omniscience.factory('jxon', function () {
 	"use strict";
 	/*
   * JXON framework - Copyleft 2011 by Mozilla Developer Network
@@ -490,7 +492,7 @@ omniscience.factory("jxon", function () {
 			return this.createObject(xmlActual);
 		},
 		stringToXml: function stringToXml(xmlStr) {
-			return new window.DOMParser().parseFromString(xmlStr, "application/xml");
+			return new window.DOMParser().parseFromString(xmlStr, 'application/xml');
 		},
 		parseText: function parseText(value) {
 			if (value.trim() === "") return null;
@@ -660,16 +662,16 @@ omniscience.factory("jxon", function () {
 					for (var sAttrib in value) {
 						parentElement.setAttribute(sAttrib, value[sAttrib]);
 					}
-				} else if (sName.charAt(0) === this.attributePrefix && sName !== this.attributePrefix + "xmlns") {
+				} else if (sName.charAt(0) === this.attributePrefix && sName !== this.attributePrefix + 'xmlns') {
 					parentElement.setAttribute(sName.slice(1), value);
 				} else if (value.constructor === Array) {
 					for (var i = 0; i < value.length; i++) {
-						oChild = xml.createElementNS(value[i][this.attributePrefix + "xmlns"] || parentElement.namespaceURI, sName);
+						oChild = xml.createElementNS(value[i][this.attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
 						convertJsonToXml(xml, oChild, value[i]);
 						parentElement.appendChild(oChild);
 					}
 				} else {
-					oChild = xml.createElementNS((value || {})[this.attributePrefix + "xmlns"] || parentElement.namespaceURI, sName);
+					oChild = xml.createElementNS((value || {})[this.attributePrefix + 'xmlns'] || parentElement.namespaceURI, sName);
 					if (value instanceof Object) {
 						convertJsonToXml(xml, oChild, value);
 					} else if (value !== null && value !== true) {
@@ -689,25 +691,25 @@ omniscience.factory("jxon", function () {
 		config: function config(o) {
 			for (var k in o) {
 				switch (k) {
-					case "valueKey":
+					case 'valueKey':
 						this.textObjectName = o.valueKey;
 						break;
-					case "attrKey":
+					case 'attrKey':
 						attributesPropertyName = o.attrKey;
 						break;
-					case "attrPrefix":
+					case 'attrPrefix':
 						this.attributePrefix = o.attrPrefix;
 						break;
-					case "lowerCaseTags":
+					case 'lowerCaseTags':
 						this.normalizeCasing = o.lowerCaseTags;
 						break;
-					case "trueIsEmpty":
+					case 'trueIsEmpty':
 						sEmptyTrue = o.trueIsEmpty;
 						break;
-					case "autoDate":
+					case 'autoDate':
 						this.parseDates = o.autoDate;
 						break;
-					case "ignorePrefixedNodes":
+					case 'ignorePrefixedNodes':
 						this.includePrefixedElements = o.ignorePrefixedNodes;
 						break;
 					default:
@@ -734,7 +736,7 @@ omniscience.factory("jxon", function () {
 });
 "use strict";
 
-omniscience.factory("lastChangeEventParser", function () {
+window.omniscience.factory('lastChangeEventParser', function () {
 	"use strict";
 
 	var domParser = new DOMParser();
@@ -746,7 +748,7 @@ omniscience.factory("lastChangeEventParser", function () {
 
 	return {
 		parseEvent: function parseEvent(eventText) {
-			var eventXml = domParser.parseFromString(eventText, "text/xml");
+			var eventXml = domParser.parseFromString(eventText, 'text/xml');
 			var lastChanges = getElements(eventXml, "propertyset property LastChange");
 
 			if (lastChanges.length === 0) // this means that the event is not a last change event
@@ -755,14 +757,14 @@ omniscience.factory("lastChangeEventParser", function () {
 			var instances = [];
 
 			lastChanges.map(function (lastChange) {
-				var eventString = lastChange.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/'/g, "&#39;").replace(/&/g, "&amp;");
-				var eventXml = domParser.parseFromString(eventString, "text/xml");
+				var eventString = lastChange.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/'/g, '&#39;').replace(/&/g, '&amp;');
+				var eventXml = domParser.parseFromString(eventString, 'text/xml');
 
 				var instancesXml = getElements(eventXml, "InstanceID");
 				instancesXml.map(function (instanceXml) {
 					var instance = {};
 					Array.prototype.slice.call(instanceXml.children).forEach(function (child) {
-						instance[child.tagName] = child.attributes.getNamedItem("val").value;
+						instance[child.tagName] = child.attributes.getNamedItem('val').value;
 					});
 					instances.push(instance);
 				});
@@ -774,8 +776,8 @@ omniscience.factory("lastChangeEventParser", function () {
 });
 'use strict';
 
-omniscience.factory('matchstickMessageGenerator', function matchstickMessageGenerator() {
-	'use strict';
+window.omniscience.factory('matchstickMessageGenerator', function matchstickMessageGenerator() {
+	"use strict";
 	return {
 		build: function build(command, type, extraData, protocolVersion) {
 			var message = {
@@ -790,7 +792,7 @@ omniscience.factory('matchstickMessageGenerator', function matchstickMessageGene
 
 			for (var data in extraData) message.data[data] = extraData[data];
 			var messageStr = JSON.stringify(message);
-			messageStr = messageStr.length + ':' + messageStr;
+			messageStr = messageStr.length + ":" + messageStr;
 			return messageStr;
 		},
 		buildv2: function buildv2(command, parameters, protocolVersion) {
@@ -802,15 +804,15 @@ omniscience.factory('matchstickMessageGenerator', function matchstickMessageGene
 			};
 
 			var messageStr = JSON.stringify(message);
-			messageStr = messageStr.length + ':' + messageStr;
+			messageStr = messageStr.length + ":" + messageStr;
 			return messageStr;
 		}
 	};
 });
 'use strict';
 
-omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService) {
-	'use strict';
+window.omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService, informationService) {
+	"use strict";
 
 	var rawServiceType = 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1';
 	function getService() {
@@ -819,13 +821,13 @@ omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, event
 
 	return {
 		isAuthorized: function getSearchCapabilities(DeviceId) {
-			return eventService.callService(getService(), 'GetSearchCapabilities', { DeviceID: deviceId });
+			return eventService.callService(getService(), "GetSearchCapabilities", { DeviceID: deviceId });
 		},
 		registerservice: function getSortCapabilities(DeviceId) {
-			return eventService.callService(getService(), 'GetSortCapabilities', { DeviceID: deviceId });
+			return eventService.callService(getService(), "GetSortCapabilities", { DeviceID: deviceId });
 		},
 		isValidated: function getSystemUpdateID(registrationReqMsg) {
-			return eventService.callService(getService(), 'GetSystemUpdateID', { RegistrationReqMsg: registrationReqMsg });
+			return eventService.callService(getService(), "GetSystemUpdateID", { RegistrationReqMsg: registrationReqMsg });
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -838,7 +840,7 @@ omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, event
 });
 "use strict";
 
-omniscience.factory("persistenceService", function persistenceService(eventService) {
+window.omniscience.factory('persistenceService', function persistenceService(eventService) {
 	"use strict";
 
 	var _device = { state: {} };
@@ -864,21 +866,17 @@ omniscience.factory("persistenceService", function persistenceService(eventServi
 });
 'use strict';
 
-omniscience.factory('pubSub', function ($rootScope) {
-	'use strict';
+window.omniscience.factory('pubSub', function ($rootScope) {
+	"use strict";
 
 	return {
 		pub: function pub() {
-			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-				args[_key] = arguments[_key];
-			}
-
-			$rootScope.$emit.apply($rootScope, args);
+			$rootScope.$emit.apply($rootScope, arguments);
 		},
 		sub: function sub(message, func, scope) {
 			var unbind = $rootScope.$on(message, function (unused) {
-				for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-					args[_key2 - 1] = arguments[_key2];
+				for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+					args[_key - 1] = arguments[_key];
 				}
 
 				return func.apply(undefined, args);
@@ -889,12 +887,12 @@ omniscience.factory('pubSub', function ($rootScope) {
 });
 'use strict';
 
-omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
-	'use strict';
+window.omniscience.factory('renderingControlService', function (eventService, informationService, subscriptionService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:RenderingControl:1';
 	var instanceId = 0;
-	var channel = 'Master';
+	var channel = "Master";
 
 	function getService() {
 		return informationService.get(rawServiceType);
@@ -902,26 +900,26 @@ omniscience.factory('renderingControlService', function (eventService, informati
 
 	return {
 		getMute: function getMute() {
-			return eventService.callService(getService(), 'GetMute', { InstanceID: instanceId, Channel: channel }).then(function (response) {
-				return response && response.hasOwnProperty('CurrentMute') ? response.CurrentMute == 1 : response;
+			return eventService.callService(getService(), "GetMute", { InstanceID: instanceId, Channel: channel }).then(function (response) {
+				return response && response.hasOwnProperty("CurrentMute") ? response.CurrentMute == 1 : response;
 			});
 		},
 		getVolume: function getVolume() {
-			return eventService.callService(getService(), 'GetVolume', { InstanceID: instanceId, Channel: channel }).then(function (response) {
-				return response && response.hasOwnProperty('CurrentVolume') ? response.CurrentVolume : response;
+			return eventService.callService(getService(), "GetVolume", { InstanceID: instanceId, Channel: channel }).then(function (response) {
+				return response && response.hasOwnProperty("CurrentVolume") ? response.CurrentVolume : response;
 			});
 		},
 		listPresets: function listPresets() {
-			return eventService.callService(getService(), 'ListPresets', { InstanceID: instanceId });
+			return eventService.callService(getService(), "ListPresets", { InstanceID: instanceId });
 		},
 		selectPresets: function selectPresets(presetName) {
-			return eventService.callService(getService(), 'ListPresets', { InstanceID: instanceId, PresetName: presetName });
+			return eventService.callService(getService(), "ListPresets", { InstanceID: instanceId, PresetName: presetName });
 		},
 		setMute: function setMute(desiredMute) {
-			return eventService.callService(getService(), 'SetMute', { InstanceID: instanceId, Channel: channel, DesiredMute: desiredMute });
+			return eventService.callService(getService(), "SetMute", { InstanceID: instanceId, Channel: channel, DesiredMute: desiredMute });
 		},
 		setVolume: function setVolume(desiredVolume) {
-			return eventService.callService(getService(), 'SetVolume', { InstanceID: instanceId, Channel: channel, DesiredVolume: desiredVolume });
+			return eventService.callService(getService(), "SetVolume", { InstanceID: instanceId, Channel: channel, DesiredVolume: desiredVolume });
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -934,19 +932,19 @@ omniscience.factory('renderingControlService', function (eventService, informati
 });
 "use strict";
 
-omniscience.factory("stubFactory", function ($rootScope, eventService) {
+window.omniscience.factory('stubFactory', function ($rootScope, eventService) {
 	"use strict";
 	return {
 		createServiceStub: function createServiceStub(serviceName, methods) {
 			var serviceStub = "omniscience.factory(" + serivceName + ", function ($rootScope, eventService) {\n\t\t\t\treturn {";
 
 			serviceStub += methods.map(function (method) {
-				methodStub += "" + method.name + ": function (service, ";
+				methodStub += method.name + ": function (service, ";
 				methodStub += method.parameters.map(function (parameter) {
 					return parameter.name;
 				}).join(", ") + "){";
 				var paramsObject = method.parameters.map(function (parameter) {
-					return "" + parameter.name + ": " + parameter.name;
+					return parameter.name + ": " + parameter.name;
 				}).join(", ");
 				methodStub += "return eventService.callService(service, \"" + method.name + "\", " + paramsObject + "); }";
 			}).join(", ");
@@ -957,7 +955,7 @@ omniscience.factory("stubFactory", function ($rootScope, eventService) {
 			var controllerStub = "omniscience.controller(\"" + serviceName + "\", function ConnectionManager($scope, " + serviceName + "Service) {\n\t\t\t\t\"use strict\";\n\n\t\t\t\t$scope.service = $scope.device.services.filter(service => service.type.raw === \"" + rawServiceType + "\")[0];\n\n\t\t\t\t//sample calls\n\t\t\t\t";
 
 			var methodStubs = methods.map(function (method) {
-				methodStub = "" + serviceName + "Service." + method.name + "($scope.service, ";
+				methodStub = serviceName + "Service." + method.name + "($scope.service, ";
 				methodStub += method.parameters.map(function (parameter) {
 					return parameter.name;
 				}).join(", ") + ")";
@@ -970,13 +968,13 @@ omniscience.factory("stubFactory", function ($rootScope, eventService) {
 			return controllerStub;
 		},
 		createDirectiveStub: function createDirectiveStub(serviceName) {
-			return "angular.module(\"omniscience\").directive(\"" + serviceName + "\", function () {\n\t\t\t\t\t\treturn ({\n\t\t\t\t\t\t\tcontroller: \"" + serviceName + "Controller\",\n\t\t\t\t\t\t\tlink: link,\n\t\t\t\t\t\t\treplace: true,\n\t\t\t\t\t\t\trestrict: \"E\",\n\t\t\t\t\t\t\ttemplateUrl: \"templates/" + serviceName + ".html\"\n\t\t\t\t\t\t});\n\n\t\t\t\t\t\tfunction link(scope, element, attributes) { }\n\t\t\t\t\t}); ";
+			return "angular.module(\"omniscience\").directive(\"" + serviceName + "\", function () {\n\t\t\t\t\t\treturn ({\n\t\t\t\t\t\t\tcontroller: \"" + serviceName + "Controller\",\n\t\t\t\t\t\t\tlink: link,\n\t\t\t\t\t\t\treplace: true,\n\t\t\t\t\t\t\trestrict: \"E\",\n\t\t\t\t\t\t\ttemplateUrl: \"../templates/" + serviceName + ".html\"\n\t\t\t\t\t\t});\n\n\t\t\t\t\t\tfunction link(scope, element, attributes) { }\n\t\t\t\t\t}); ";
 		}
 	};
 });
 "use strict";
 
-omniscience.factory("subscriptionService", function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
+window.omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
 	"use strict";
 
 	var subscriptions = {};
@@ -1000,7 +998,7 @@ omniscience.factory("subscriptionService", function ($q, $timeout, eventService,
 		var lastChangeObj = lastChangeEventParser.parseEvent(eventXmlString);
 
 		if (lastChangeObj) callbacks.filter(function (callback) {
-			return typeof callback.lastChangeCallback === "function";
+			return typeof callback.lastChangeCallback === 'function';
 		}).forEach(function (callback) {
 			return callback.lastChangeCallback(lastChangeObj);
 		});else {
@@ -1022,7 +1020,7 @@ omniscience.factory("subscriptionService", function ($q, $timeout, eventService,
 				});
 
 				callbacks.filter(function (callback) {
-					return typeof callback.genericEventCallback === "function";
+					return typeof callback.genericEventCallback === 'function';
 				}).forEach(function (callback) {
 					return callback.genericEventCallback([eventObj]);
 				});
@@ -1063,8 +1061,8 @@ omniscience.factory("subscriptionService", function ($q, $timeout, eventService,
 });
 'use strict';
 
-omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService) {
-	'use strict';
+window.omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService, informationService) {
+	"use strict";
 
 	var rawServiceType = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';
 
@@ -1077,46 +1075,46 @@ omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, 
 			this.getDeviceInfo();
 		},
 		delAPSettings: function delAPSettings(newAPSettings) {
-			return eventService.callService(getService(), 'DelAPSettings', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "DelAPSettings", { NewAPSettings: newAPSettings });
 		},
 		delSTASettings: function delSTASettings(newSTASettings) {
-			return eventService.callService(getService(), 'DelSTASettings', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "DelSTASettings", { NewAPSettings: newAPSettings });
 		},
 		getAPSettings: function getAPSettings(newMessage) {
-			return eventService.callService(getService(), 'GetAPSettings', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "GetAPSettings", { NewAPSettings: newAPSettings });
 		},
 		getDeviceInfo: function getDeviceInfo() {
-			return eventService.callService(getService(), 'GetserviceInfo', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "GetserviceInfo", { NewAPSettings: newAPSettings });
 		},
 		getSTASettings: function getSTASettings(newMessage) {
-			return eventService.callService(getService(), 'GetSTASettings', { NewMessage: newMessage });
+			return eventService.callService(getService(), "GetSTASettings", { NewMessage: newMessage });
 		},
 		putMessage: function putMessage(newInMessage) {
-			return eventService.callService(getService(), 'PutMessage', { NewInMessage: newInMessage });
+			return eventService.callService(getService(), "PutMessage", { NewInMessage: newInMessage });
 		},
 		putWLANResponse: function putWLANResponse(newMessage, newWLANEventType, newWLANEventMAC) {
-			return eventService.callService(getService(), 'PutWLANResponse', { NewMessage: newMessage, NewWLANEventType: newWLANEventType, NewWLANEventMAC: newWLANEventMAC });
+			return eventService.callService(getService(), "PutWLANResponse", { NewMessage: newMessage, NewWLANEventType: newWLANEventType, NewWLANEventMAC: newWLANEventMAC });
 		},
 		rebootAP: function rebootAP(newAPSettings) {
-			return eventService.callService(getService(), 'RebootAP', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "RebootAP", { NewAPSettings: newAPSettings });
 		},
 		rebootSTA: function rebootSTA(newSTASettings) {
-			return eventService.callService(getService(), 'RebootSTA', { NewSTASettings: newSTASettings });
+			return eventService.callService(getService(), "RebootSTA", { NewSTASettings: newSTASettings });
 		},
 		resetAP: function resetAP(newMessage) {
-			return eventService.callService(getService(), 'ResetAP', { NewMessage: newMessage });
+			return eventService.callService(getService(), "ResetAP", { NewMessage: newMessage });
 		},
 		resetSTA: function resetSTA(newMessage) {
-			return eventService.callService(getService(), 'ResetSTA', { NewMessage: newMessage });
+			return eventService.callService(getService(), "ResetSTA", { NewMessage: newMessage });
 		},
 		setAPSettings: function setAPSettings(newAPSettings) {
-			return eventService.callService(getService(), 'SetAPSettings', { NewAPSettings: newAPSettings });
+			return eventService.callService(getService(), "SetAPSettings", { NewAPSettings: newAPSettings });
 		},
 		setSelectedRegistrar: function setSelecctedRegistrar(newMessage) {
-			return eventService.callService(getService(), 'SetSelectedRegistrar', { NewMessage: newMessage });
+			return eventService.callService(getService(), "SetSelectedRegistrar", { NewMessage: newMessage });
 		},
 		setSTASettings: function setSTASettings() {
-			return eventService.callService(getService(), 'SetSTASettings');
+			return eventService.callService(getService(), "SetSTASettings");
 		},
 		subscribe: function subscribe(genericEventCallback, lastChangeEventCallback) {
 			return subscriptionService.subscribe(getService(), genericEventCallback, lastChangeEventCallback);
@@ -1127,3 +1125,5 @@ omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, 
 		}
 	};
 });
+
+//# sourceMappingURL=Services.js.map

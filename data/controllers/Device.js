@@ -1,4 +1,4 @@
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
+window.omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
     "use strict";
 
     eventService.emit("loadDevices");

@@ -1,4 +1,4 @@
-﻿omniscience.controller('CapabilitiesController', function CapabilitiesController($scope, persistenceService, connectionManagerService) {
+﻿window.omniscience.controller('CapabilitiesController', function CapabilitiesController($scope, persistenceService, connectionManagerService) {
 	"use strict";
 
 	$scope.currentConnectionInfo = {};

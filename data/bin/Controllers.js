@@ -1,11 +1,11 @@
 "use strict";
 
-omniscience.controller('AboutController', function AboutController($scope) {
+window.omniscience.controller('AboutController', function AboutController($scope) {
 	"use strict";
 });
 "use strict";
 
-omniscience.controller('CapabilitiesController', function CapabilitiesController($scope, persistenceService, connectionManagerService) {
+window.omniscience.controller('CapabilitiesController', function CapabilitiesController($scope, persistenceService, connectionManagerService) {
 	"use strict";
 
 	$scope.currentConnectionInfo = {};
@@ -62,7 +62,7 @@ omniscience.controller('CapabilitiesController', function CapabilitiesController
 });
 "use strict";
 
-omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
+window.omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
 	"use strict";
 
 	eventService.emit("loadDevices");
@@ -128,66 +128,26 @@ omniscience.controller('DeviceController', function DeviceController($scope, $ro
 });
 "use strict";
 
-omniscience.controller('DeviceInfoController', function DeviceInfoController($scope) {
+window.omniscience.controller('DeviceInfoController', function DeviceInfoController($scope) {
 	"use strict";
 });
 "use strict";
 
-omniscience.controller('DeviceListController', function DeviceListController($scope, eventService, $q) {
+window.omniscience.controller('DeviceListController', function DeviceListController($scope, eventService, $q) {
 	"use strict";
-	var fetched = false;
-	var encoded = "";
 	eventService.emit("loadDevices");
-	var getImage = function getImage(url) {
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', url, true);
-		xhr.responseType = 'arraybuffer';
-		var deferred = $q.defer();
-		xhr.onload = function (e) {
-			if (this.status == 200) {
-				var uInt8Array = new Uint8Array(this.response);
-				var i = uInt8Array.length;
-				var binaryString = new Array(i);
-				while (i--) {
-					binaryString[i] = String.fromCharCode(uInt8Array[i]);
-				}
-				var data = binaryString.join('');
-
-				var base64 = window.btoa(data);
-				deferred.resolve("data:image/jpeg;base64," + base64);
-			} else {
-				deferred.reject();
-			}
-		};
-		console.log(url);
-		xhr.send();
-		return deferred.promise;
-	};
-
-	$scope.fetchImageDataUri = function (url) {
-		return url.base64Image;
-		/*if (!fetched) {
-  	return getImage("http://www.gstatic.com/eureka/images/eureka_device.png").then(function(base64) {
-  		encoded = base64;
-  		fetched = true;
-  		return encoded;
-  	});
-  }
-  else {
-  	return encoded;
-  }*/
-	};
+	eventService.emit("refreshDevices");
 });
 "use strict";
 
-omniscience.controller('HomeController', function HomeController($scope, eventService) {
+window.omniscience.controller('HomeController', function HomeController($scope, eventService) {
   "use strict";
 
   eventService.emit("loadDevices");
 });
 'use strict';
 
-omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
+window.omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
 	"use strict";
 
 	$rootScope.devices = [];
@@ -275,7 +235,7 @@ omniscience.controller('IndexController', function IndexController($scope, $root
 });
 "use strict";
 
-omniscience.controller('MatchStickSettingsController', function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
+window.omniscience.controller('MatchStickSettingsController', function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
 	"use strict";
 
 	var controlUrl = new URL($scope.device.address);
@@ -423,7 +383,7 @@ omniscience.controller('MatchStickSettingsController', function MatchStickSettin
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
 
-omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
+window.omniscience.controller('PlaybackController', function playbackController($scope, $interval, eventService, avTransportService, renderingControlService, pubSub) {
 	"use strict";
 
 	$scope.availableActions = ["play"];
@@ -643,7 +603,7 @@ omniscience.controller('PlaybackController', function playbackController($scope,
 });
 "use strict";
 
-omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
+window.omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
 	"use strict";
 
 	$scope.filePickerisOpen = true;
@@ -816,3 +776,5 @@ omniscience.controller('PlaylistController', function PlaylistController($scope,
 	pubSub.sub("previous", $scope.previous, $scope);
 	pubSub.sub("next", $scope.next, $scope);
 });
+
+//# sourceMappingURL=Controllers.js.map

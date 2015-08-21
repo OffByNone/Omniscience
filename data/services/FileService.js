@@ -1,4 +1,4 @@
-﻿omniscience.factory('fileService', function (eventService) {
+﻿window.omniscience.factory('fileService', function (eventService) {
 	"use strict";
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1';
 

@@ -1,4 +1,4 @@
-﻿omniscience.factory('stubFactory', function ($rootScope, eventService) {
+﻿window.omniscience.factory('stubFactory', function ($rootScope, eventService) {
 	"use strict";
 	return {
 		createServiceStub: function (serviceName, methods) {
@@ -40,7 +40,7 @@
 							link: link,
 							replace: true,
 							restrict: "E",
-							templateUrl: "templates/${serviceName}.html"
+							templateUrl: "../templates/${serviceName}.html"
 						});
 
 						function link(scope, element, attributes) { }

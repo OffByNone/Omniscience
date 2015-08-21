@@ -1,4 +1,4 @@
-﻿omniscience.factory('jxon', function () {
+﻿window.omniscience.factory('jxon', function () {
 	"use strict";
 	/*
 	 * JXON framework - Copyleft 2011 by Mozilla Developer Network

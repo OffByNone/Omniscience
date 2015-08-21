@@ -1,4 +1,4 @@
-omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService) {
+window.omniscience.factory('wfaWlanConfigService', function ($rootScope, eventService, subscriptionService, informationService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1';

@@ -1,4 +1,4 @@
-﻿omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
+﻿window.omniscience.controller('PlaylistController', function PlaylistController($scope, $timeout, avTransportService, fileService, pubSub) {
 	"use strict";
 
 	$scope.filePickerisOpen = true;

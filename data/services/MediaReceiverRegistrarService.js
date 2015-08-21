@@ -1,4 +1,4 @@
-omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService) {
+window.omniscience.factory('mediaReceiverRegistrarService', function ($rootScope, eventService, subscriptionService, informationService) {
 	"use strict";
 
 	var rawServiceType = 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1';

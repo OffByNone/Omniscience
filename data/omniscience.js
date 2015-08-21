@@ -1,6 +1,7 @@
-﻿(function () {
+﻿/* global angular */
+
+(function () {
 	'use strict';
-	//, 'chrome-image-storage'
 	window.omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider'], function ($provide) {
 		// Prevent Angular from sniffing for the history API
 		// since it's not supported in chrome packaged apps.
@@ -15,23 +16,23 @@
 	window.omniscience.config(function omniscience($routeProvider, $locationProvider, $compileProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: 'templates/Home.html',
+				templateUrl: '../templates/Home.html',
 				controller: 'HomeController'
 			})
 			.when('/home', {
-				templateUrl: 'templates/Home.html',
+				templateUrl: '../templates/Home.html',
 				controller: 'HomeController'
 			})
 			.when('/about', {
-				templateUrl: 'templates/About.html',
+				templateUrl: '../templates/About.html',
 				controller: 'AboutController'
 			})
 			.when('/device/:deviceId', {
-				templateUrl: 'templates/Device.html',
+				templateUrl: '../templates/Device.html',
 				controller: 'DeviceController'
 			})
 			.otherwise({ redirectTo: '/home' });
-		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|resource|mailto|chrome-extension):/);
-		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|resource|data|chrome-extension):|data:image\//);
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|resource|mailto|chrome-extension|gopher):/);
+		$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|resource|data|chrome-extension|gopher):|data:image\//);
 	});
 })();

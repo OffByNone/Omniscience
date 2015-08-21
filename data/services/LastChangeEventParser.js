@@ -1,4 +1,4 @@
-﻿omniscience.factory('lastChangeEventParser', function (){
+﻿window.omniscience.factory('lastChangeEventParser', function (){
 	"use strict";
 
 	var domParser = new DOMParser();

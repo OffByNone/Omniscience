@@ -1,4 +1,4 @@
-﻿omniscience.controller('MatchStickSettingsController', function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
+﻿window.omniscience.controller('MatchStickSettingsController', function MatchStickSettingsController($scope, eventService, matchstickMessageGenerator) {
 	"use strict";
 
 	var controlUrl = new URL($scope.device.address);

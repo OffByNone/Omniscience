@@ -1,4 +1,4 @@
-omniscience.factory('connectionManagerService', function (eventService, informationService, subscriptionService){
+window.omniscience.factory('connectionManagerService', function (eventService, informationService, subscriptionService){
 	"use strict";
 
 	var connectionId = 0;

@@ -1,4 +1,4 @@
-﻿omniscience.controller('DeviceInfoController', function DeviceInfoController($scope) {
+﻿window.omniscience.controller('DeviceInfoController', function DeviceInfoController($scope) {
 	"use strict";
 
 });

@@ -1,4 +1,4 @@
-﻿omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
+﻿window.omniscience.controller('IndexController', function IndexController($scope, $rootScope, eventService) {
 	"use strict";
 
 	$rootScope.devices = [];

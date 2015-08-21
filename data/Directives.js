@@ -6,7 +6,7 @@
 			controller: "AboutController",
 			link: link,
 			restrict: "E",
-			templateUrl: "templates/About.html"
+			templateUrl: "../templates/About.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -16,7 +16,7 @@
 			controller: "DeviceInfoController",
 			link: link,
 			restrict: "E",
-			templateUrl: "templates/DeviceInfo.html"
+			templateUrl: "../templates/DeviceInfo.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -27,7 +27,7 @@
 			link: link,
 			replace: true,
 			restrict: "E",
-			templateUrl: "templates/DeviceList.html"
+			templateUrl: "../templates/DeviceList.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -37,7 +37,7 @@
 			controller: "MatchStickSettingsController",
 			link: link,
 			restrict: "E",
-			templateUrl: "templates/MatchStickSettings.html"
+			templateUrl: "../templates/MatchStickSettings.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -47,7 +47,7 @@
 			controller: "PlaybackController",
 
 			restrict: "E",
-			templateUrl: "templates/Playback.html"
+			templateUrl: "../templates/Playback.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -57,7 +57,7 @@
 			controller: "PlaylistController",
 			link: link,
 			restrict: "E",
-			templateUrl: "templates/Playlist.html"
+			templateUrl: "../templates/Playlist.html"
 		});
 
 		function link(scope, element, attributes) { }
@@ -67,7 +67,7 @@
 			controller: "CapabilitiesController",
 			link: link,
 			restrict: "E",
-			templateUrl: "templates/Capabilities.html"
+			templateUrl: "../templates/Capabilities.html"
 		});
 
 		function link(scope, element, attributes) { }

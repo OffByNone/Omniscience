@@ -1,4 +1,4 @@
-﻿omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
+﻿window.omniscience.factory('subscriptionService', function ($q, $timeout, eventService, lastChangeEventParser, jxon) {
 	"use strict";
 
 	var subscriptions = {};

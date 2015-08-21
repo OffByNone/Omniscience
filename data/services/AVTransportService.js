@@ -1,4 +1,4 @@
-omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
+window.omniscience.factory('avTransportService', function (eventService, subscriptionService, informationService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:AVTransport:1'; //todo: move this to a constants file

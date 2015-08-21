@@ -1,4 +1,4 @@
-﻿omniscience.factory('persistenceService', function persistenceService(eventService) {
+﻿window.omniscience.factory('persistenceService', function persistenceService(eventService) {
 	"use strict";
 
 	var _device = { state: {} };

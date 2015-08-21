@@ -1,4 +1,4 @@
-﻿omniscience.factory('pubSub', function ($rootScope) {
+﻿window.omniscience.factory('pubSub', function ($rootScope) {
 	"use strict";
 
 	return {

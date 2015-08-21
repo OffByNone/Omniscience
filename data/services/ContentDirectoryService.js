@@ -1,4 +1,4 @@
-omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService) {
+window.omniscience.factory('contentDirectoryService', function ($rootScope, eventService, subscriptionService, informationService) {
 	"use strict";
 
 	var rawServiceType = 'urn:schemas-upnp-org:service:ContentDirectory:1';
