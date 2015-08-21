@@ -17,7 +17,6 @@
 					<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
 					<li role="presentation" ng-show="hasService('urn:schemas-upnp-org:service:AVTransport:1')"><a data-target="#playlist" aria-controls="playlist" role="tab" data-toggle="tab">Playlist</a></li>
 					<li ng-show="isMatchStick()" role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-					<li role="presentation"><a data-target="#debug" aria-controls="debug" role="tab" data-toggle="tab">Debug</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown" role="presentation">
@@ -33,7 +32,7 @@
 	<div>
 		<div class="media">
 			<div class="media-left media-top">
-				<img class="icon" ng-show="device.icons[0].url" ng-src="{{ device.icons[0].url }}" />
+				<img class="icon" ng-show="device.icon.base64Image" ng-src="{{ device.icon.base64Image }}" />
 			</div>
 			<div class="media-body">
 				<h1 class="active-device-header">
@@ -59,7 +58,6 @@
 			<div ng-include="'../templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
 			<playlist class="tab-pane" id="playlist" role="tabpanel" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
 			<matchstick-settings role="tabpanel" class="tab-pane" id="settings" ng-if="isMatchStick()"></matchstick-settings>
-			<div ng-include="'../templates/DebugInfo.html'" role="tabpanel" class="tab-pane" id="debug"></div>
 		</div><!-- Tab panes -->
 	</div>
 	<playback class="clearfix" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playback>
