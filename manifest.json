@@ -1,10 +1,10 @@
 {
 	"name": "Omniscience",
 	"description": "Finds UPnP devices on the local network",
-	"version": "0.5.0",
+	"version": "0.8.0",
 	"manifest_version": 2,
 	"app": {
-		"background": { "scripts": [ "./bin/libs/Chrome_Require.js" ] }
+		"background": { "scripts": [ "./bin/Chrome_Background.js" ] }
 	},
 	"permissions": [
 		"http://*/",

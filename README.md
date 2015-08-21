@@ -33,3 +33,10 @@ How To:
 	When using pre-existing profile console.log statements from addon will not be shown.  To enable add key to about:config with
 		name: extensions.jid1-A3BeMgzQQjOvNg@jetpack.sdk.console.logLevel
 		value: all
+
+
+Commands to Build
+
+	npm run build
+	npm run buildpost
+	npm run post
