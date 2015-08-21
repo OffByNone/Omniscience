@@ -1,42 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/* global chrome */
+"use strict";
 
-'use strict';
+var CompositionRoot = require('../CompositionRoot');
+var compositionRoot = new CompositionRoot();
 
-chrome.app.runtime.onLaunched.addListener(function () {
-	chrome.app.window.create('../data/Foreground/Chrome.html', {
-		id: 'omniscience',
-		'outerBounds': {
-			'width': 400,
-			'height': 500
+var serviceExecutor = compositionRoot.getServiceExecutor();
+var simpleServer = compositionRoot.createSimpleServer();
+var port = simpleServer.start();
+console.log("server started on port:" + port);
+
+compositionRoot.createDeviceService().then(function (deviceService) {
+	deviceService.search();
+	var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, simpleServer);
+
+	frontEndBridge.on("sendToFrontEnd", function (eventType) {
+		for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+			data[_key - 1] = arguments[_key];
 		}
-	}, function (appWindow) {
-		var CompositionRoot = require('../CompositionRoot');
-		var compositionRoot = new CompositionRoot();
 
-		appWindow.contentWindow.addEventListener('load', function (e) {
-			var serviceExecutor = compositionRoot.getServiceExecutor();
-			var simpleServer = compositionRoot.createSimpleServer();
-			var port = simpleServer.start();
-			console.log("server started on port:" + port);
-
-			compositionRoot.createDeviceService().then(function (deviceService) {
-				deviceService.search();
-				var frontEndBridge = compositionRoot.createFrontEndBridge(deviceService, serviceExecutor, simpleServer);
-
-				frontEndBridge.on("sendToFrontEnd", function (eventType) {
-					for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-						data[_key - 1] = arguments[_key];
-					}
-
-					var message = { eventType: eventType, data: makeSafeForEmit.apply(undefined, data) };
-					chrome.runtime.sendMessage(JSON.stringify(message), function () {});
-				});
-				chrome.runtime.onMessage.addListener(function (message) {
-					return frontEndBridge.onMessageFromFrontEnd(message);
-				});
-			});
-		});
+		var message = JSON.stringify({ eventType: eventType, data: makeSafeForEmit.apply(undefined, data) });
+		window.parent.postMessage(message, "*");
+	});
+	window.addEventListener("message", function (event) {
+		return frontEndBridge.onMessageFromFrontEnd(event.data);
 	});
 });
 

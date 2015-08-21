@@ -33,5 +33,7 @@ require("sdk/system/unload").when(function (reason) {
 	if (deviceService) deviceService.stop();
 	if (simpleServer) simpleServer.stop();
 	//todo: loop over devices and unsubscribe from all events
-	//check if uninstall, if so remove storage
+	//check if uninstall/disable, if so remove saved data
 });
+
+//# sourceMappingURL=Firefox_Background.js.map

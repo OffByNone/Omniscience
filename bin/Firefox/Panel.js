@@ -2,7 +2,7 @@
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var Constants = require('../Utilities/Constants');
+var Constants = require('./Constants');
 
 var Panel = function Panel(pubSub, panels) {
     _classCallCheck(this, Panel);
@@ -18,3 +18,4 @@ var Panel = function Panel(pubSub, panels) {
 };
 
 module.exports = Panel;
+//# sourceMappingURL=Panel.js.map

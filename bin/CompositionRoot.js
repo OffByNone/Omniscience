@@ -32,7 +32,7 @@ var CompositionRoot = (function () {
 				menu = this._sdk.firefox.getNativeWindowMenu();
 			}
 
-			var Button = require('./UI/Button');
+			var Button = require('./Firefox/Button');
 			return new Button(button, menu);
 		}
 	}, {
@@ -58,7 +58,7 @@ var CompositionRoot = (function () {
 	}, {
 		key: "createTab",
 		value: function createTab(button, frontEndBridge) {
-			var Tab = require('./UI/Tab');
+			var Tab = require('./Firefox/Tab');
 			return new Tab(this._sdk.firefox.tabs(), button, frontEndBridge);
 		}
 	}]);
@@ -67,3 +67,5 @@ var CompositionRoot = (function () {
 })();
 
 module.exports = CompositionRoot;
+
+//# sourceMappingURL=CompositionRoot.js.map
