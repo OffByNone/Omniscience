@@ -43,7 +43,7 @@
 		"build": "npm run build:data & npm run build:chrome & npm run build:cordova & npm run build:firefox",
 		"post": "jpm post --post-url=http://127.0.0.1:7999",
 		"buildpost": "npm run build && npm run post",
-		"test": "jasmine"
-
+		"test": "jasmine",
+		"install":"npm run build"
 	}
 }
