@@ -10,7 +10,7 @@
 	"bugs": {
 		"url": "https://github.com/OffByNone/Omniscience/issues"
 	},
-	"id": "jid1-A3BeMgzQQjOvNg@jetpack",
+	"id": "Omniscience@OffByNone",
 	"license": "GNU GPL v3",
 	"repository": {
 		"url": "https://github.com/OffByNone/Omniscience.git",
@@ -44,6 +44,7 @@
 		"post": "jpm post --post-url=http://127.0.0.1:7999",
 		"buildpost": "npm run build && npm run post",
 		"test": "jasmine",
-		"install":"npm run build"
+		"install":"npm run build",
+		"compile":"npm install && npm run build && jpm xpi"
 	}
 }
