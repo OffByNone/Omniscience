@@ -385,14 +385,14 @@ var FrontEndBridge = (function (_Eventable) {
 			switch (eventType) {
 				case 'Subscribe':
 					var eventSubUrl = data[0],
-					    serviceUUID = data[1],
+					    serviceHash = data[1],
 					    serverIP = data[2],
 					    timeoutInSeconds = data[3],
 					    subscriptionId = data[4];
 
-					var directResponsesTo = 'http://' + serverIP + ':' + this._simpleServer.port + '/events/' + serviceUUID;
-					this._simpleServer.registerPath('/events/' + serviceUUID, function (request) {
-						return _this2.sendToFrontEnd("UPnPEvent", serviceUUID, request.body);
+					var directResponsesTo = 'http://' + serverIP + ':' + this._simpleServer.port + '/events/' + serviceHash;
+					this._simpleServer.registerPath('/events/' + serviceHash, function (request) {
+						return _this2.sendToFrontEnd("UPnPEvent", serviceHash, request.body);
 					});
 					this._subscriptionService.subscribe(directResponsesTo, eventSubUrl, timeoutInSeconds, subscriptionId).then(function (subscriptionId) {
 						return _this2.sendToFrontEnd("emitResponse", uniqueId, subscriptionId);
@@ -411,7 +411,7 @@ var FrontEndBridge = (function (_Eventable) {
 					    method = data[1],
 					    info = data[2];
 
-					this._serviceExecutor.callService(service.controlUrl, service.uuid, method, info).then(function (response) {
+					this._serviceExecutor.callService(service.controlUrl, service.hash, method, info).then(function (response) {
 						return _this2.sendToFrontEnd("emitResponse", uniqueId, response);
 					});
 					break;
@@ -4594,36 +4594,36 @@ module.exports = {
 		id: "upnp-org"
 	},
 	defaultDeviceTimeoutInSeconds: 900,
-	defaultIcon: './data/icons/logo_64.png',
-	MatchStickMacAddresses: ['98-3B-16', '02-1A-11'],
+	defaultIcon: "./data/icons/logo_64.png",
+	MatchStickMacAddresses: ["98-3B-16", "02-1A-11"],
 	ChromecastMacAddresses: [],
 	FireTVStickMacAddresses: [],
-	SSDPServiceType: 'upnp:rootdevice', //'ssdp:all'
+	SSDPServiceType: "upnp:rootdevice", //'ssdp:all'
 	uuidRegex: /(?:uuid:)([^:]*)/i,
-	MulticastIP: '239.255.255.250',
+	MulticastIP: "239.255.255.250",
 	MulticastPort: 1900,
-	PeerNameResolutionProtocolST: 'urn:microsoft windows peer name resolution protocol: v4:ipv6:linklocal',
-	MSearch: 'M-SEARCH * HTTP/1.1\r\n' + 'HOST: {0}:{1}\r\n' + 'ST: {2}\r\n' + 'MAN: "ssdp:discover"\r\n' + 'MX: 2\r\n\r\n',
+	PeerNameResolutionProtocolST: "urn:microsoft windows peer name resolution protocol: v4:ipv6:linklocal",
+	MSearch: "M-SEARCH * HTTP/1.1\r\n" + "HOST: {0}:{1}\r\n" + "ST: {2}\r\n" + "MAN: \"ssdp:discover\"\r\n" + "MX: 2\r\n\r\n",
 	ssdp: {
 		update: "ssdp:update",
 		"new": "ssdp:alive",
 		gone: "ssdp:byebye"
 	},
 	SOAP: {
-		ContentType: 'text/xml; charset=utf-8',
-		Body: '<?xml version="1.0" encoding="utf-8"?>\n' + '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">' + '<SOAP-ENV:Body>' + '<m:{1} xmlns:m="{0}">' + '{2}' + '</m:{1}>' + '</SOAP-ENV:Body>' + '</SOAP-ENV:Envelope>'
+		ContentType: "text/xml; charset=utf-8",
+		Body: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" + "<SOAP-ENV:Envelope SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" + "<SOAP-ENV:Body>" + "<m:{1} xmlns:m=\"{0}\">" + "{2}" + "</m:{1}>" + "</SOAP-ENV:Body>" + "</SOAP-ENV:Envelope>"
 	},
 	PreconditionFailed: 412,
 	ModelNames: {
-		MatchStick: 'MatchStick',
-		Chromecast: 'Eureka Dongle',
-		Firestick: 'FireTV Stick'
+		MatchStick: "MatchStick",
+		Chromecast: "Eureka Dongle",
+		Firestick: "FireTV Stick"
 	},
 	ServiceTypes: {
 		AddressBook: "urn:schemas-upnp-org:service:AddressBook:1",
-		AVTransport: 'urn:schemas-upnp-org:service:AVTransport:1',
-		AVTransportv2: 'urn:schemas-upnp-org:service:AVTransport:2',
-		AVTransportv3: 'urn:schemas-upnp-org:service:AVTransport:3',
+		AVTransport: "urn:schemas-upnp-org:service:AVTransport:1",
+		AVTransportv2: "urn:schemas-upnp-org:service:AVTransport:2",
+		AVTransportv3: "urn:schemas-upnp-org:service:AVTransport:3",
 		BasicManagement: "urn:schemas-upnp-org:service:BasicManagement:1",
 		BasicManagementv2: "urn:schemas-upnp-org:service:BasicManagement:2",
 		Calendar: "urn:schemas-upnp-org:service:Calendar:1",
@@ -4631,19 +4631,19 @@ module.exports = {
 		CallManagementv2: "urn:schemas-upnp-org:service:CallManagement:2",
 		ConfigurationManagement: "urn:schemas-upnp-org:service:ConfigurationManagement:1",
 		ConfigurationManagementv2: "urn:schemas-upnp-org:service:ConfigurationManagement:2",
-		ConnectionManager: 'urn:schemas-upnp-org:service:ConnectionManager:1',
-		ConnectionManagerv2: 'urn:schemas-upnp-org:service:ConnectionManager:2',
-		ConnectionManagerv3: 'urn:schemas-upnp-org:service:ConnectionManager:3',
-		ContentDirectory: 'urn:schemas-upnp-org:service:ContentDirectory:1',
-		ContentDirectoryv2: 'urn:schemas-upnp-org:service:ContentDirectory:2',
-		ContentDirectoryv3: 'urn:schemas-upnp-org:service:ContentDirectory:3',
-		ContentDirectoryv4: 'urn:schemas-upnp-org:service:ContentDirectory:4',
+		ConnectionManager: "urn:schemas-upnp-org:service:ConnectionManager:1",
+		ConnectionManagerv2: "urn:schemas-upnp-org:service:ConnectionManager:2",
+		ConnectionManagerv3: "urn:schemas-upnp-org:service:ConnectionManager:3",
+		ContentDirectory: "urn:schemas-upnp-org:service:ContentDirectory:1",
+		ContentDirectoryv2: "urn:schemas-upnp-org:service:ContentDirectory:2",
+		ContentDirectoryv3: "urn:schemas-upnp-org:service:ContentDirectory:3",
+		ContentDirectoryv4: "urn:schemas-upnp-org:service:ContentDirectory:4",
 		ContentSync: "urn:schemas-upnp-org:service:ContentSync:1",
 		Controlvalve: "urn:schemas-upnp-org:service:controlValve:1",
 		DataStore: "urn:schemas-upnp-org:service:DataStore:1",
 		DeviceProtection: "urn:schemas-upnp-org:service:DeviceProtection:1",
 		DeviceSecurity: "urn:schemas-upnp-org:service:DeviceSecurity:1",
-		DIALMultiscreen: 'urn:dial-multiscreen-org:service:dial:1',
+		DIALMultiscreen: "urn:dial-multiscreen-org:service:dial:1",
 		DigitalSecurityCameraSettings: "urn:schemas-upnp-org:service:DigitalSecurityCameraSettings:1",
 		DigitalSecurityCameraStillImage: "urn:schemas-upnp-org:service:DigitalSecurityCameraStillImage:1",
 		DigitalSecurityCameraMotionImage: "urn:schemas-upnp-org:service:DigitalSecurityCameraMotionImage:1",
@@ -4657,17 +4657,17 @@ module.exports = {
 		HVACSetpointSchedule: "urn:schemas-upnp-org:service:HVAC_SetpointSchedule:1",
 		InboundConnectionConfig: "urn:schemas-upnp-org:service:InboundConnectionConfig:1",
 		InputConfig: "urn:schemas-upnp-org:service:InputConfig:1",
-		IRCC: 'urn:schemas-sony-com:service:IRCC:1',
+		IRCC: "urn:schemas-sony-com:service:IRCC:1",
 		LinkAuthentication: "urn:schemas-upnp-org:service:LinkAuthentication:1",
-		Layer3Forwarding: 'urn:schemas-upnp-org:service:Layer3Forwarding:1',
+		Layer3Forwarding: "urn:schemas-upnp-org:service:Layer3Forwarding:1",
 		LowPower: "urn:schemas-upnp-org:service:LowerPowerDevice:1",
 		MediaManagement: "urn:schemas-upnp-org:service:MediaManagement:1",
 		MediaManagementv2: "urn:schemas-upnp-org:service:MediaManagement:2",
-		MediaReceiverRegistrar: 'urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1',
+		MediaReceiverRegistrar: "urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1",
 		Messaging: "urn:schemas-upnp-org:service:Messaging:1",
 		Messagingv2: "urn:schemas-upnp-org:service:Messaging:2",
-		MicrosoftWindowsPeerNameResolutionProtocol: 'urn:Microsoft Windows Peer Name Resolution Protocol:v4:IPV6:LinkLocal',
-		Party: 'urn:schemas-sony-com:service:Party:1',
+		MicrosoftWindowsPeerNameResolutionProtocol: "urn:Microsoft Windows Peer Name Resolution Protocol:v4:IPV6:LinkLocal",
+		Party: "urn:schemas-sony-com:service:Party:1",
 		Presence: "urn:schemas-upnp-org:service:Presence:1",
 		PrintBasic: "urn:schemas-upnp-org:service:PrintBasic:1",
 		PrintEnhancedLayout: "urn:schemas-upnp-org:service:PrintEnhancedLayout:1",
@@ -4688,7 +4688,7 @@ module.exports = {
 		RemoteAccessTransportAgentConfig: "urn:schemas-upnp-org:service:RATAConfig:1",
 		RemoteUIClient: "urn:schemas-upnp-org:service:RemoteUIClient:1",
 		RemoteUIServer: "urn:schemas-upnp-org:service:RemoteUIServer:1",
-		RenderingControl: 'urn:schemas-upnp-org:service:RenderingControl:1',
+		RenderingControl: "urn:schemas-upnp-org:service:RenderingControl:1",
 		SamsungMultiscreen: "urn:samsung.com:service:MultiScreenService:1",
 		Scan: "urn:schemas-upnp-org:service:Scan:1",
 		ScheduledRecording: "urn:schemas-upnp-org:service:ScheduledRecording:1",
@@ -4701,17 +4701,17 @@ module.exports = {
 		TemperatureSensor: "urn:schemas-upnp-org:service:TemperatureSensor:1",
 		TemperatureSetpoint: "urn:schmeas-upnp-org:service:TemperatureSetpoint:1",
 		TwoWayMotionMotor: "urn:schemas-upnp-org:service:TwoWayMotionMotor:1",
-		WANCommonInterfaceConfig: 'urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1',
-		WANIPConnection: 'urn:schemas-upnp-org:service:WANIPConnection:1',
-		WANPPPConnection: 'urn:schemas-upnp-org:service:WANPPPConnection:1',
+		WANCommonInterfaceConfig: "urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1",
+		WANIPConnection: "urn:schemas-upnp-org:service:WANIPConnection:1",
+		WANPPPConnection: "urn:schemas-upnp-org:service:WANPPPConnection:1",
 		WLANConfiguration: "urn:schemas-upnp-org:service:WLANConfiguration:1",
-		WFAWLANConfig: 'urn:schemas-wifialliance-org:service:WFAWLANConfig:1',
-		XCIS: 'urn:schemas-sony-com:service:X_CIS:1'
+		WFAWLANConfig: "urn:schemas-wifialliance-org:service:WFAWLANConfig:1",
+		XCIS: "urn:schemas-sony-com:service:X_CIS:1"
 	},
 	DeviceTypes: {
 		Basic: "urn:schemas-upnp-org:device:Basic:1",
 		BinaryLight: "urn:schemas-upnp-org:device:BinaryLight:1",
-		DIALMultiscreen: 'urn:dial-multiscreen-org:device:dial:1',
+		DIALMultiscreen: "urn:dial-multiscreen-org:device:dial:1",
 		DigitalSecurityCamera: "urn:schemas-upnp-org:device:DigitalSecurityCamera:1",
 		HVAC: "urn:schemas-upnp-org:device:HVAC_System:1",
 		HVACZoneThermostat: "urn:schemas-upnp-org:device:HVAC_ZoneThermostat:1",
@@ -4734,7 +4734,7 @@ module.exports = {
 		RemoteAccessServerv2: "urn:schemas-upnp-org:device:RAServer:2",
 		RemoteUIClient: "urn:schemas-upnp-org:device:RemoteUIClientDevice:1",
 		RemoteUIServer: "urn:schemas-upnp-org:device:RemoteUIServerDevice:1",
-		Root: 'upnp:rootdevice',
+		Root: "upnp:rootdevice",
 		Scanner: "urn:schemas-upnp-org:device:Scanner:1",
 		SensorManagement: "urn:schemas-upnp-org:device:SensorManagement:1",
 		SolarProtectionBlind: "urn:schemas-upnp-org:device:SolarProtectionBlind:1",
@@ -4742,10 +4742,10 @@ module.exports = {
 		TelephonyClientv2: "urn:schemas-upnp-org:device:TelephonyClient:2",
 		TelephonyServer: "urn:schemas-upnp-org:device:TelephonyServer:1",
 		TelephonyServerv2: "urn:schemas-upnp-org:device:TelephonyServer:2",
-		WAN: 'urn:schemas-upnp-org:device:WANDevice:1',
-		WANConnection: 'urn:schemas-upnp-org:device:WANConnectionDevice:1',
+		WAN: "urn:schemas-upnp-org:device:WANDevice:1",
+		WANConnection: "urn:schemas-upnp-org:device:WANConnectionDevice:1",
 		WLANAccessPoint: "urn:schemas-upnp-org:device:WLANAccessPointDevice:1",
-		WFA: 'urn:schemas-wifialliance-org:device:WFADevice:1'
+		WFA: "urn:schemas-wifialliance-org:device:WFADevice:1"
 	}
 };
 },{}],98:[function(require,module,exports){
@@ -4920,7 +4920,7 @@ var UPnPService = function UPnPService() {
     this.id = null;
     this.properties = [];
     this.methods = [];
-    this.uuid = null;
+    this.hash = null; //the uuid is not as unique as I had hoped.
     this.subscriptionId = null; //id used to unsubscribe and renew subscriptions.  Is returned from the subscribe call.
 };
 
@@ -4940,21 +4940,31 @@ var UPnPVersion = function UPnPVersion() {
 module.exports = UPnPVersion;
 },{}],109:[function(require,module,exports){
 /* global Promise */
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var Device = require('../Entities/Device');
 var UPnPVersion = require('../Entities/UPnPVersion');
 var DeviceManufacturer = require('../Entities/DeviceManufacturer');
 var DeviceModel = require('../Entities/DeviceModel');
 var Icon = require('../Entities/Icon');
 
-var DeviceFactory = (function () {
+var _require = require('omniscience-utilities');
+
+var Eventable = _require.Eventable;
+
+var DeviceFactory = (function (_Eventable) {
 	function DeviceFactory(xmlParser, urlProvider, md5, upnpServiceFactory, upnpExtensionInfoFactory, xhr, base64Utils) {
 		_classCallCheck(this, DeviceFactory);
 
+		_get(Object.getPrototypeOf(DeviceFactory.prototype), 'constructor', this).call(this);
 		this._xmlParser = xmlParser;
 		this._urlProvider = urlProvider;
 		this._md5 = md5;
@@ -4964,60 +4974,70 @@ var DeviceFactory = (function () {
 		this._base64Utils = base64Utils;
 	}
 
+	_inherits(DeviceFactory, _Eventable);
+
 	_createClass(DeviceFactory, [{
-		key: 'create',
-		value: function create(device, responseText, location, fromAddress, serverIP) {
+		key: 'build',
+		value: function build(responseText, location, fromAddress, serverIP) {
+			var responseXml = this._xmlParser.parseFromString(responseText);
+			var responseHash = this._md5(responseText);
+
+			var root = this._xmlParser.getElement(responseXml, 'root');
+			if (!root) throw new Error('Required element \'root\' was not found in responseXml');
+
+			var base = this._xmlParser.getText(root, 'baseUrl');
+			var upnpVersion = new UPnPVersion();
+			upnpVersion.major = this._xmlParser.getText(root, 'specVersion major');
+			upnpVersion.minor = this._xmlParser.getText(root, 'specVersion minor');
+
+			var deviceXml = this._xmlParser.getElement(root, 'device');
+			if (!deviceXml) throw new Error('Required element \'device\' was not found inside \'root\' node');
+
+			this._parseDeviceAttributes(deviceXml, responseHash, serverIP, fromAddress, location, upnpVersion, base);
+		}
+	}, {
+		key: '_parseDeviceAttributes',
+		value: function _parseDeviceAttributes(deviceXml, responseHash, serverIP, fromAddress, location, upnpVersion, base) {
 			var _this = this;
 
-			var responseXml = this._xmlParser.parseFromString(responseText);
+			var device = new Device();
 
-			var root = this._xmlParser.getElement(responseXml, "root");
+			device.serialNumber = this._xmlParser.getText(deviceXml, 'serialNumber');
+			device.webPage = this._xmlParser.getText(deviceXml, 'presentationURL');
+			device.name = this._xmlParser.getText(deviceXml, 'friendlyName');
+			device.id = this._xmlParser.getText(deviceXml, 'UDN').replace(/uuid\:/, '');
 
-			if (!root) throw new Error("Required element 'root' was not found in responseXml");
+			device.type = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(deviceXml, 'deviceType'));
+			device.manufacturer = new DeviceManufacturer();
+			device.manufacturer.name = this._xmlParser.getText(deviceXml, 'manufacturer');
+			device.manufacturer.url = this._xmlParser.getText(deviceXml, 'manufacturerURL');
+			device.model = new DeviceModel();
+			device.model.number = this._xmlParser.getText(deviceXml, 'modelNumber');
+			device.model.description = this._xmlParser.getText(deviceXml, 'modelDescription');
+			device.model.name = this._xmlParser.getText(deviceXml, 'modelName');
+			device.model.url = this._xmlParser.getText(deviceXml, 'modelUrl');
+			device.upc = this._xmlParser.getText(deviceXml, 'UPC');
 
-			var base = this._xmlParser.getText(root, "baseUrl");
-			var deviceXml = this._xmlParser.getElement(root, "device");
+			device.address = this._urlProvider.createUrl(base || this._urlProvider.createUrl(location).origin);
+			device.ssdpDescription = this._urlProvider.createUrl(location);
+			device.responseHash = responseHash;
+			device.fromAddress = fromAddress;
+			device.serverIP = serverIP;
 
-			if (!deviceXml) throw new Error("Required element 'device' was not found inside 'root' node");
+			var subDevices = this._xmlParser.getElements(deviceXml, 'deviceList device');
+			subDevices.forEach(function (subDeviceXml) {
+				_this._parseDeviceAttributes(subDeviceXml, responseHash, serverIP, fromAddress, location, upnpVersion, base);
+			});
 
-			this._parseDeviceAttributes(device, deviceXml);
-			return this._parseDeviceIcons(device, deviceXml, location, base).then(function () {
-				var servicesXml = _this._xmlParser.getElements(deviceXml, "serviceList service");
-
+			this._parseDeviceIcons(device, deviceXml, location, base).then(function () {
+				var servicesXml = _this._xmlParser.getElements(deviceXml, 'serviceList service');
 				servicesXml.forEach(function (serviceXml) {
 					var serviceInfo = _this._upnpServiceFactory.create(serviceXml, location, base, serverIP);
 					device.services.push(serviceInfo);
 				});
 
-				device.upnpVersion = new UPnPVersion();
-				device.upnpVersion.major = _this._xmlParser.getText(root, "specVersion major");
-				device.upnpVersion.minor = _this._xmlParser.getText(root, "specVersion minor");
-
-				device.address = _this._urlProvider.createUrl(base || _this._urlProvider.createUrl(location).origin);
-				device.ssdpDescription = _this._urlProvider.createUrl(location);
-				device.responseHash = _this._md5(responseText);
-				device.fromAddress = fromAddress;
-				device.serverIP = serverIP;
+				_this.emit('deviceBuilt', device);
 			});
-		}
-	}, {
-		key: '_parseDeviceAttributes',
-		value: function _parseDeviceAttributes(device, deviceXml) {
-			device.serialNumber = this._xmlParser.getText(deviceXml, "serialNumber");
-			device.webPage = this._xmlParser.getText(deviceXml, "presentationURL");
-			device.name = this._xmlParser.getText(deviceXml, "friendlyName");
-			device.id = this._xmlParser.getText(deviceXml, "UDN").replace(/uuid\:/, "");
-
-			device.type = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(deviceXml, "deviceType"));
-			device.manufacturer = new DeviceManufacturer();
-			device.manufacturer.name = this._xmlParser.getText(deviceXml, "manufacturer");
-			device.manufacturer.url = this._xmlParser.getText(deviceXml, "manufacturerURL");
-			device.model = new DeviceModel();
-			device.model.number = this._xmlParser.getText(deviceXml, "modelNumber");
-			device.model.description = this._xmlParser.getText(deviceXml, "modelDescription");
-			device.model.name = this._xmlParser.getText(deviceXml, "modelName");
-			device.model.url = this._xmlParser.getText(deviceXml, "modelUrl");
-			device.upc = this._xmlParser.getText(deviceXml, "UPC");
 		}
 	}, {
 		key: '_parseDeviceIcons',
@@ -5025,7 +5045,7 @@ var DeviceFactory = (function () {
 			var _this2 = this;
 
 			return new Promise(function (resolve, reject) {
-				var iconsXml = _this2._xmlParser.getElements(deviceXml, "iconList icon");
+				var iconsXml = _this2._xmlParser.getElements(deviceXml, 'iconList icon');
 				if (!iconsXml.length) {
 					resolve();
 				} else {
@@ -5033,12 +5053,12 @@ var DeviceFactory = (function () {
 						var icons = [];
 						iconsXml.forEach(function (iconXml) {
 							var icon = new Icon();
-							icon.mimeType = _this2._xmlParser.getText(iconXml, "mimetype");
-							icon.width = _this2._xmlParser.getText(iconXml, "width");
-							icon.height = _this2._xmlParser.getText(iconXml, "height");
-							icon.depth = _this2._xmlParser.getText(iconXml, "depth");
-							icon.url = _this2._urlProvider.toUrl(_this2._xmlParser.getText(iconXml, "url"), location, base);
-							console.log("width: " + Number.parseInt(icon.width, 10) + " height: " + Number.parseInt(icon.height, 10));
+							icon.mimeType = _this2._xmlParser.getText(iconXml, 'mimetype');
+							icon.width = _this2._xmlParser.getText(iconXml, 'width');
+							icon.height = _this2._xmlParser.getText(iconXml, 'height');
+							icon.depth = _this2._xmlParser.getText(iconXml, 'depth');
+							icon.url = _this2._urlProvider.toUrl(_this2._xmlParser.getText(iconXml, 'url'), location, base);
+							console.log('width: ' + Number.parseInt(icon.width, 10) + ' height: ' + Number.parseInt(icon.height, 10));
 							icon.area = (!isNaN(Number.parseInt(icon.width, 10)) ? Number.parseInt(icon.width, 10) : 1) * (!isNaN(Number.parseInt(icon.height, 10)) ? Number.parseInt(icon.height, 10) : 1);
 							icons.push(icon);
 						});
@@ -5048,7 +5068,7 @@ var DeviceFactory = (function () {
 							return -1;
 						};
 						var pngIcons = icons.filter(function (icon) {
-							return icon.mimeType === "image/png";
+							return icon.mimeType === 'image/png';
 						}).sort(sortFunc);
 						if (pngIcons && pngIcons.length) {
 							device.icon = pngIcons[0];
@@ -5065,13 +5085,15 @@ var DeviceFactory = (function () {
 								resolve();
 							});
 						} else {
-							device.icon.base64Image = "";
+							device.icon.base64Image = '';
 							resolve();
 						}
 					})();
 				}
 			});
 		}
+	}, {
+		key: '_getImage',
 
 		/*_base64EncodeImage(binaryImage) {
   	let uInt8Array = new Uint8Array(binaryImage);
@@ -5081,11 +5103,10 @@ var DeviceFactory = (function () {
         binaryString[arrayLength] = String.fromCharCode(uInt8Array[arrayLength]);
       }
       let data = binaryString.join('');
-  	    let base64 = window.btoa(data);
+  
+      let base64 = window.btoa(data);
       return "data:image/jpeg;base64," + base64;
   }*/
-	}, {
-		key: '_getImage',
 		value: function _getImage(url, mimeType) {
 			var _this3 = this;
 
@@ -5102,7 +5123,7 @@ var DeviceFactory = (function () {
 							binaryString[i] = String.fromCharCode(uInt8Array[i]);
 						}
 						var base64 = _this3._base64Utils.encode(binaryString.join(''));
-						resolve("data:" + mimeType + ";base64," + base64);
+						resolve('data:' + mimeType + ';base64,' + base64);
 					} else {
 						reject();
 					}
@@ -5113,10 +5134,10 @@ var DeviceFactory = (function () {
 	}]);
 
 	return DeviceFactory;
-})();
+})(Eventable);
 
 module.exports = DeviceFactory;
-},{"../Entities/DeviceManufacturer":100,"../Entities/DeviceModel":101,"../Entities/Icon":102,"../Entities/UPnPVersion":108}],110:[function(require,module,exports){
+},{"../Entities/Device":99,"../Entities/DeviceManufacturer":100,"../Entities/DeviceModel":101,"../Entities/Icon":102,"../Entities/UPnPVersion":108,"omniscience-utilities":156}],110:[function(require,module,exports){
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5165,7 +5186,7 @@ var ExecutableServiceMethodFactory = (function () {
 
 module.exports = ExecutableServiceMethodFactory;
 },{}],111:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -5187,13 +5208,13 @@ var ServiceMethodFactory = (function () {
             var _this = this;
 
             var method = new ServiceMethod();
-            method.name = this._xmlParser.getText(methodXml, "name");
+            method.name = this._xmlParser.getText(methodXml, 'name');
 
-            var args = this._xmlParser.getElements(methodXml, "argument").map(function (argumentXml) {
+            var args = this._xmlParser.getElements(methodXml, 'argument').map(function (argumentXml) {
                 return {
-                    name: _this._xmlParser.getText(argumentXml, "name"),
-                    direction: _this._xmlParser.getText(argumentXml, "direction"),
-                    relatedStateVariable: _this._xmlParser.getText(argumentXml, "relatedStateVariable")
+                    name: _this._xmlParser.getText(argumentXml, 'name'),
+                    direction: _this._xmlParser.getText(argumentXml, 'direction'),
+                    relatedStateVariable: _this._xmlParser.getText(argumentXml, 'relatedStateVariable')
                 };
             });
             args.forEach(function (argument) {
@@ -5219,7 +5240,7 @@ var ServiceMethodFactory = (function () {
 
 module.exports = ServiceMethodFactory;
 },{"../Entities/ServiceArgument":103,"../Entities/ServiceMethod":104}],112:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -5239,20 +5260,20 @@ var ServicePropertyFactory = (function () {
         key: 'create',
         value: function create(propertyXml) {
             var property = new ServiceProperty();
-            property.name = this._xmlParser.getText(propertyXml, "name");
-            property.datatype = this._xmlParser.getText(propertyXml, "dataType"); //todo: use the table containing allowed datatypes to better parse this
-            property.defaultValue = this._xmlParser.getText(propertyXml, "defaultValue");
-            property.evented = this._xmlParser.getAttribute(propertyXml, "sendEvents") === "yes";
+            property.name = this._xmlParser.getText(propertyXml, 'name');
+            property.datatype = this._xmlParser.getText(propertyXml, 'dataType'); //todo: use the table containing allowed datatypes to better parse this
+            property.defaultValue = this._xmlParser.getText(propertyXml, 'defaultValue');
+            property.evented = this._xmlParser.getAttribute(propertyXml, 'sendEvents') === 'yes';
 
-            property.allowedValues = this._xmlParser.getElements(propertyXml, "allowedValue").map(function (value) {
+            property.allowedValues = this._xmlParser.getElements(propertyXml, 'allowedValue').map(function (value) {
                 return value.innerHTML;
             });
             property.allowedValueRange = new AllowedValueRange();
 
-            if (this._xmlParser.hasNode(propertyXml, "allowedValueRange")) {
-                property.allowedValueRange.minimum = this._xmlParser.getText(propertyXml, "allowedValueRange minimum");
-                property.allowedValueRange.maximum = this._xmlParser.getText(propertyXml, "allowedValueRange maximum");
-                property.allowedValueRange.step = this._xmlParser.getText(propertyXml, "allowedValueRange step");
+            if (this._xmlParser.hasNode(propertyXml, 'allowedValueRange')) {
+                property.allowedValueRange.minimum = this._xmlParser.getText(propertyXml, 'allowedValueRange minimum');
+                property.allowedValueRange.maximum = this._xmlParser.getText(propertyXml, 'allowedValueRange maximum');
+                property.allowedValueRange.step = this._xmlParser.getText(propertyXml, 'allowedValueRange step');
             }
             return property;
         }
@@ -5263,44 +5284,44 @@ var ServicePropertyFactory = (function () {
 
 module.exports = ServicePropertyFactory;
 },{"../Entities/AllowedValueRange":98,"../Entities/ServiceProperty":105}],113:[function(require,module,exports){
-"use strict";
+'use strict';
 var UPnPExtensionInfo = require('../Entities/UPnPExtensionInfo');
 var Constants = require('../Constants');
 
 module.exports = {
-      create: function create(typeString) {
-            /*
-            Type of Extension	Standard												Non-Standard
-            device type			urn:schemas-upnp-org:device:[deviceType]:[version]		urn:[domain-name]:device:[deviceType]:[version]
-            service type 		urn:schemas-upnp-org:service:[serviceType]:[version]	urn:[domain-name]:service:[serviceType]:[version]
-            service id 			urn:upnp-org:serviceId:[serviceID]						urn:[domain-name]:serviceId:[serviceID]
-            */
-            if (!typeString) throw new Error("Argument 'typeString' cannot be null.");
+        create: function create(typeString) {
+                /*
+                Type of Extension	Standard												Non-Standard
+                device type			urn:schemas-upnp-org:device:[deviceType]:[version]		urn:[domain-name]:device:[deviceType]:[version]
+                service type 		urn:schemas-upnp-org:service:[serviceType]:[version]	urn:[domain-name]:service:[serviceType]:[version]
+                service id 			urn:upnp-org:serviceId:[serviceID]						urn:[domain-name]:serviceId:[serviceID]
+                */
+                if (!typeString) throw new Error('Argument \'typeString\' cannot be null.');
 
-            var parts = typeString.split(":");
-            if (parts.length !== 5 && parts.length !== 4) throw new Error("Invalid number of parts.  Must contain either 4 or 5, but had " + parts.length);
+                var parts = typeString.split(':');
+                if (parts.length !== 5 && parts.length !== 4) throw new Error('Invalid number of parts.  Must contain either 4 or 5, but had ' + parts.length);
 
-            var info = new UPnPExtensionInfo();
-            info.parts = parts;
-            info.raw = typeString;
-            info.domainName = info.parts[1];
-            info.type = info.parts[2];
-            info.name = info.parts[3];
+                var info = new UPnPExtensionInfo();
+                info.parts = parts;
+                info.raw = typeString;
+                info.domainName = info.parts[1];
+                info.type = info.parts[2];
+                info.name = info.parts[3];
 
-            if (info.parts.length === 5) {
-                  //device type and service type have 5 parts
-                  info.isStandard = info.domainName === Constants.standardDomainName.type;
-                  info.version = info.parts[4];
-            } else if (info.parts.length === 4) {
-                  //service id has 4 parts
-                  info.isStandard = info.domainName === Constants.standardDomainName.id;
-            }
+                if (info.parts.length === 5) {
+                        //device type and service type have 5 parts
+                        info.isStandard = info.domainName === Constants.standardDomainName.type;
+                        info.version = info.parts[4];
+                } else if (info.parts.length === 4) {
+                        //service id has 4 parts
+                        info.isStandard = info.domainName === Constants.standardDomainName.id;
+                }
 
-            return info;
-      }
+                return info;
+        }
 };
 },{"../Constants":97,"../Entities/UPnPExtensionInfo":106}],114:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -5310,77 +5331,78 @@ var UPnPVersion = require('../Entities/UPnPVersion');
 var UPnPService = require('../Entities/UPnPService');
 
 var UPnPServiceFactory = (function () {
-	function UPnPServiceFactory(fetch, xmlParser, urlProvider, upnpExtensionInfoFactory, serviceProperyFactory, serviceMethodFactory, serviceExecutor, executableServiceMethodFactory) {
-		_classCallCheck(this, UPnPServiceFactory);
+				function UPnPServiceFactory(fetch, md5, xmlParser, urlProvider, upnpExtensionInfoFactory, serviceProperyFactory, serviceMethodFactory, serviceExecutor, executableServiceMethodFactory) {
+								_classCallCheck(this, UPnPServiceFactory);
 
-		this._fetch = fetch;
-		this._xmlParser = xmlParser;
-		this._urlProvider = urlProvider;
-		this._upnpExtensionInfoFactory = upnpExtensionInfoFactory;
-		this._serviceProperyFactory = serviceProperyFactory;
-		this._serviceMethodFactory = serviceMethodFactory;
-		this._serviceExecutor = serviceExecutor;
-		this._executableServiceMethodFactory = executableServiceMethodFactory;
-	}
+								this._fetch = fetch;
+								this._md5 = md5;
+								this._xmlParser = xmlParser;
+								this._urlProvider = urlProvider;
+								this._upnpExtensionInfoFactory = upnpExtensionInfoFactory;
+								this._serviceProperyFactory = serviceProperyFactory;
+								this._serviceMethodFactory = serviceMethodFactory;
+								this._serviceExecutor = serviceExecutor;
+								this._executableServiceMethodFactory = executableServiceMethodFactory;
+				}
 
-	_createClass(UPnPServiceFactory, [{
-		key: 'create',
-		value: function create(serviceXml, location, base, serverIP) {
-			var _this = this;
+				_createClass(UPnPServiceFactory, [{
+								key: 'create',
+								value: function create(serviceXml, location, base, serverIP) {
+												var _this = this;
 
-			var upnpService = new UPnPService();
-			upnpService.controlUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, "controlURL"), location, base);
-			upnpService.eventSubUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, "eventSubURL"), location, base);
-			upnpService.scpdUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, "SCPDURL"), location, base);
-			upnpService.uuid = this._xmlParser.getText(serviceXml, "serviceId").split(":")[3];
-			upnpService.id = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(serviceXml, "serviceId"));
-			upnpService.type = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(serviceXml, "serviceType"));
-			upnpService.serverIP = serverIP;
+												var upnpService = new UPnPService();
+												upnpService.controlUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, 'controlURL'), location, base);
+												upnpService.eventSubUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, 'eventSubURL'), location, base);
+												upnpService.scpdUrl = this._urlProvider.toUrl(this._xmlParser.getText(serviceXml, 'SCPDURL'), location, base);
+												upnpService.id = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(serviceXml, 'serviceId'));
+												upnpService.hash = this._md5(upnpService.scpdUrl || location);
+												upnpService.type = this._upnpExtensionInfoFactory.create(this._xmlParser.getText(serviceXml, 'serviceType'));
+												upnpService.serverIP = serverIP;
 
-			if (this._urlProvider.isValidUri(upnpService.scpdUrl)) this._fetch(upnpService.scpdUrl).then(function (response) {
-				//todo: take in the current upnpService object as a parameter, and add a hash of the response to said object so I can lazy rebuild it like I do the device
-				var responseXml = _this._xmlParser.parseFromString(response._bodyText);
-				upnpService.upnpVersion = new UPnPVersion();
-				upnpService.upnpVersion.major = _this._xmlParser.getText(responseXml, "specVersion major");
-				upnpService.upnpVersion.minor = _this._xmlParser.getText(responseXml, "specVersion minor");
+												if (this._urlProvider.isValidUri(upnpService.scpdUrl)) this._fetch(upnpService.scpdUrl).then(function (response) {
+																//todo: take in the current upnpService object as a parameter, and add a hash of the response to said object so I can lazy rebuild it like I do the device
+																var responseXml = _this._xmlParser.parseFromString(response._bodyText);
+																upnpService.upnpVersion = new UPnPVersion();
+																upnpService.upnpVersion.major = _this._xmlParser.getText(responseXml, 'specVersion major');
+																upnpService.upnpVersion.minor = _this._xmlParser.getText(responseXml, 'specVersion minor');
 
-				var propertiesXml = _this._xmlParser.getElements(responseXml, "stateVariable");
-				propertiesXml.forEach(function (propertyXml) {
-					return upnpService.properties.push(_this._serviceProperyFactory.create(propertyXml));
-				});
+																var propertiesXml = _this._xmlParser.getElements(responseXml, 'stateVariable');
+																propertiesXml.forEach(function (propertyXml) {
+																				return upnpService.properties.push(_this._serviceProperyFactory.create(propertyXml));
+																});
 
-				var methodsXml = _this._xmlParser.getElements(responseXml, "action");
-				methodsXml.forEach(function (methodXml) {
-					return upnpService.methods.push(_this._serviceMethodFactory.create(methodXml, upnpService.properties));
-				});
+																var methodsXml = _this._xmlParser.getElements(responseXml, 'action');
+																methodsXml.forEach(function (methodXml) {
+																				return upnpService.methods.push(_this._serviceMethodFactory.create(methodXml, upnpService.properties));
+																});
 
-				var executableService = {};
-				upnpService.methods.forEach(function (method) {
-					return executableService[method.name] = _this._executableServiceMethodFactory.create(method, upnpService.type.raw);
-				});
-				_this._serviceExecutor.executableServices[upnpService.uuid] = executableService;
+																var executableService = {};
+																upnpService.methods.forEach(function (method) {
+																				return executableService[method.name] = _this._executableServiceMethodFactory.create(method, upnpService.type.raw);
+																});
+																_this._serviceExecutor.executableServices[upnpService.hash] = executableService;
 
-				return upnpService;
-			});
+																return upnpService;
+												});
 
-			return upnpService;
-		}
-	}]);
+												return upnpService;
+								}
+				}]);
 
-	return UPnPServiceFactory;
+				return UPnPServiceFactory;
 })();
 
 module.exports = UPnPServiceFactory;
 },{"../Entities/UPnPService":107,"../Entities/UPnPVersion":108}],115:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Constants = require('../Constants');
 
@@ -5389,8 +5411,6 @@ var _require = require('omniscience-utilities');
 var Eventable = _require.Eventable;
 
 var ActiveSearcher = (function (_Eventable) {
-	_inherits(ActiveSearcher, _Eventable);
-
 	function ActiveSearcher(ssdpClients) {
 		_classCallCheck(this, ActiveSearcher);
 
@@ -5399,9 +5419,7 @@ var ActiveSearcher = (function (_Eventable) {
 		this._isInitialized = false;
 	}
 
-	//todo: I think there is a way to merge the active and passive searchers. Have them simply take in a list of active ssdpclients and passive ssdpclients
-	//the messageReceived function is different - don't forget
-	//I could then move the bulk of the initializessdpclients somewhere else, the bigger problem is that if I move it back to ssdpclient it will be harder to test
+	_inherits(ActiveSearcher, _Eventable);
 
 	_createClass(ActiveSearcher, [{
 		key: 'search',
@@ -5430,9 +5448,9 @@ var ActiveSearcher = (function (_Eventable) {
 					return _this._error(error);
 				});
 				ssdpClient.on('messageReceived', function (headers) {
-					if (headers["st"] === Constants.PeerNameResolutionProtocolST) return; //this is a Microsoft thing to resolve names on ipv6 networks and in this case just causes problems
+					if (headers['st'] === Constants.PeerNameResolutionProtocolST) return; //this is a Microsoft thing to resolve names on ipv6 networks and in this case just causes problems
 
-					_this.emit("found", headers);
+					_this.emit('found', headers);
 				});
 			});
 			this._isInitialized = true;
@@ -5447,17 +5465,21 @@ var ActiveSearcher = (function (_Eventable) {
 	return ActiveSearcher;
 })(Eventable);
 
+//todo: I think there is a way to merge the active and passive searchers. Have them simply take in a list of active ssdpclients and passive ssdpclients
+//the messageReceived function is different - don't forget
+//I could then move the bulk of the initializessdpclients somewhere else, the bigger problem is that if I move it back to ssdpclient it will be harder to test
+
 module.exports = ActiveSearcher;
 },{"../Constants":97,"omniscience-utilities":156}],116:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Constants = require('../Constants');
 
@@ -5466,8 +5488,6 @@ var _require = require('omniscience-utilities');
 var Eventable = _require.Eventable;
 
 var DeviceLocator = (function (_Eventable) {
-	_inherits(DeviceLocator, _Eventable);
-
 	function DeviceLocator(timer, fetch, activeSearcher, passiveSearcher, xmlParser, simpleTCP, urlProvider) {
 		_classCallCheck(this, DeviceLocator);
 
@@ -5487,19 +5507,21 @@ var DeviceLocator = (function (_Eventable) {
 		this._isInitialized = false;
 	}
 
+	_inherits(DeviceLocator, _Eventable);
+
 	_createClass(DeviceLocator, [{
 		key: '_initializeSearchers',
 		value: function _initializeSearchers() {
 			var _this = this;
 
-			this._activeSearcher.on("found", function (headers, ignoreDebounce) {
+			this._activeSearcher.on('found', function (headers, ignoreDebounce) {
 				return _this._deviceFound(headers, ignoreDebounce);
 			});
-			this._passiveSearcher.on("found", function (headers, ignoreDebounce) {
+			this._passiveSearcher.on('found', function (headers, ignoreDebounce) {
 				return _this._deviceFound(headers, ignoreDebounce);
 			});
-			this._passiveSearcher.on("lost", function (headers) {
-				return _this.emit("deviceLost", headers.usn.split("::")[0]);
+			this._passiveSearcher.on('lost', function (headers) {
+				return _this.emit('deviceLost', headers.usn.split('::')[0]);
 			});
 			this._passiveSearcher.listen();
 
@@ -5516,7 +5538,7 @@ var DeviceLocator = (function (_Eventable) {
 				_this2._checkForLostDevice(device.ssdpDescription, device.id, false).then(function (found) {
 					if (!found) {
 						delete _this2._deviceLastResponses[device.id];
-						_this2.emit("deviceLost", device.id);
+						_this2.emit('deviceLost', device.id);
 					}
 				});
 			});
@@ -5540,13 +5562,13 @@ var DeviceLocator = (function (_Eventable) {
 
 			var waitTimeInSeconds = Constants.defaultDeviceTimeoutInSeconds;
 
-			if (headers.hasOwnProperty("cache-control")) waitTimeInSeconds = headers["cache-control"].split("=")[1];
+			if (headers.hasOwnProperty('cache-control')) waitTimeInSeconds = headers['cache-control'].split('=')[1];
 
 			this._deviceTimeouts[id] = this._timer.setTimeout(function () {
 				_this3._checkForLostDevice(_this3._urlProvider.toUrl(headers.location), id).then(function (found) {
 					if (!found) {
 						delete _this3._deviceLastResponses[id];
-						_this3.emit("deviceLost", id);
+						_this3.emit('deviceLost', id);
 					} else {
 						_this3._deviceFound(headers, true);
 					}
@@ -5571,9 +5593,9 @@ var DeviceLocator = (function (_Eventable) {
 				return _this4._fetch(location).then(function (response) {
 					if (!response.ok) return false;else {
 						var responseXml = _this4._xmlParser.parseFromString(response._bodyText);
-						var deviceIdElements = _this4._xmlParser.getElements(responseXml, "UDN");
+						var deviceIdElements = _this4._xmlParser.getElements(responseXml, 'UDN');
 						return deviceIdElements.some(function (deviceIdElement) {
-							return id === deviceIdElement.innerHTML.replace("uuid:", "");
+							return id === deviceIdElement.innerHTML.replace('uuid:', '');
 						});
 						//check the xml to make sure what we got back has the same id as what we were looking for --my matchstick gets a new ip on each boot
 						//also make sure to check against all UDN elements as sub devices will have their own and we don't know what we are looking for
@@ -5590,15 +5612,15 @@ var DeviceLocator = (function (_Eventable) {
 
 module.exports = DeviceLocator;
 },{"../Constants":97,"omniscience-utilities":156}],117:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Constants = require('../Constants');
 
@@ -5607,8 +5629,6 @@ var _require = require('omniscience-utilities');
 var Eventable = _require.Eventable;
 
 var PassiveSearcher = (function (_Eventable) {
-	_inherits(PassiveSearcher, _Eventable);
-
 	function PassiveSearcher(ssdpClients) {
 		_classCallCheck(this, PassiveSearcher);
 
@@ -5616,6 +5636,8 @@ var PassiveSearcher = (function (_Eventable) {
 		this._ssdpClients = ssdpClients;
 		this._isInitialized = false;
 	}
+
+	_inherits(PassiveSearcher, _Eventable);
 
 	_createClass(PassiveSearcher, [{
 		key: 'listen',
@@ -5642,9 +5664,9 @@ var PassiveSearcher = (function (_Eventable) {
 				ssdpClient.on('messageReceived', function (headers) {
 					if (headers.st === Constants.PeerNameResolutionProtocolST) return; //this is a Microsoft thing to resolve names on ipv6 networks and in this case just causes problems
 
-					var nts = (headers.nts || "").toLowerCase();
+					var nts = (headers.nts || '').toLowerCase();
 
-					if (nts === Constants.ssdp.update || nts === Constants.ssdp['new']) _this.emit("found", headers, nts === Constants.ssdp.update);else if (nts === Constants.ssdp.gone) _this.emit("lost", headers);
+					if (nts === Constants.ssdp.update || nts === Constants.ssdp['new']) _this.emit('found', headers, nts === Constants.ssdp.update);else if (nts === Constants.ssdp.gone) _this.emit('lost', headers);
 				});
 			});
 			this._isInitialized = true;
@@ -5661,17 +5683,17 @@ var PassiveSearcher = (function (_Eventable) {
 
 module.exports = PassiveSearcher;
 },{"../Constants":97,"omniscience-utilities":156}],118:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Constants = require('../Constants');
 
@@ -5680,8 +5702,6 @@ var _require = require('omniscience-utilities');
 var Eventable = _require.Eventable;
 
 var SSDPClient = (function (_Eventable) {
-	_inherits(SSDPClient, _Eventable);
-
 	function SSDPClient(stringUtils, udpSocket) {
 		_classCallCheck(this, SSDPClient);
 
@@ -5690,10 +5710,7 @@ var SSDPClient = (function (_Eventable) {
 		this._stringUtils = stringUtils;
 	}
 
-	/**
-  * Simple Service Discovery Protocol
-  * DLNA, and DIAL are built on top of this
-  */
+	_inherits(SSDPClient, _Eventable);
 
 	_createClass(SSDPClient, [{
 		key: 'initialize',
@@ -5704,9 +5721,9 @@ var SSDPClient = (function (_Eventable) {
 				return _this.emit('close', status);
 			});
 			this._socket.onPacketReceivedEvent(function (message) {
-				var messageData = typeof message.data === "string" ? message.data : _this._toString(message.data);
+				var messageData = typeof message.data === 'string' ? message.data : _this._toString(message.data);
 				var headers = _this._parseHeaders(messageData);
-				headers.fromAddress = message.fromAddr.address + ":" + message.fromAddr.port;
+				headers.fromAddress = message.fromAddr.address + ':' + message.fromAddr.port;
 				headers.serverIP = _this._socket.localIP;
 				_this.emit('messageReceived', headers);
 			});
@@ -5730,9 +5747,9 @@ var SSDPClient = (function (_Eventable) {
 		value: function _parseHeaders(headerString) {
 			//todo: move this to another file, it doesnt belong here
 			var headers = {};
-			headerString.split("\r\n").forEach(function (x) {
-				if (!x || x.indexOf(":") === -1) return;
-				var colon = x.indexOf(":");
+			headerString.split('\r\n').forEach(function (x) {
+				if (!x || x.indexOf(':') === -1) return;
+				var colon = x.indexOf(':');
 				headers[x.substring(0, colon).toLowerCase()] = x.substring(colon + 1).trim();
 			});
 			return headers;
@@ -5753,18 +5770,22 @@ var SSDPClient = (function (_Eventable) {
 	return SSDPClient;
 })(Eventable);
 
+/**
+ * Simple Service Discovery Protocol
+ * DLNA, and DIAL are built on top of this
+ */
 module.exports = SSDPClient;
 },{"../Constants":97,"omniscience-utilities":156}],119:[function(require,module,exports){
 /* global Promise */
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Constants = require('../Constants');
 
@@ -5775,8 +5796,6 @@ var Eventable = _require.Eventable;
 var Device = require('../Entities/Device');
 
 var DeviceService = (function (_Eventable) {
-	_inherits(DeviceService, _Eventable);
-
 	function DeviceService(deviceFactory, deviceLocator, storageService, notifications, fetch, md5) {
 		_classCallCheck(this, DeviceService);
 
@@ -5788,15 +5807,9 @@ var DeviceService = (function (_Eventable) {
 		this._fetch = fetch;
 		this._md5 = md5;
 		this._isInitialized = false;
-
-		this.devices = [];
-		/* todo: this is now a race condition full of problems
-   * what if we execute a search before we resolve the promise?
-   */
-		this._storageService.get("devices").then(function (devices) {
-			/*this.devices = devices || [];*/
-		});
 	}
+
+	_inherits(DeviceService, _Eventable);
 
 	_createClass(DeviceService, [{
 		key: 'loadDevices',
@@ -5818,11 +5831,11 @@ var DeviceService = (function (_Eventable) {
 			var _this2 = this;
 
 			if (!this._isInitialized) {
-				this._deviceLocator.on("deviceFound", function (id, location, fromAddress, serverIP) {
-					if (location.toLowerCase().indexOf("http") !== 0) location = "http://" + location; //Microsoft special
+				this._deviceLocator.on('deviceFound', function (id, location, fromAddress, serverIP) {
+					if (location.toLowerCase().indexOf('http') !== 0) location = 'http://' + location; //Microsoft special
 					_this2._fetch(location).then(function (response) {
-						var deviceXml = response._bodyText;
-						var deviceResponseHash = _this2._md5(deviceXml);
+						var responseText = response._bodyText;
+						var deviceResponseHash = _this2._md5(responseText);
 						var device = _this2.devices.filter(function (device) {
 							return device.id === id;
 						})[0];
@@ -5831,26 +5844,31 @@ var DeviceService = (function (_Eventable) {
 							/* for devices that show up on multiple network interfaces, their response hashes will be different, and their fromAddresses will also be different
         * don't rebuild if it is simply the same device on a different network interface
         */
-							device = device || new Device();
-
 							try {
-								_this2._deviceFactory.create(device, deviceXml, location, fromAddress, serverIP).then(function () {
-									_this2._addDevice(device);
-								});
+								_this2._deviceFactory.build(responseText, location, fromAddress, serverIP);
 							} catch (err) {
 								console.log(err);
 							}
-							/*todo: either root node or device node were missing.  probably log a warning/error to the console.*/
 						}
 					});
 				});
-				this._deviceLocator.on("deviceLost", function (id) {
+				this._deviceFactory.on('deviceBuilt', function (newDevice) {
+					var oldDevice = _this2.devices.filter(function (device) {
+						return device.id === newDevice.id;
+					})[0];
+					_this2._addDevice(newDevice, oldDevice);
+				});
+				this._deviceLocator.on('deviceLost', function (id) {
 					return _this2._removeDevice(id);
 				});
 				this._isInitialized = true;
-			}
 
-			this._deviceLocator.search(this.devices);
+				this._storageService.get('devices').then(function (devices) {
+					//make sure to only search after we load devices or it becomes a race
+					_this2.devices = devices || [];
+					_this2._deviceLocator.search(_this2.devices);
+				});
+			} else this._deviceLocator.search(this.devices);
 		}
 	}, {
 		key: '_removeDevice',
@@ -5858,7 +5876,7 @@ var DeviceService = (function (_Eventable) {
 			for (var i = 0; i < this.devices.length; i++) {
 				if (this.devices[i].id === id) {
 					var lostDevice = this.devices.splice(i, 1)[0];
-					this.emit("deviceLost", lostDevice);
+					this.emit('deviceLost', lostDevice);
 					this._saveDeviceList();
 					return;
 				}
@@ -5866,15 +5884,17 @@ var DeviceService = (function (_Eventable) {
 		}
 	}, {
 		key: '_addDevice',
-		value: function _addDevice(device) {
-			var isNew = this.devices.every(function (existingDevice) {
+		value: function _addDevice(newDevice, device) {
+			if (typeof device === 'undefined' || device === null) device = newDevice;else for (var prop in newDevice) {
+				device[prop] = newDevice[prop];
+			}var isNew = this.devices.every(function (existingDevice) {
 				return existingDevice.id !== device.id;
 			});
 			if (isNew) {
 				this.devices.push(device);
 				this._notifications.notify({
 					title: 'Found ' + device.name,
-					text: "a " + device.model.name + " by " + device.manufacturer.name,
+					text: 'a ' + device.model.name + ' by ' + device.manufacturer.name,
 					iconURL: device.icon && device.icon.base64Image ? device.icon.base64Image : Constants.defaultIcon
 				});
 			}
@@ -5884,7 +5904,7 @@ var DeviceService = (function (_Eventable) {
 	}, {
 		key: '_saveDeviceList',
 		value: function _saveDeviceList() {
-			this._storageService.set("devices", this.devices);
+			this._storageService.set('devices', this.devices);
 		}
 	}]);
 
@@ -5913,7 +5933,7 @@ module.exports = {
 	}
 };
 },{}],121:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -5965,32 +5985,32 @@ module.exports = SOAPService;
 },{"../Constants":97}],122:[function(require,module,exports){
 "use strict";
 var ServiceExecutor = {
-      executableServices: {},
-      callService: function callService(serviceControlUrl, serviceUUID, serviceMethod, data) {
-            if (!serviceControlUrl) throw new Error("Argument 'serviceControlUrl' cannot be null.");
-            if (!serviceUUID) throw new Error("Argument 'serviceUUID' cannot be null.");
-            if (!serviceMethod) throw new Error("Argument 'serviceMethod' cannot be null.");
+        executableServices: {},
+        callService: function callService(serviceControlUrl, serviceHash, serviceMethod, data) {
+                if (!serviceControlUrl) throw new Error("Argument 'serviceControlUrl' cannot be null.");
+                if (!serviceHash) throw new Error("Argument 'serviceHash' cannot be null.");
+                if (!serviceMethod) throw new Error("Argument 'serviceMethod' cannot be null.");
 
-            var serviceClass = ServiceExecutor.executableServices[serviceUUID];
-            if (!serviceClass) throw new Error("Executable Service has not yet been created.");
+                var serviceClass = ServiceExecutor.executableServices[serviceHash];
+                if (!serviceClass) throw new Error("Executable Service has not yet been created.");
 
-            var serviceFunc = serviceClass[serviceMethod];
-            if (typeof serviceFunc !== "function") throw new Error("Executable Service has been created, but method has not.");
+                var serviceFunc = serviceClass[serviceMethod];
+                if (typeof serviceFunc !== "function") throw new Error("Executable Service has been created, but method has not.");
 
-            return serviceFunc(serviceControlUrl, data);
-      }
+                return serviceFunc(serviceControlUrl, data);
+        }
 };
 
 module.exports = ServiceExecutor;
 },{}],123:[function(require,module,exports){
 "use strict";
-/* global Promise */
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Constants = require('../Constants');
+/* global Promise */
+var Constants = require("../Constants");
 
 var SubscriptionService = (function () {
 	function SubscriptionService(fetch) {
@@ -6022,10 +6042,10 @@ var SubscriptionService = (function () {
 				};
 			}
 			return this._fetch(subscriptionUrl, {
-				method: 'SUBSCRIBE',
+				method: "SUBSCRIBE",
 				headers: headers
 			}).then(function (response) {
-				subscriptionId = (response.headers.get('sid') || "").replace("uuid:", "");
+				subscriptionId = (response.headers.get("sid") || "").replace("uuid:", "");
 				if (!response.ok) {
 					//handle 405 method not allowed
 					if (response.status == Constants.PreconditionFailed) {
@@ -6048,7 +6068,7 @@ var SubscriptionService = (function () {
 			if (!subscriptionUrl) return Promise.reject("Argument 'subscriptionUrl' cannot be null.");
 			if (!subscriptionId) return Promise.reject("Argument 'subscriptionId' cannot be null.");
 
-			return this._fetch(subscriptionUrl, { method: 'UNSUBSCRIBE', headers: { SID: subscriptionId } });
+			return this._fetch(subscriptionUrl, { method: "UNSUBSCRIBE", headers: { SID: subscriptionId } });
 		}
 	}]);
 
@@ -6070,12 +6090,10 @@ var XmlParser = (function () {
 		this._domParser = domParser;
 	}
 
-	//todo: make this into a singleton
-
 	_createClass(XmlParser, [{
 		key: "parseFromString",
 		value: function parseFromString(stringOfXml) {
-			return typeof stringOfXml === "string" ? this._domParser.parseFromString(stringOfXml, 'text/xml') : null;
+			return typeof stringOfXml === "string" ? this._domParser.parseFromString(stringOfXml, "text/xml") : null;
 		}
 	}, {
 		key: "getElements",
@@ -6108,6 +6126,7 @@ var XmlParser = (function () {
 	return XmlParser;
 })();
 
+//todo: make this into a singleton
 module.exports = XmlParser;
 },{}],125:[function(require,module,exports){
 "use strict";
@@ -6116,11 +6135,11 @@ module.exports.format = function format(stringToFormat) {
     //a string.format like function
     var args = Array.prototype.slice.call(arguments, 1);
     return stringToFormat.replace(/{(\d+)}/g, function (match, number) {
-        return typeof args[number] !== 'undefined' ? args[number] : match;
+        return typeof args[number] !== "undefined" ? args[number] : match;
     });
 };
 },{}],126:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -6150,7 +6169,7 @@ var _require = require('omniscience-utilities');
 
 var Utilities = _require.Utilities;
 
-var SdkResolver = require("omniscience-sdk-resolver");
+var SdkResolver = require('omniscience-sdk-resolver');
 
 var UPnP = (function () {
 	function UPnP() {
@@ -6166,7 +6185,7 @@ var UPnP = (function () {
 			var _this = this;
 
 			return this.createDeviceLocator().then(function (deviceLocator) {
-				return new DeviceService(new DeviceFactory(new XmlParser(_this._sdk.createDomParser()), _this._utilities.createUrlProvider(), _this._utilities.MD5(), new UPnPServiceFactory(_this._utilities.fetch(), new XmlParser(_this._sdk.createDomParser()), _this._utilities.createUrlProvider(), UPnPExtensionInfoFactory, new ServicePropertyFactory(new XmlParser(_this._sdk.createDomParser())), new ServiceMethodFactory(new XmlParser(_this._sdk.createDomParser())), ServiceExecutor, new ExecutableServiceMethodFactory(new XmlParser(_this._sdk.createDomParser()), new SOAPService(_this._utilities.fetch(), new XmlParser(_this._sdk.createDomParser()), StringUtils), ParameterValidator)), UPnPExtensionInfoFactory, _this._sdk.XMLHttpRequest(), _this._sdk.createBase64Utils()), deviceLocator, _this._sdk.createStorageService(), _this._sdk.notifications(), _this._utilities.fetch(), _this._utilities.MD5());
+				return new DeviceService(new DeviceFactory(new XmlParser(_this._sdk.createDomParser()), _this._utilities.createUrlProvider(), _this._utilities.MD5(), new UPnPServiceFactory(_this._utilities.fetch(), _this.utilities.MD5(), new XmlParser(_this._sdk.createDomParser()), _this._utilities.createUrlProvider(), UPnPExtensionInfoFactory, new ServicePropertyFactory(new XmlParser(_this._sdk.createDomParser())), new ServiceMethodFactory(new XmlParser(_this._sdk.createDomParser())), ServiceExecutor, new ExecutableServiceMethodFactory(new XmlParser(_this._sdk.createDomParser()), new SOAPService(_this._utilities.fetch(), new XmlParser(_this._sdk.createDomParser()), StringUtils), ParameterValidator)), UPnPExtensionInfoFactory, _this._sdk.XMLHttpRequest(), _this._sdk.createBase64Utils()), deviceLocator, _this._sdk.createStorageService(), _this._sdk.notifications(), _this._utilities.fetch(), _this._utilities.MD5());
 			});
 		}
 	}, {

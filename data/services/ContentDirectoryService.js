@@ -35,7 +35,7 @@ window.omniscience.factory('contentDirectoryService', function ($rootScope, even
 		},
 		unsubscribe: function () {
 			var service = getService();
-			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);
+			return subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);
 		}
 	};
 });

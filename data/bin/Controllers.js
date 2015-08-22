@@ -122,7 +122,7 @@ window.omniscience.controller('DeviceController', function DeviceController($sco
 				return false;
 			}
 		}).forEach(function (service) {
-			return subscriptionService.unsubscribe(service.uuid, service.subscriptionId, service.eventSubUrl);
+			return subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);
 		});
 	});
 });

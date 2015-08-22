@@ -4,17 +4,17 @@
 	var subscriptions = {};
 
 	function addSubscription(service, timeoutInSeconds) {
-		subscriptions[service.uuid].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
-		return eventService.emit("Subscribe", service.eventSubUrl, service.uuid, service.serverIP, timeoutInSeconds, service.subscriptionId).then((subscriptionId) => {
-			if (!subscriptionId) $timeout.cancel(subscriptions[service.uuid].timeout);
+		subscriptions[service.hash].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
+		return eventService.emit("Subscribe", service.eventSubUrl, service.hash, service.serverIP, timeoutInSeconds, service.subscriptionId).then((subscriptionId) => {
+			if (!subscriptionId) $timeout.cancel(subscriptions[service.hash].timeout);
 
 			service.subscriptionId = subscriptionId;
 			return subscriptionId;
 		});
 	}
 
-	eventService.on("UPnPEvent", (serviceUUID, eventXmlString) => {
-		var callbacks = subscriptions[serviceUUID].callbacks;
+	eventService.on("UPnPEvent", (serviceHash, eventXmlString) => {
+		var callbacks = subscriptions[serviceHash].callbacks;
 		if (!callbacks) return;
 
 		var lastChangeObj = lastChangeEventParser.parseEvent(eventXmlString);
@@ -52,28 +52,28 @@
 		subscribe: function subscribe(service, genericEventCallback, lastChangeCallback, timeoutInSeconds) {
 			if (typeof genericEventCallback !== "function" && typeof lastChangeCallback !== "function") throw new Error("Invalid argument exception.  Both parameters 'genericCallback' and 'lastChangeCallback' are null or not functions.  At least one of them must be a function.");
 			if (!service || typeof service !== "object") throw new Error("Invalid argument exception.  Parameter 'service' is either null or not an object.");
-			if (!service.uuid) throw new Error("Argument null exception service.uuid cannot be null.");
+			if (!service.hash) throw new Error("Argument null exception service.hash cannot be null.");
 			if (!service.eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
 
-			if (typeof subscriptions[service.uuid] === "object") {
-				subscriptions[service.uuid].callbacks.push({ genericEventCallback, lastChangeCallback });
+			if (typeof subscriptions[service.hash] === "object") {
+				subscriptions[service.hash].callbacks.push({ genericEventCallback, lastChangeCallback });
 				return $q.reject("already subscribed, Your callbacks will still be executed.");
 				//todo: resolve with sub id.  While we have already subscribed, the first subscription response may not have returned yet, so we might not have the sub id
 			}
 
-			subscriptions[service.uuid] = { callbacks: [{ genericEventCallback, lastChangeCallback }] };
+			subscriptions[service.hash] = { callbacks: [{ genericEventCallback, lastChangeCallback }] };
 			return addSubscription(service, timeoutInSeconds || 900);
 		},
-		unsubscribe: function unsubscribe(serviceUUID, subscriptionId, eventSubUrl) {
-			if (!serviceUUID) throw new Error("Argument null exception service.uuid cannot be null.");
+		unsubscribe: function unsubscribe(serviceHash, subscriptionId, eventSubUrl) {
+			if (!serviceHash) throw new Error("Argument null exception service.hash cannot be null.");
 			if (!eventSubUrl) throw new Error("Argument null exception service.eventSubUrl cannot be null.");
 			if (!subscriptionId) return; //means we never subscribed in the first place
-			if (!subscriptions[serviceUUID]) return; //if we have already unsubscribed
+			if (!subscriptions[serviceHash]) return; //if we have already unsubscribed
 
-			if (!!subscriptions[serviceUUID].timeout) $timeout.cancel(subscriptions[serviceUUID].timeout);
-			delete subscriptions[serviceUUID];
+			if (!!subscriptions[serviceHash].timeout) $timeout.cancel(subscriptions[serviceHash].timeout);
+			delete subscriptions[serviceHash];
 
-			return eventService.emit("Unsubscribe", eventSubUrl, subscriptionId, serviceUUID)
+			return eventService.emit("Unsubscribe", eventSubUrl, subscriptionId, serviceHash)
 							.then(() => subscriptionId = null);
 		}
 	}
