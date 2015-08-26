@@ -1,6 +1,6 @@
 *.db
-npm-debug.log
 *.name
+npm-debug.log
 .idea/
 .vs/
 
