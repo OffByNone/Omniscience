@@ -37,14 +37,16 @@
 	"scripts": {
 		"lint": "eslint",
 		"build:data":"babel ./data/Services -o ./data/bin/Services.js -s & babel ./data/Controllers -o ./data/bin/Controllers.js -s",
-		"build:chrome":"browserify ./lib/Background/Chrome.js --im -t babelify -o ./bin/Chrome_Background.js",
-		"build:cordova":"browserify ./lib/Background/Cordova.js --im -t babelify -o ./bin/Cordova_Background.js",
+		"build:chrome:background":"browserify ./lib/Background/Chrome.js --im -t babelify -o ./bin/Chrome_Background.js",
+		"build:chrome":"npm run build:chrome:background & npm run build:data",
+		"build:cordova:background":"browserify ./lib/Background/Cordova.js --im -t babelify -o ./bin/Cordova_Background.js",
+		"build:cordova":"npm run build:cordova:background & npm run build:data",
 		"build:firefox":"babel ./lib/Background/Firefox.js -o ./bin/Firefox_Background.js -s & babel ./lib/CompositionRoot.js -o ./bin/CompositionRoot.js -s & babel ./lib/FrontEndBridge.js -o ./bin/FrontEndBridge.js -s & babel ./lib/Firefox -d ./bin/Firefox -s",
-		"build": "npm run build:data & npm run build:chrome & npm run build:cordova & npm run build:firefox",
+		"build": "npm run build:data & npm run build:chrome:background & npm run build:cordova:background & npm run build:firefox",
 		"post": "jpm post --post-url=http://127.0.0.1:7999",
-		"buildpost": "npm run build && npm run post",
+		"buildpost": "npm run build:firefox && npm run post",
 		"test": "jasmine",
 		"install":"npm run build",
-		"compile":"npm install && npm run build && jpm xpi"
+		"xpi":"npm install && npm run build:firefox && jpm xpi"
 	}
 }
