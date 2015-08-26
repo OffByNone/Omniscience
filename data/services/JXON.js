@@ -114,19 +114,21 @@
 		},
 		getChildElements: function (childNodes) {
 			var children = [];
-			for (var childNode of childNodes) {
-				if (this.nodeTypes[childNode.nodeType] === "Element" && (this.includePrefixedElements || !childNode.prefix))
-					children.push(childNode)
+			for (var i = 0; i < childNodes.length; i++) {
+				//cannot be a for of due to https://code.google.com/p/chromium/issues/detail?id=401699
+				if (this.nodeTypes[childNodes[i].nodeType] === "Element" && (this.includePrefixedElements || !childNodes[i].prefix))
+					children.push(childNodes[i])
 			}
 			return children;
 		},
 		getInnerText: function (childNodes) {
 			var innerText = "";
-			for (var childNode of childNodes) {
-				var nodeType = this.nodeTypes[childNode.nodeType];
+			for (var i = 0; i < childNodes.length; i++) {
+				//cannot be a for of due to https://code.google.com/p/chromium/issues/detail?id=401699
+				var nodeType = this.nodeTypes[childNodes[i].nodeType];
 
 				if (nodeType === "CDATASection" || nodeType === "text")
-					innerText += childNode.nodeValue.trim();
+					innerText += childNodes[i].nodeValue.trim();
 			}
 
 			return this.parseText(innerText);
@@ -243,8 +245,8 @@
 		},
 		jsToString: this.stringify = function (jsonObject, namespaceUri /* optional */, qualifiedName /* optional */, documentType /* optional */) {
 			return this.xmlToString(
-			  this.jsonToXml(jsonObject, namespaceUri, qualifiedName, documentType)
-			);
+				this.jsonToXml(jsonObject, namespaceUri, qualifiedName, documentType)
+				);
 		},
 	};
 });
