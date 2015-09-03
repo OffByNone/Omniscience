@@ -35,8 +35,6 @@
 	connectionManagerService.subscribe((eventArray) => {
 		if (!Array.isArray(eventArray)) return;
 
-		console.log(eventArray);
-
 		eventArray.forEach(eventObj => {
 			if (eventObj.hasOwnProperty("currentconnectioninfo"))
 				$scope.currentConnectionInfo = eventObj.currentConnectionInfo;
