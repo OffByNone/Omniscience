@@ -6,11 +6,9 @@
 	$rootScope.serviceTypes = [];
 	$rootScope.eventLog = [];
 
+
 	$rootScope.refreshDevices = function refreshDevices() {
 		eventService.emit('refreshDevices');
-	};
-	$rootScope.loadDevices = function loadDevices() {
-		eventService.emit("loadDevices");
 	};
 
 	function addUpdateDevice(device) {
