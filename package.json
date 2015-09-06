@@ -29,10 +29,10 @@
 		"jpm-mobile": "^0.0.5"
 	},
 	"dependencies": {
-		"omniscience-networking": "offbynone/omniscience-networking",
-		"omniscience-sdk-resolver": "offbynone/omniscience-sdk-resolver",
-		"omniscience-upnp": "offbynone/omniscience-upnp",
-		"omniscience-utilities": "offbynone/omniscience-utilities"
+		"omniscience-networking": "offbynone/omniscience-networking#Dev",
+		"omniscience-sdk-resolver": "offbynone/omniscience-sdk-resolver#Dev",
+		"omniscience-upnp": "offbynone/omniscience-upnp#Dev",
+		"omniscience-utilities": "offbynone/omniscience-utilities#Dev"
 	},
 	"scripts": {
 		"lint": "eslint",
