@@ -19,8 +19,8 @@
 						<dd ng-show="service.type.raw">{{service.type.raw}}</dd>
 						<dt ng-show="service.id.raw">Raw Id</dt>
 						<dd ng-show="service.id.raw">{{service.id.raw}}</dd>
-						<dt ng-show="service.subscriptionId">Subscription Id</dt>
-						<dd ng-show="service.subscriptionId">{{service.subscriptionId}}</dd>
+						<dt ng-show="subscriptions[service.hash]">Subscription Id</dt>
+						<dd ng-show="subscriptions[service.hash]">{{subscriptions[service.hash]}}</dd>
 					</dl>
 				</div>
 			</div>

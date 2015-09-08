@@ -3,6 +3,8 @@ window.omniscience.controller('DeviceController', function DeviceController($sco
 
 	informationService.init();
 	$scope.eventLog = [];
+	$scope.subscriptions = {};
+
 
 	$scope.hasService = function hasService(rawServiceType) {
 		if ($scope.device && Array.isArray($scope.device.services))
@@ -25,34 +27,29 @@ window.omniscience.controller('DeviceController', function DeviceController($sco
 		$scope.device = device || {};
 		$scope.device.services.forEach(informationService.put);
 		$scope.device.services
-        .filter((service) => {
-        	try {
-        		var url = new URL(service.eventSubUrl);
-        		return url.hostname && url.protocol;
-        	} catch (error) {
-        		return false;
-        	}
-        })
-        .forEach((service) => subscriptionService.subscribe(service,
+		.filter((service) => {
+			try {
+				var url = new URL(service.eventSubUrl);
+				return url.hostname && url.protocol;
+			} catch (error) {
+				return false;
+			}
+		})
+		.forEach((service) => subscriptionService.subscribe(service,
 				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }),
 				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }))
-			.then((subscriptionId) => service.subscriptionId = subscriptionId));
+			.then((subscriptionId) => $scope.subscriptions[service.hash] = subscriptionId));
 	}
 
 	getDevice();
 
 	$scope.$on('$destroy', function () {
-		$scope.device.services
-			.filter((service) => {
-				try {
-					var url = new URL(service.eventSubUrl);
-					return url.hostname && url.protocol;
-				} catch (error) {
-					return false;
-				}
-			})
-			.forEach((service) => {
-				subscriptionService.unsubscribe(service.hash, service.subscriptionId, service.eventSubUrl);
-			});
+		for (var serviceHash in $scope.subscriptions) {
+			if ($scope.subscriptions.hasOwnProperty(serviceHash)) {
+				var service = $scope.device.services.filter(deviceService => serviceHash === deviceService.hash)[0];
+				subscriptionService.unsubscribe(service.hash, $scope.subscriptions[serviceHash], service.eventSubUrl);
+				delete $scope.subscriptions[serviceHash];
+			}
+		}
 	});
 });

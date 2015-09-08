@@ -7,8 +7,6 @@
 		subscriptions[service.hash].timeout = $timeout(() => addSubscription(service, timeoutInSeconds), timeoutInSeconds * 900);/// make it 90% of the period so we don't resubscribe too late and potentially miss something
 		return eventService.emit("Subscribe", service.eventSubUrl, service.hash, service.serverIP, timeoutInSeconds, service.subscriptionId).then((subscriptionId) => {
 			if (!subscriptionId) $timeout.cancel(subscriptions[service.hash].timeout);
-
-			service.subscriptionId = subscriptionId;
 			return subscriptionId;
 		});
 	}

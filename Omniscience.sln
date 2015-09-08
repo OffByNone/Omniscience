@@ -45,6 +45,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1165AB1F-BB6E-496B-A149-853693054AFA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.jpmignore = .jpmignore
 		manifest.json = manifest.json
 		package.json = package.json
 		README.md = README.md
