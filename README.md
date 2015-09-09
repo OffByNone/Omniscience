@@ -3,40 +3,47 @@ Omniscience
 
 Firefox Extension/Chrome App to find and interact with UPnP (chromecast, matchstick, firetv stick, xbox 360, xbox one, etc..) devices on your local network
 
-How To:
+#Prerequisites:
 
-	Run
+	1. Recent version of Node
+	2. babel, babelify, browserify, eslint, jasmine, jpm `npm install babel babelify browserify eslint jasmine jpm -g`
 
-		install jpm
-		navigate to root of addon
-		jpm run -p ExtensionDev --debug
+#How To:
+	##Build
+		(From root of soln)
+		`npm run build`
+		or `npm run build:chrome`
+		or `npm run build:firefox`
+		or `npm run build:cordova`
+		or `npm run xpi`
 
-		-p ExtensionDev is telling it to use my existing profile with the name ExtensionDev.
-			Note that it will copy that profile and you will use a copy of the profile which will be destroyed when you close the window.  Your original profile will not be touched
-		--debug tells it to start with the addon debugger open
+	##Run Tests
+		`npm run test`
+		`npm run lint`
 
-		on windows environment variable JPM_FIREFOX_BINARY controls default binary to execute
+	##Run
+		###Chrome
+		1. Go to chrome://extensions
+		2. Check the Developer Mode box
+		3. Click Load unpacked extension
+		4. Select the root of the soln
+		5. Click Launch
 
-	Debug Node unit tests
-		node --debug-brk node_modules/jasmine/bin/jasmine.js spec\UnitTestFileHere.js
-	Istanbul code coverage
-		istanbul cover node_modules/jasmine/bin/jasmine.js
+		###Firefox
+		1. Install the Extension Auto Installer from addons.mozilla.org
+		2. Change the port it listens on to 7999
+		3. run `npm run buildpost` or `npm run post`
 
-	View contents of simplestorage
+	##View contents of simplestorage
 		From addon-debugger console run
 			loader.modules['resource://gre/modules/commonjs/sdk/simple-storage.js'].exports.storage
 
-	Connect to MatchStick for debugging purposes
+	##Connect to MatchStick for debugging purposes
 		adb connect ip:5555 (5555 is default so you should be able to omit the port, ip is the ip of your device)
 		adb devices (you should see your device, mine just shows as device)
 		open webide and it should be listed under usb devices
-	When using pre-existing profile console.log statements from addon will not be shown.  To enable add key to about:config with
+	##Firefox about:config changes:
 		name: extensions.jid1-A3BeMgzQQjOvNg@jetpack.sdk.console.logLevel
 		value: all
-
-
-Commands to Build
-
-	npm run build
-	npm run buildpost
-	npm run post
+		name: xpinstall.signatures.required
+		value: false
