@@ -1,8 +1,6 @@
 {
 	"author": "OffByNone",
-	"contributors": [
-		"seandulin"
-	],
+	"contributors":["seandulin"],
 	"title": "Omniscience",
 	"name": "omniscience",
 	"description": "Finds UPnP devices on the local network",
@@ -23,13 +21,13 @@
 		"Fennec": ">=38.0a1"
 	},
 	"devDependencies": {
-		"browserify": "^11.0.1",
-		"babel": "^5.8.21",
-		"babelify": "^6.2.0",
-		"eslint": "^1.2.1",
+		"babel": "^5.8.23",
+		"babelify": "^6.3.0",
+		"browserify": "11.0.1",
+		"eslint": "^1.3.1",
 		"jasmine": "^2.3.2",
 		"jpm": "^1.0.1",
-		"jpm-mobile": "^0.0.5"
+		"jpm-mobile": "^0.0.6"
 	},
 	"dependencies": {
 		"omniscience-networking": "offbynone/omniscience-networking",
@@ -38,29 +36,18 @@
 		"omniscience-utilities": "offbynone/omniscience-utilities"
 	},
 	"scripts": {
-		"build:data:services": "./node_modules/.bin/babel ./data/Services -o ./data/bin/Services.js -s",
-		"build:data:controllers": "./node_modules/.bin/babel ./data/Controllers -o ./data/bin/Controllers.js -s",
-		"build:data": "npm run build:data:services & npm run build:data:controllers",
-		
-		"build:chrome:background": "./node_modules/.bin/browserify ./lib/Background/Chrome.js --im -t babelify -o ./bin/Chrome_Background.js",
-		"build:chrome": "npm run build:chrome:background & npm run build:data",
-		
-		"build:cordova:background": "./node_modules/.bin/browserify ./lib/Background/Cordova.js --im -t babelify -o ./bin/Cordova_Background.js",
-		"build:cordova": "npm run build:cordova:background & npm run build:data",
-		
-		"build:firefox:background": "./node_modules/.bin/babel ./lib/Background/Firefox.js -o ./bin/Firefox_Background.js -s",
-		"build:firefox:comproot": "./node_modules/.bin/babel ./lib/CompositionRoot.js -o ./bin/CompositionRoot.js -s",
-		"build:firefox:feb": "./node_modules/.bin/babel ./lib/FrontEndBridge.js -o ./bin/FrontEndBridge.js -s",
-		"build:firefox:lib": "babel ./lib/Firefox -d ./bin/Firefox -s",
-		"build:firefox": "npm run build:firefox:background & npm run build:firefox:comproot & npm run build:firefox:feb & npm run build:firefox:lib",
-		
+		"lint": "eslint",
+		"build:data":"babel ./data/Services -o ./data/bin/Services.js -s & babel ./data/Controllers -o ./data/bin/Controllers.js -s",
+		"build:chrome:background":"browserify ./lib/Background/Chrome.js --im -t babelify -o ./bin/Chrome_Background.js",
+		"build:chrome":"npm run build:chrome:background & npm run build:data",
+		"build:cordova:background":"browserify ./lib/Background/Cordova.js --im -t babelify -o ./bin/Cordova_Background.js",
+		"build:cordova":"npm run build:cordova:background & npm run build:data",
+		"build:firefox":"babel ./lib/Background/Firefox.js -o ./bin/Firefox_Background.js -s & babel ./lib/CompositionRoot.js -o ./bin/CompositionRoot.js -s & babel ./lib/FrontEndBridge.js -o ./bin/FrontEndBridge.js -s & babel ./lib/Firefox -d ./bin/Firefox -s",
 		"build": "npm run build:data & npm run build:chrome:background & npm run build:cordova:background & npm run build:firefox",
-		"post": "./node_modules/.bin/jpm post --post-url=http://127.0.0.1:7999",
+		"post": "jpm post --post-url=http://127.0.0.1:7999",
 		"buildpost": "npm run build:firefox && npm run post",
-		
-		"lint": "./node_modules/.bin/eslint",
-		"test": "./node_modules/.bin/jasmine",
-		"install": "npm run build",
-		"xpi": "npm install && npm run build:firefox && ./node_modules/.bin/jpm xpi"
+		"test": "jasmine",
+		"install":"npm run build",
+		"xpi":"npm install && npm run build:firefox && jpm xpi"
 	}
 }

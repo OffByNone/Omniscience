@@ -20,6 +20,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "data", "data\", "{B73C23DE-
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "58063"
+		SlnRelativePath = "data\"
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "lib", "lib\", "{2D5ACAC1-4012-427B-B923-F74D59938225}"
@@ -40,11 +41,13 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "lib", "lib\", "{2D5ACAC1-40
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "58073"
+		SlnRelativePath = "lib\"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1165AB1F-BB6E-496B-A149-853693054AFA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.jpmignore = .jpmignore
 		manifest.json = manifest.json
 		package.json = package.json
 		README.md = README.md
@@ -69,6 +72,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "spec", "spec\", "{0E6C1D65-
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "64968"
+		SlnRelativePath = "spec\"
 	EndProjectSection
 EndProject
 Global
