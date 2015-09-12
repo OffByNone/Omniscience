@@ -1,4 +1,4 @@
-window.omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService) {
+window.omniscience.controller('DeviceController', function DeviceController($scope, $routeParams, $rootScope, $timeout, eventService, informationService, subscriptionService, loggerService) {
 	"use strict";
 
 	informationService.init();
@@ -36,8 +36,16 @@ window.omniscience.controller('DeviceController', function DeviceController($sco
 			}
 		})
 		.forEach((service) => subscriptionService.subscribe(service,
-				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }),
-				(subEvents) => $scope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), service, subEvents }))
+				(subEvents) => {
+					var loggable = {};
+					loggable[service.type.name] = subEvents;
+					loggerService.log(loggable);
+				},
+				(subEvents) => {
+					var loggable = {};
+					loggable[service.type.name] = subEvents;
+					loggerService.log(loggable);
+				})
 			.then((subscriptionId) => $scope.subscriptions[service.hash] = subscriptionId));
 	}
 

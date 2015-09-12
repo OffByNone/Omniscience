@@ -1,5 +1,5 @@
 <div>
-	<nav class="navbar navbar-default">
+	<nav id="navbar" class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-content">
@@ -20,7 +20,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown" role="presentation">
-						<a class="dropdown-toggle" data-toggle="dropdown" role="tab" aria-expanded="false">{{device.name}} <span class="caret"></span></a>
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Event Log<span class="caret"></span></a>
+						<div ng-include="'../templates/Logger.html'" class="dropdown-menu" role="menu"></div>
+						<!--<logger class="dropdown-menu" role="menu"></logger>-->
+					</li>
+					<li class="dropdown" role="presentation">
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{device.name}} <span class="caret"></span></a>
 						<div class="list-group dropdown-menu" role="menu">
 							<device-list></device-list>
 						</div>
