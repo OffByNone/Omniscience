@@ -21,4 +21,20 @@
 .event-log {
 	max-width: 750px;
 	max-height: 750px;
+	overflow: auto;
+}
+
+ul.event-log li {
+	background: white;
+	display: block;
+	padding: 5px;
+}
+
+.event-log li:hover {
+	background-color: aliceblue;
+}
+
+.event-log-name {
+	font-weight: bold;
+	font-size: 16px;
 }

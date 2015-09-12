@@ -23,7 +23,7 @@
 	}
 
 	return {
-		log: function log(obj) {
+		log: function log(obj, name) {
 			var loggable;
 			if (typeof obj === "string") obj = JSON.parse(obj);
 
@@ -32,7 +32,7 @@
 
 			//loggable = $sce.trustAsHtml(syntaxHighlight(loggable));
 
-			$rootScope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), loggable });
+			$rootScope.eventLog.push({ timestamp: new Date(Date.now()).toLocaleTimeString(), loggable, name });
 		}
 	};
 });

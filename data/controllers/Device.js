@@ -36,16 +36,8 @@ window.omniscience.controller('DeviceController', function DeviceController($sco
 			}
 		})
 		.forEach((service) => subscriptionService.subscribe(service,
-				(subEvents) => {
-					var loggable = {};
-					loggable[service.type.name] = subEvents;
-					loggerService.log(loggable);
-				},
-				(subEvents) => {
-					var loggable = {};
-					loggable[service.type.name] = subEvents;
-					loggerService.log(loggable);
-				})
+				(subEvents) => loggerService.log(subEvents, service.type.name),
+				(subEvents) => loggerService.log(subEvents, service.type.name))
 			.then((subscriptionId) => $scope.subscriptions[service.hash] = subscriptionId));
 	}
 

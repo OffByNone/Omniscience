@@ -1,6 +1,10 @@
 ﻿<ul class="list-inline container-fluid event-log">
 	<li ng-repeat="event in $root.eventLog">
-		<span>{{event.timestamp}}</span>
+		<span ng-show="!event.name">{{event.timestamp}}</span>
+		<div ng-show="event.name">
+			<span class="event-log-name ng-binding">{{event.name}}</span>
+			<span class="ng-binding">{{event.timestamp}}</span>
+		</div>
 		<pre>{{event.loggable}}"</pre>
 	</li>
 </ul>
