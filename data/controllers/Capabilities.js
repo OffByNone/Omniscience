@@ -3,7 +3,7 @@
 
 	$scope.currentConnectionInfo = {};
 	$scope.currentConnectionIds = {};
-	$scope.protocolInfo = {};
+	$scope.protocolInfo = [];
 
 	$scope.setProtocolInfoFilter = function (newFilter) {
 		$scope.protocolInfoFilter = newFilter;
