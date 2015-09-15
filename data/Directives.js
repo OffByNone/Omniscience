@@ -72,4 +72,14 @@
 
 		function link(scope, element, attributes) { }
 	});
+	angular.module("omniscience").directive("logger", function () {
+		return ({
+			controller: "LoggerController",
+			link: link,
+			restrict: "E",
+			templateUrl: "../templates/Logger.html"
+		});
+
+		function link(scope, element, attributes) { }
+	});
 })();

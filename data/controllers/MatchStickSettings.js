@@ -164,6 +164,9 @@
 	$scope.getDeviceInfo2();
 	$scope.getNetworks();
 
+
+
+
 	//todo: the below three aren't wired up and therefore are untested.  test and wire them up
 	$scope.setWiFi = function setWiFi(wifiSettings) {
 		//todo: validate that this actually works, then put something in the UI so it can be used.

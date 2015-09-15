@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h3 class="device-name">
-					<span ng-show="device.type.name">{{device.type.name}}</span>
+					<span ng-show="device.type.name" ng-attr-title="{{device.type.raw}}">{{device.type.name}}</span>
 					<span ng-show="device.type.version">v{{device.type.version}}</span>
 				</h3>
 				<span class="label label-primary" ng-show="device.type.isStandard">Standard</span>
@@ -13,8 +13,6 @@
 		<div class="row">
 			<div class="col-md-12">
 				<dl class="dl-horizontal">
-					<dt ng-show="device.type.raw">Raw</dt>
-					<dd ng-show="device.type.raw">{{device.type.raw}}</dd>
 					<dt ng-show="device.language">Language</dt>
 					<dd ng-show="device.language">{{device.language.name}}</dd>
 					<dt ng-show="device.model.number">Model Number</dt>
@@ -25,10 +23,6 @@
 					<dd ng-show="device.timezone">{{device.timezone}}</dd>
 					<dt ng-show="device.uuid">UUID</dt>
 					<dd ng-show="device.uuid">{{device.uuid}}</dd>
-					<dt ng-show="device.id">ID</dt>
-					<dd ng-show="device.id">{{device.id}}</dd>
-					<dt ng-show="device.upnpVersion">UPnP</dt>
-					<dd ng-show="device.upnpVersion">v{{device.upnpVersion.major}}.{{device.upnpVersion.minor}}</dd>
 					<dt ng-show="device.macAddress">Mac Address</dt>
 					<dd ng-show="device.macAddress">{{device.macAddress}}</dd>
 					<dt ng-show="device.serialNumber">Serial Number</dt>
@@ -36,30 +30,6 @@
 					<dt ng-show="device.softwareVersion">Software Version</dt>
 					<dd ng-show="device.softwareVersion">{{device.softwareVersion}}</dd>
 				</dl>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<ul class="list-inline container-fluid event-log">
-					<li ng-repeat="event in eventLog">
-						<div>
-							<span class="event-log-service-name">
-								{{event.service.type.name}}
-							</span>
-							<span>
-								{{event.timestamp}}
-							</span>
-						</div>
-						<div class="row" ng-repeat="e in event.subEvents">
-							<div class="col-md-offset-1 col-md-11">
-								<div class="row" ng-hide="value === ''" ng-repeat="(key, value) in e">
-									<div class="col-md-4">{{key}}</div>
-									<div class="col-md-4">{{value}}</div>
-								</div>
-							</div>
-						</div>
-					</li>
-				</ul>
 			</div>
 		</div>
 		<div class="row" ng-show="device.ssdpDescription">

@@ -1,27 +1,21 @@
 ﻿<div class="well">
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" ng-class="{active: $first}" ng-repeat="service in device.services">
+		<li role="presentation" ng-class="{active: $first}" ng-repeat="service in device.services | orderBy: 'type.name'">
 			<a data-target="#{{service.hash}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
 		</li>
 	</ul>
 	<div class="tab-content tab-padding">
-		<div ng-repeat="service in device.services" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.hash}}">
+		<div ng-repeat="service in device.services | orderBy: 'type.name'" role="tabpanel" ng-class="{active: $first}" class="tab-pane service" id="{{service.hash}}">
 			<div class="row" ng-show="service.type.raw">
 				<div class="col-md-12">
 					<h4 class="service-name">
-						<span ng-show="service.type.name">{{service.type.name}}</span>
+						<span ng-show="service.type.name" ng-attr-title="{{service.id.raw}}">{{service.type.name}}</span>
 						<span ng-show="service.type.version">v{{service.type.version}}</span>
 					</h4>
-					<span class="label label-primary" ng-show="service.type.isStandard">Standard</span>
-					<span class="label label-info" ng-show="!service.type.isStandard">Vendor Specific</span>
-					<dl class="dl-horizontal">
-						<dt ng-show="service.type.raw">Raw Name</dt>
-						<dd ng-show="service.type.raw">{{service.type.raw}}</dd>
-						<dt ng-show="service.id.raw">Raw Id</dt>
-						<dd ng-show="service.id.raw">{{service.id.raw}}</dd>
-						<dt ng-show="subscriptions[service.hash]">Subscription Id</dt>
-						<dd ng-show="subscriptions[service.hash]">{{subscriptions[service.hash]}}</dd>
-					</dl>
+					<span class="label label-primary" ng-show="service.type.isStandard" ng-attr-title="{{service.type.raw}}">Standard</span>
+					<span class="label label-info" ng-show="!service.type.isStandard" ng-attr-title="{{service.type.raw}}">Vendor Specific</span>
+					<span class="label label-success" ng-show="subscriptions[service.hash]" ng-attr-title="{{subscriptions[service.hash]}}">Subscribed</span>
+					<span class="label label-danger" ng-show="!subscriptions[service.hash]">Not Subscribed</span>
 				</div>
 			</div>
 			<div class="row" ng-show="service.scpdUrl || service.controlUrl || service.eventSubUrl">
