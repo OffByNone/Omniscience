@@ -4,13 +4,8 @@
 		<p class="list-group-item-text">
 			<em>{{ device.model.name }}</em> by <em>{{ device.manufacturer.name }}</em>
 		</p>
-		<span class="capabilities">
-			<span class="fa fa-server" ng-show="device.capabilities.server"></span>
-			<span class="glyphicon glyphicon-headphones" ng-show="device.capabilities.audio"></span>
-			<span class="glyphicon glyphicon-film" ng-show="device.capabilities.video"></span>
-			<span class="glyphicon glyphicon-picture" ng-show="device.capabilities.image"></span>
-			<span class="glyphicon glyphicon-blackboard" ng-show="device.capabilities.mirror"></span>
-			<span class="icon-router" ng-show="device.capabilities.router"></span>
+		<span class="capabilities" ng-repeat="(key, value) in device.fontIcons">
+			<span class="{{key}}"></span>
 		</span>
 	</div>
 	<span class="media-right media-middle">
