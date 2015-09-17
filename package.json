@@ -37,7 +37,7 @@
 	},
 	"scripts": {
 		"lint": "eslint",
-		"build:data":"babel ./data/Services -o ./data/bin/Services.js -s & babel ./data/Controllers -o ./data/bin/Controllers.js",
+		"build:data":"babel ./data/Services -o ./data/bin/Services.js & babel ./data/Controllers -o ./data/bin/Controllers.js",
 		"build:chrome:background":"browserify ./lib/Background/Chrome.js --im -t babelify -o ./bin/Chrome_Background.js",
 		"build:chrome":"npm run build:chrome:background & npm run build:data",
 		"build:cordova:background":"browserify ./lib/Background/Cordova.js --im -t babelify -o ./bin/Cordova_Background.js",
