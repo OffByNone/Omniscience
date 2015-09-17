@@ -1,41 +1,41 @@
-﻿<div class="well clearfix">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<h3 class="device-name">
-					<span ng-show="device.type.name" ng-attr-title="{{device.type.raw}}">{{device.type.name}}</span>
+﻿<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="device-name">
+					<span ng-show="device.type.name">{{device.type.name}}</span>
 					<span ng-show="device.type.version">v{{device.type.version}}</span>
 				</h3>
-				<span class="label label-primary" ng-show="device.type.isStandard">Standard</span>
-				<span class="label label-info" ng-show="device.type.isVendorSpecific">Vendor Specific</span>
-			</div>
+			<span class="label label-primary" ng-show="device.type.isStandard">Standard</span>
+			<span class="label label-info" ng-show="device.type.isVendorSpecific">Vendor Specific</span>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<dl class="dl-horizontal">
-					<dt ng-show="device.language">Language</dt>
-					<dd ng-show="device.language">{{device.language.name}}</dd>
-					<dt ng-show="device.model.number">Model Number</dt>
-					<dd ng-show="device.model.number">{{device.model.number}}</dd>
-					<dt ng-show="device.model.description">Model Description</dt>
-					<dd ng-show="device.model.description">{{device.model.description}}</dd>
-					<dt ng-show="device.timezone">Timezone</dt>
-					<dd ng-show="device.timezone">{{device.timezone}}</dd>
-					<dt ng-show="device.uuid">UUID</dt>
-					<dd ng-show="device.uuid">{{device.uuid}}</dd>
-					<dt ng-show="device.macAddress">Mac Address</dt>
-					<dd ng-show="device.macAddress">{{device.macAddress}}</dd>
-					<dt ng-show="device.serialNumber">Serial Number</dt>
-					<dd ng-show="device.serialNumber">{{device.serialNumber}}</dd>
-					<dt ng-show="device.softwareVersion">Software Version</dt>
-					<dd ng-show="device.softwareVersion">{{device.softwareVersion}}</dd>
-				</dl>
-			</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<dl class="dl-horizontal">
+				<dt>Device Type</dt>
+				<dd>{{device.type.raw}}</dd>
+				<dt ng-show="device.language">Language</dt>
+				<dd ng-show="device.language">{{device.language.name}}</dd>
+				<dt ng-show="device.model.number">Model Number</dt>
+				<dd ng-show="device.model.number">{{device.model.number}}</dd>
+				<dt ng-show="device.model.description">Model Description</dt>
+				<dd ng-show="device.model.description">{{device.model.description}}</dd>
+				<dt ng-show="device.timezone">Timezone</dt>
+				<dd ng-show="device.timezone">{{device.timezone}}</dd>
+				<dt ng-show="device.uuid">UUID</dt>
+				<dd ng-show="device.uuid">{{device.uuid}}</dd>
+				<dt ng-show="device.macAddress">Mac Address</dt>
+				<dd ng-show="device.macAddress">{{device.macAddress}}</dd>
+				<dt ng-show="device.serialNumber">Serial Number</dt>
+				<dd ng-show="device.serialNumber">{{device.serialNumber}}</dd>
+				<dt ng-show="device.softwareVersion">Software Version</dt>
+				<dd ng-show="device.softwareVersion">{{device.softwareVersion}}</dd>
+			</dl>
 		</div>
-		<div class="row" ng-show="device.ssdpDescription">
-			<div class="col-md-12">
-				<a target="_blank" ng-href="{{device.ssdpDescription}}" ng-show="device.ssdpDescription">SSDP Description</a>
-			</div>
+	</div>
+	<div class="row" ng-show="device.ssdpDescription">
+		<div class="col-md-12">
+			<a target="_blank" ng-href="{{device.ssdpDescription}}" ng-show="device.ssdpDescription">SSDP Description</a>
 		</div>
 	</div>
 </div>

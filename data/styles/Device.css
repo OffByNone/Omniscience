@@ -39,3 +39,8 @@ span.glyphicon:hover, small.glyphicon:hover {
 	font-weight: bold;
 	cursor: pointer;
 }
+
+.line-break-after::after {
+	display:block;
+	content:"";
+}
