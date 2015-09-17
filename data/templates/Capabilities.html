@@ -10,7 +10,6 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Type</th>
 							<th>Protocol</th>
 							<th>Network</th>
 							<th>Medium</th>
@@ -21,7 +20,6 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="info in protocolInfo | filter: protocolInfoFilter | orderBy: 'contentFormat.containerType'">
-							<td>{{info.type}}</td>
 							<td>{{info.protocol}}</td>
 							<td>{{info.network}}</td>
 							<td>{{info.contentFormat.medium}}</td>
