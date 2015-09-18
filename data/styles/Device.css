@@ -41,6 +41,10 @@ span.glyphicon:hover, small.glyphicon:hover {
 }
 
 .line-break-after::after {
-	display:block;
-	content:"";
+	display: block;
+	content: "";
+}
+
+div.overflow-show {
+	overflow: visible;
 }

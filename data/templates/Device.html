@@ -12,9 +12,9 @@
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-content">
 				<ul class="nav navbar-nav">
-					<li ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')" role="presentation"><a data-target="#capabilities" aria-controls="capabilities" role="tab" data-toggle="tab">Capabilities</a></li>
+					<li role="presentation" ng-show="hasService('urn:schemas-upnp-org:service:AVTransport:1')" class="active"><a data-target="#playlist" aria-controls="playlist" role="tab" data-toggle="tab">Playlist</a></li>
 					<li role="presentation"><a data-target="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a></li>
-					<li role="presentation" ng-show="hasService('urn:schemas-upnp-org:service:AVTransport:1')"><a data-target="#playlist" aria-controls="playlist" role="tab" data-toggle="tab">Playlist</a></li>
+					<li ng-show="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')" role="presentation"><a data-target="#capabilities" aria-controls="capabilities" role="tab" data-toggle="tab">Capabilities</a></li>
 					<li ng-show="isMatchStick()" role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -34,11 +34,11 @@
 		</div>
 	</nav>
 	<div>
-		<div class="media">
+		<div class="media overflow-show">
 			<div class="media-left media-top">
 				<img class="icon" ng-show="device.icon.base64Image" ng-src="{{ device.icon.base64Image }}" />
 			</div>
-			<div class="media-body">
+			<div class="media-body overflow-show">
 				<h1 class="active-device-header">
 					<a target="_blank" ng-href="{{device.webPage}}" ng-show="device.webPage">{{device.name}}</a>
 					<span ng-hide="device.webPage">{{device.name}}</span>
@@ -46,9 +46,9 @@
 						<button type="button" class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown" aria-expanded="false">
 							<span class="glyphicon glyphicon-plus"></span>
 						</button>
-						<div class="dropdown-menu" role="menu">
+						<span class="dropdown-menu" role="menu">
 							<div ng-include="'../templates/DeviceInfo.html'" id="info"></div>
-						</div>
+						</span>
 					</span>
 					<small>
 						<em>
@@ -65,9 +65,9 @@
 			</div>
 		</div>
 		<div class="tab-content container-fluid">
+			<playlist class="tab-pane active" id="playlist" role="tabpanel" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
 			<capabilities role="tabpanel" class="tab-pane" id="capabilities" ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></capabilities>
 			<div ng-include="'../templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
-			<playlist class="tab-pane" id="playlist" role="tabpanel" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
 			<matchstick-settings role="tabpanel" class="tab-pane" id="settings" ng-if="isMatchStick()"></matchstick-settings>
 		</div>
 		<!-- Tab panes -->
