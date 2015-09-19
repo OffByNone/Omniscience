@@ -1,4 +1,4 @@
-﻿<div class="well">
+﻿<div>
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" ng-class="{active: $first}" ng-repeat="service in device.services | orderBy: 'type.name'">
 			<a data-target="#{{service.hash}}" aria-controls="{{service.type.name}}" role="tab" data-toggle="tab">{{service.type.name}}</a>
