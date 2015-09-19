@@ -6,7 +6,7 @@
 				<span ng-show="device.type.version">v{{device.type.version}}</span>
 			</h3>
 			<span class="label label-primary" ng-show="device.type.isStandard">Standard</span>
-			<span class="label label-info" ng-show="device.type.isVendorSpecific">Vendor Specific</span>
+			<span class="label label-info" ng-show="!device.type.isStandard">Vendor Specific</span>
 		</div>
 	</div>
 	<div class="row">
@@ -18,8 +18,11 @@
 				<dd ng-show="device.language">{{device.language.name}}</dd>
 				<dt ng-show="device.model.number">Model Number</dt>
 				<dd ng-show="device.model.number">{{device.model.number}}</dd>
-				<dt ng-show="device.model.description">Model Description</dt>
-				<dd ng-show="device.model.description">{{device.model.description}}</dd>
+				<dt ng-show="device.model.name">Model Name</dt>
+				<dd ng-show="device.model.name">
+					<a target="_blank" ng-show="device.model.url" ng-href="{{device.model.url}}">{{device.model.name}}</a>
+					<span ng-hide="device.model.url">{{device.model.name}}</span>
+				</dd>
 				<dt ng-show="device.timezone">Timezone</dt>
 				<dd ng-show="device.timezone">{{device.timezone}}</dd>
 				<dt ng-show="device.uuid">UUID</dt>
