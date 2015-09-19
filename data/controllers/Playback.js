@@ -18,12 +18,9 @@ window.omniscience.controller('PlaybackController', function playbackController(
 	$scope.toggleMute = function toggleMute() {
 		setMute(!$scope.isMuted);
 	};
-	$scope.incrementVolume = function incrementVolume() {
-		setVolume( Number($scope.volume) + 1);
-	};
-	$scope.decrementVolume = function decrementVolume() {
-		setVolume( Number($scope.volume) - 1);
-	};
+	$scope.setVolume = function() {
+		renderingControlService.setVolume($scope.volume);
+	}
 	$scope.percentComplete = function percentComplete() {
 		return ($scope.currentTrack.currentSeconds / $scope.currentTrack.totalSeconds) * 100;
 	};
@@ -45,11 +42,6 @@ window.omniscience.controller('PlaybackController', function playbackController(
 
 	function updatePlaybackState(newState) {
 		$scope.playback.state = newState;
-	}
-
-	function setVolume (newVolume) {
-		$scope.volume = newVolume;
-		renderingControlService.setVolume(newVolume);
 	}
 	function setMute (mute) {
 		$scope.isMuted = mute
@@ -163,12 +155,12 @@ window.omniscience.controller('PlaybackController', function playbackController(
 			$scope.currentMedia.totalTime = mediaTotal.minutes;
 			$scope.currentMedia.totalSeconds = mediaTotal.seconds;
 		}
-        if(lastChangeEvent.hasOwnProperty('TransportState')) {
-            if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
-                //we are at the end of the song and currently playing. Play next song
-                //todo: having two computers on the same network on the same device will be an issue here
-                $scope.next(true);
-            }
+		if(lastChangeEvent.hasOwnProperty('TransportState')) {
+			if (lastChangeEvent.TransportState.toLowerCase() === 'stopped' && $scope.playback.state.toLowerCase() === 'playing') {
+				//we are at the end of the song and currently playing. Play next song
+				//todo: having two computers on the same network on the same device will be an issue here
+				$scope.next(true);
+			}
 			updatePlaybackState(lastChangeEvent.TransportState);
 		}
 		if(lastChangeEvent.hasOwnProperty('CurrentTrackURI')) {

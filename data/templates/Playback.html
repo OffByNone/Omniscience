@@ -14,9 +14,8 @@
 	<div class="volume-speaker">
 		<span class="glyphicon" ng-class="{'glyphicon-volume-off': isMuted, 'glyphicon-volume-up': !isMuted}" ng-click="toggleMute()"></span>
 		<div class="volume-detail">
-			<span class="glyphicon glyphicon-minus" ng-click="decrementVolume()"></span>
 			<span class="volume-detail-text">{{volume}}</span>
-			<span class="glyphicon glyphicon-plus" ng-click="incrementVolume()"></span>
+			<slider ng-change="setVolume()" ng-model="volume" min="0" max="100" step="1"></slider>
 		</div>
 	</div>
 	<div class="file-time">

@@ -8,8 +8,11 @@
 		<select ng-show="showSelect(parameter)"
 				ng-options="allowedValue for allowedValue in parameter.allowedValues"
 				ng-model="parameter.value"></select>
-
-		<!-- if has allowed value range, make a slider -->
+		<slider ng-show="showSlider(parameter)"
+				ng-model="parameter.value"
+				min="parameter.allowedValueRange.minimum"
+				max="parameter.allowedValueRange.maximum"
+				step="parameter.allowedValueRange.step"></slider>
 	</div>
 
 	<button type="submit">Send</button>
