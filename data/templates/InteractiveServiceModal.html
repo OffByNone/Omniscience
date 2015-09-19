@@ -1,4 +1,4 @@
-﻿<form>
+﻿<form ng-submit="sendRequest()">
 	<h1>{{currentMethod.name}}</h1>
 
 	<div ng-repeat="parameter in currentMethod.parameters">
@@ -12,7 +12,7 @@
 		<!-- if has allowed value range, make a slider -->
 	</div>
 
-	<button type="submit" ng-click="sendRequest()">Send</button>
+	<button type="submit">Send</button>
 
 	<pre class="response">
 		{{response}}
