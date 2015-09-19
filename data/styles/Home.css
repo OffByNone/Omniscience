@@ -32,6 +32,6 @@
 	}
 }
 
-html {
+html, body {
   overflow-y: visible;
 }
