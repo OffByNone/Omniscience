@@ -18,4 +18,17 @@
 			$scope.response = JSON.stringify(response, null, 2);
 		});
 	}
+
+	$scope.showText = function (parameter) {
+		return !$scope.showSelect(parameter) && !$scope.showSlider(parameter) && !$scope.showCheckbox(parameter);
+	};
+	$scope.showSelect = function (parameter) {
+		return parameter.allowedValues.length > 0;
+	};
+	$scope.showSlider = function (parameter) {
+		return parameter.allowedValueRange.minimum && parameter.allowedValueRange.maximum;
+	};
+	$scope.showCheckbox = function (parameter) {
+		return parameter.backingProperty.jsType === "boolean";
+	};
 });

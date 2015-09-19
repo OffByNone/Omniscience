@@ -1,14 +1,20 @@
-﻿<div>
+﻿<form>
 	<h1>{{currentMethod.name}}</h1>
 
 	<div ng-repeat="parameter in currentMethod.parameters">
 		<label>{{parameter.name}}</label>
-		<input type="text" ng-model="parameter.value" />
+		<input ng-show="showCheckbox(parameter)" type="checkbox" ng-model="parameter.value" />
+		<input ng-show="showText(parameter)" type="text" ng-model="parameter.value" />
+		<select ng-show="showSelect(parameter)"
+				ng-options="allowedValue for allowedValue in parameter.allowedValues"
+				ng-model="parameter.value"></select>
+
+		<!-- if has allowed value range, make a slider -->
 	</div>
 
-	<button type="button" ng-click="sendRequest()">Send</button>
+	<button type="submit" ng-click="sendRequest()">Send</button>
 
 	<pre class="response">
 		{{response}}
 	</pre>
-</div>
+</form>
