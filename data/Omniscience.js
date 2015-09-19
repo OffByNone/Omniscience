@@ -2,7 +2,9 @@
 
 (function () {
 	'use strict';
-	window.omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider'], function ($provide) {
+	$('[data-toggle="tooltip"]').tooltip();
+
+	window.omniscience = angular.module('omniscience', ['ngRoute', 'ui.bootstrap-slider', 'ui.bootstrap'], function ($provide) {
 		// Prevent Angular from sniffing for the history API
 		// since it's not supported in chrome packaged apps.
 		if(typeof window.chrome !== "undefined")  { //only do this for chrome

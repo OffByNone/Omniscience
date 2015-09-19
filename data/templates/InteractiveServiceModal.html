@@ -1,0 +1,14 @@
+﻿<div>
+	<h1>{{currentMethod.name}}</h1>
+
+	<div ng-repeat="parameter in currentMethod.parameters">
+		<label>{{parameter.name}}</label>
+		<input type="text" ng-model="parameter.value" />
+	</div>
+
+	<button type="button" ng-click="sendRequest()">Send</button>
+
+	<pre class="response">
+		{{response}}
+	</pre>
+</div>

@@ -29,7 +29,7 @@
 				<h3>Methods</h3>
 				<ul class="col-md-12 list-inline methods">
 					<li class="method" ng-repeat="method in service.methods">
-						<h4>{{method.name}}</h4>
+						<h4 ng-click="openModal(service, method)">{{method.name}}</h4>
 						(<ul class="list-inline">
 							<li class="parameter" ng-repeat="parameter in method.parameters">
 								<h5 data-toggle="tooltip" title="{{parameter.backingProperty}}">

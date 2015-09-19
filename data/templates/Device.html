@@ -67,7 +67,7 @@
 		<div class="tab-content container-fluid">
 			<playlist class="tab-pane active" id="playlist" role="tabpanel" ng-if="hasService('urn:schemas-upnp-org:service:AVTransport:1')"></playlist>
 			<capabilities role="tabpanel" class="tab-pane" id="capabilities" ng-if="hasService('urn:schemas-upnp-org:service:ConnectionManager:1')"></capabilities>
-			<div ng-include="'../templates/ServiceInfo.html'" role="tabpanel" class="tab-pane" id="services"></div>
+			<interactive-service role="tabpanel" class="tab-pane" id="services"></interactive-service>
 			<matchstick-settings role="tabpanel" class="tab-pane" id="settings" ng-if="isMatchStick()"></matchstick-settings>
 		</div>
 		<!-- Tab panes -->

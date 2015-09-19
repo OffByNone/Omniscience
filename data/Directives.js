@@ -82,4 +82,15 @@
 
 		function link(scope, element, attributes) { }
 	});
+	angular.module("omniscience").directive("interactiveService", function () {
+		return ({
+			controller: "InteractiveServiceController",
+			link: link,
+			replace: true,
+			restrict: "E",
+			templateUrl: "../templates/InteractiveService.html"
+		});
+
+		function link(scope, element, attributes) { }
+	});
 })();
