@@ -21,12 +21,12 @@
 		"Fennec": ">=38.0a1"
 	},
 	"devDependencies": {
-		"babel": "^5.8.23",
-		"babelify": "^6.3.0",
-		"browserify": "^11.1.0",
-		"eslint": "^1.4.3",
-		"jasmine": "^2.3.2",
-		"jpm": "^1.0.1",
+		"babel": "^6.23.0",
+		"babelify": "^10.0.0",
+		"browserify": "^16.2.3",
+		"eslint": "^6.0.0",
+		"jasmine": "^3.4.0",
+		"jpm": "^1.3.1",
 		"jpm-mobile": "^0.0.6"
 	},
 	"dependencies": {
